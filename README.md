@@ -2,6 +2,12 @@
 
 TODO: Write a gem description
 
+# really just a loose adaptation of jamis' approaches
+# (e.g., here: http://weblog.jamisbuck.org/2010/12/27/maze-generation-recursive-backtracking)
+
+# solution types are given symmetrically as 'extruders' (passage-carvers) and 'intruders' (path-finders)
+
+
 ## Installation
 
 Add this line to your application's Gemfile:
