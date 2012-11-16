@@ -1,36 +1,29 @@
 module Minotaur
   module Pathfinders
-    class RecursiveBacktrackingPathfinder
+    module RecursiveBacktrackingPathfinder
+      attr_accessor :solution_path
 
-      def path_between(labyrinth,origin,destination) #,path=[])
-        puts "--- Attempting to find distance between origin #{origin} and destination #{destination} for labyrinth"
-        puts labyrinth
-        path = []
-        return path if origin==destination
+      def path_between?(origin,destination=Position.origin,path=[])
+        self.solution_path ||= []
 
-        routes = labyrinth.each_open(origin).map do |next_pos|
-          path_between(labyrinth,next_pos,destination)
+        self.solution_path.push(origin)
+        puts to_s(solution_path)
+
+        if origin == destination
+          return true
         end
 
-        #shortest_route = routes.min(:size) # do { |r| r.size } |next_position, direction|
-        #end
-        #path << path_between(labyrinth,next_position)
+        each_passable_adjacent_to(origin) do |next_position|
+          unless self.solution_path.include?(next_position)
+            if path_between?(next_position,destination)
+              return true
+            end
+          end
+        end
 
-        path << routes.min(:size)
-
-        path
+        self.solution_path.pop
+        false
       end
-
-        #def explore!(labyrinth,target,origin=Position.origin,distance=0)
-      #  return if target == origin
-      #  labyrinth.each_open_with_direction(origin) do |next_position, direction|
-      #    labyrinth.mark!(origin, direction)
-      #    labyrinth.mark!(next_position, Direction.opposite(direction))
-      #    intrude!(labyrinth,target,next_position,distance+1)
-      #  end
-      #end
-
-
     end
   end
 end

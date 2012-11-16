@@ -1,8 +1,8 @@
 require "rspec"
 require 'minotaur'
 
-WIDTH = 5
-HEIGHT = 5
+WIDTH = 20
+HEIGHT = 10
 
 describe Minotaur::Labyrinth do
   let(:width)      { WIDTH }
@@ -13,7 +13,7 @@ describe Minotaur::Labyrinth do
   end
 
   let(:pathfinder) do
-    Minotaur::Pathfinders::RecursiveBacktrackingPathfinder.new
+    Minotaur::Pathfinders::BacktrackingPathfinder.new
   end
 
   subject do
@@ -32,11 +32,12 @@ describe Minotaur::Labyrinth do
 
   context "when extruding a labyrinth" do
     describe "the resultant grid" do
-      its(:width) { should eql width }
+      its(:width)  { should eql width }
       its(:height) { should eql height }
 
       # TODO real tests
       pending "some real tests"
+
 
       #context "should be everywhere connected" do
       #  MAX_DISTANCE = WIDTH*HEIGHT # worst case should be have to traverse WHOLE AREA to get there

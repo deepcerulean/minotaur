@@ -2,8 +2,8 @@ require "rspec"
 require 'minotaur'
 
 describe Minotaur::Position do
-  let(:x) { 14 }
-  let(:y) { 13 }
+  let(:x) { 4 }
+  let(:y) { 5 }
 
   subject do
     Minotaur::Position.new(x,y)

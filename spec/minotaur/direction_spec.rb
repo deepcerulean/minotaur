@@ -15,4 +15,8 @@ describe Direction do
       Direction.opposite(direction).should be(opposite)
     end
   end
+
+  it "should give adjacent positions" do
+
+  end
 end

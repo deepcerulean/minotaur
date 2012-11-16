@@ -3,7 +3,9 @@ require "minotaur/directions"
 require "minotaur/position"
 require "minotaur/grid"
 require "minotaur/extruders/recursive_backtracking_extruder"
+require "minotaur/pathfinder"
 require "minotaur/pathfinders/recursive_backtracking_pathfinder"
+require "minotaur/pathfinders/random_mouse"
 require "minotaur/labyrinth"
 
 module Minotaur

@@ -24,57 +24,71 @@ module Minotaur
       at(position).zero?
     end
 
-    def self.each_position(width,height)
-      width.times do |x|
-        height.times do |y|
-          yield Position.new(x,y)
-        end
-      end
+    def mark!(position, direction)
+      self.rows[position.y][position.x] |= direction
     end
 
-    #def adjacent_from(origin)
-    #  origin.adjacent.select { |position| contains? position }
-    #end
+    def build_passage!(position,next_position)
+      direction = Direction.from(position, next_position)
+      mark!(position,direction)
+      other_direction = Direction.opposite(direction)
+      mark!(next_position, other_direction)
+    end
 
-    def empty_adjacent_from(origin)
-      origin.adjacent.select do |position|
+    def passable?(origin,destination)
+      raise "Only adjacent cells can be passable" unless origin.adjacent.include?(destination)
+      #puts "=== attempting to determine if #{origin} is passable from #{destination}"
+      direction = Direction.from(origin, destination)
+      #puts "--- direction is #{Direction.humanize(direction)}"
+      #puts "--- at origin: #{at(origin)}"
+      #puts "--- at origin & direction: #{at(origin) & direction}"
+      #puts "--- !! => #{!!(at(origin) & direction)}"
+      (at(origin) & direction) > 0
+    end
+
+    def empty_adjacent_to(origin)
+      origin.adjacent.shuffle.select do |position|
         contains?(position) && empty?(position)
       end
     end
 
-    def mark!(position, direction)
-
-      puts "=============="
-      puts "--- Marking #{position} as passable to the #{Direction.humanize(direction)}"
-      puts "--- before: "
-      puts to_s
-      self.rows[position.y][position.x] |= direction
-      puts "--- after: "
-      puts to_s
-
+    def each_empty_adjacent_to(origin)
+      empty_adjacent_to(origin).select do |position|
+        yield position if contains?(position) && empty?(position)
+      end
     end
 
-    def build_passage!(position,next_position)
-      #p self
-      puts
-      puts
-      puts "============="
-      puts "--- Carving passage between #{position} and #{next_position}"
-      direction = Direction.from(position, next_position)
-      puts "--- Marking #{position} with passage in direction #{Direction.humanize direction}"
-      mark!(position,direction)
-
-      other_direction = Direction.opposite(direction)
-      puts "--- Marking #{next_position} with a passage in the other direction #{Direction.humanize other_direction}"
-      mark!(next_position, other_direction)
+    def passable_adjacent_to(origin)
+      origin.adjacent.shuffle.select do |adjacent|
+        contains?(adjacent) && passable?(origin,adjacent)
+      end
     end
 
-    def to_s
+    def each_passable_adjacent_to(origin)
+      passable_adjacent_to(origin).select do |adjacent|
+        yield adjacent if contains?(adjacent) && passable?(origin,adjacent)
+      end
+    end
+
+
+    def to_s(path=[],path_indicator='*',path_start_indicator='a',path_end_indicator='b')
       output = " " + "_" * (self.width * 2 - 1) << "\n"
       self.height.times do |y|
         output << "|"
         self.width.times do |x|
-          output << ((self.rows[y][x] & SOUTH != 0) ? " " : "_")
+          pos = Position.new(x,y)
+          if path.include?(pos)
+            if path.first == pos
+              output << path_start_indicator
+            elsif path.last == pos
+              output << path_end_indicator
+            else
+              output << path_indicator
+            end
+          else
+            output << ((self.rows[y][x] & SOUTH != 0) ? " " : "_")
+          end
+
           if self.rows[y][x] & EAST != 0
             output << (((self.rows[y][x] | self.rows[y][x+1]) & SOUTH != 0) ? " " : "_")
           else
@@ -84,6 +98,20 @@ module Minotaur
         output << "\n"
       end
       output
+    end
+
+
+    #
+    # helpers (may belong somewhere else?)
+    #
+
+
+    def self.each_position(width,height)
+      width.times do |x|
+        height.times do |y|
+          yield Position.new(x,y)
+        end
+      end
     end
   end
 end
