@@ -14,6 +14,8 @@ describe Grid do
   its(:width)   { should eql(width) }
   its(:height)  { should eql(height) }
 
+  let(:direction) { Direction.from origin, destination }
+
   context "passage handling" do
     let(:origin) { Position.origin }
     let(:destination) { Position.origin.translate(EAST) }
@@ -24,15 +26,15 @@ describe Grid do
       end
 
       it "should be passable one way" do
-        subject.passable?(origin,destination).should be_true
+        subject.passable?(origin,direction).should be_true
       end
 
       it "should be passable the other" do
-        subject.passable?(destination,origin).should be_true
+        subject.passable?(destination,Direction.opposite(direction)).should be_true
       end
 
       it "should not be passable in other directions" do
-        subject.passable?(origin,origin.translate(SOUTH)).should be_false
+        subject.passable?(origin,SOUTH).should be_false
       end
     end
   end

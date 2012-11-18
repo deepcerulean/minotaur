@@ -35,15 +35,10 @@ module Minotaur
       mark!(next_position, other_direction)
     end
 
-    def passable?(origin,destination)
-      raise "Only adjacent cells can be passable" unless origin.adjacent.include?(destination)
-      #puts "=== attempting to determine if #{origin} is passable from #{destination}"
-      direction = Direction.from(origin, destination)
-      #puts "--- direction is #{Direction.humanize(direction)}"
-      #puts "--- at origin: #{at(origin)}"
-      #puts "--- at origin & direction: #{at(origin) & direction}"
-      #puts "--- !! => #{!!(at(origin) & direction)}"
-      (at(origin) & direction) > 0
+    def passable?(origin,direction) #destination)
+      #raise "Only adjacent cells can be passable" unless origin.adjacent.include?(destination)
+      #direction = Direction.from(origin, destination)
+      (at(origin) & direction) != 0
     end
 
     def empty_adjacent_to(origin)
@@ -60,15 +55,16 @@ module Minotaur
 
     def passable_adjacent_to(origin)
       origin.adjacent.shuffle.select do |adjacent|
-        contains?(adjacent) && passable?(origin,adjacent)
+        contains?(adjacent) && passable?(origin,Direction.from(origin,adjacent))
       end
     end
 
     def each_passable_adjacent_to(origin)
       passable_adjacent_to(origin).select do |adjacent|
-        yield adjacent if contains?(adjacent) && passable?(origin,adjacent)
+        yield adjacent if contains?(adjacent) && passable?(origin,Direction.from(origin,adjacent))
       end
     end
+
 
 
     def to_s(path=[],path_indicator='*',path_start_indicator='a',path_end_indicator='b')
@@ -78,19 +74,25 @@ module Minotaur
         self.width.times do |x|
           pos = Position.new(x,y)
           if path.include?(pos)
-            if path.first == pos
-              output << path_start_indicator
-            elsif path.last == pos
-              output << path_end_indicator
-            else
-              output << path_indicator
+            output << case pos
+              when path.first then path_start_indicator
+              when path.last  then path_end_indicator
+              else path_indicator
             end
+            #if path.first == pos
+            #  output << path_start_indicator
+            #elsif path.last == pos
+            #  output << path_end_indicator
+            #else
+            #  output << path_indicator
+            #end
           else
-            output << ((self.rows[y][x] & SOUTH != 0) ? " " : "_")
+            output << (passable?(pos,SOUTH) ? " " : "_") #(self.rows[y][x] & SOUTH != 0) ? " " : "_")
           end
 
           if self.rows[y][x] & EAST != 0
-            output << (((self.rows[y][x] | self.rows[y][x+1]) & SOUTH != 0) ? " " : "_")
+            output << (((at(pos) | at(pos.translate(EAST))) & SOUTH != 0) ? " " : "_")
+                      #(((self.rows[y][x] | self.rows[y][x+1]) & SOUTH != 0) ? " " : "_")
           else
             output << "|"
           end

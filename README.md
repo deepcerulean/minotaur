@@ -1,11 +1,13 @@
 # Minotaur
 
-TODO: Write a gem description
+[![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/deepcerulean/minotaur)
 
-# really just a loose adaptation of jamis' approaches
-# (e.g., here: http://weblog.jamisbuck.org/2010/12/27/maze-generation-recursive-backtracking)
+Labyrinth-generating and solving framework framework.
 
-# solution types are given symmetrically as 'extruders' (passage-carvers) and 'intruders' (path-finders)
+A somewhat loose adaptation of jamis' approaches
+(e.g., here: http://weblog.jamisbuck.org/2010/12/27/maze-generation-recursive-backtracking)
+
+Note that generators/solvers are given symmetrically as 'extruders' (passage-carvers, generators) and 'pathfinders' (solvers)
 
 
 ## Installation
