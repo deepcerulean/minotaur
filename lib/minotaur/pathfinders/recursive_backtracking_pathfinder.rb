@@ -7,7 +7,7 @@ module Minotaur
         self.solution_path ||= []
 
         self.solution_path.push(origin)
-        puts to_s(solution_path)
+        #puts to_s(solution_path)
 
         if origin == destination
           return true

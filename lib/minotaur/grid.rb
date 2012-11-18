@@ -66,7 +66,6 @@ module Minotaur
     end
 
 
-
     def to_s(path=[],path_indicator='*',path_start_indicator='a',path_end_indicator='b')
       output = " " + "_" * (self.width * 2 - 1) << "\n"
       self.height.times do |y|
@@ -79,20 +78,11 @@ module Minotaur
               when path.last  then path_end_indicator
               else path_indicator
             end
-            #if path.first == pos
-            #  output << path_start_indicator
-            #elsif path.last == pos
-            #  output << path_end_indicator
-            #else
-            #  output << path_indicator
-            #end
           else
-            output << (passable?(pos,SOUTH) ? " " : "_") #(self.rows[y][x] & SOUTH != 0) ? " " : "_")
+            output << (passable?(pos,SOUTH) ? " " : "_")
           end
-
           if self.rows[y][x] & EAST != 0
             output << (((at(pos) | at(pos.translate(EAST))) & SOUTH != 0) ? " " : "_")
-                      #(((self.rows[y][x] | self.rows[y][x+1]) & SOUTH != 0) ? " " : "_")
           else
             output << "|"
           end
