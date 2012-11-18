@@ -56,7 +56,7 @@ describe Grid do
         let(:height) { 1 }
         let(:path)   { [Position.origin] }
         it "should draw the path" do
-          subject.to_s(path).should eql(" _\n|.|\n")
+          subject.to_s(path).should eql(" _\n|a|\n")
         end
       end
     end

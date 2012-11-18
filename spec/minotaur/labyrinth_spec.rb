@@ -9,11 +9,11 @@ describe Minotaur::Labyrinth do
   let(:height)     { HEIGHT }
 
   let(:extruder) do
-    Minotaur::Extruders::RecursiveBacktrackingExtruder.new
+    Minotaur::Extruders::RecursiveBacktrackingExtruder
   end
 
   let(:pathfinder) do
-    Minotaur::Pathfinders::BacktrackingPathfinder.new
+    Minotaur::Pathfinders::RecursiveBacktrackingPathfinder
   end
 
   subject do
