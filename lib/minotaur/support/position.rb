@@ -1,12 +1,11 @@
 module Minotaur
   class Position < Struct.new(:x, :y)
-    #def <=>(other)
-    #  self.x <=> other.x && self.y <=> other.y
-    #end
-    #include Comparable
-
     def ==(other)
       self.x == other.x && self.y == other.y
+    end
+
+    def +(other)
+      Position.new(self.x + other.x, self.y + other.y)
     end
 
     def translate(direction,n=1)
