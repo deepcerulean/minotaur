@@ -44,12 +44,14 @@ describe Grid do
       describe "a tiny grid" do
         let(:width)  { 1 }
         let(:height) { 1 }
-        its(:to_s) { should eql(" _\n|_|\n") }
+        #its(:to_s) { should eql(" _\n|_|\n") }
+        its(:to_s) { should eql("/---|\n|   |\n|---|\n") }
       end
       describe "a 2x2 grid" do
         let(:width) { 2 }
         let(:height) { 2 }
-        its(:to_s) { should eql(" ___\n|_|_|\n|_|_|\n")}
+        #its(:to_s) { should eql(" ___\n|_|_|\n|_|_|\n")}
+        its(:to_s) { should eql("/---|---|\n|   |   |\n|---|---|\n|   |   |\n|---|---|\n") }
       end
     end
     context "with a path" do
@@ -58,7 +60,8 @@ describe Grid do
         let(:height) { 1 }
         let(:path)   { [Position.origin] }
         it "should draw the path" do
-          subject.to_s(path).should eql(" _\n|a|\n")
+          #subject.to_s(path).should eql(" _\n|a|\n")
+          subject.to_s(path).should eql("/---|\n| a |\n|---|\n")
         end
       end
     end
@@ -79,7 +82,4 @@ describe Grid do
       end
     end
   end
-
-  pending "some more/better tests"
-
 end

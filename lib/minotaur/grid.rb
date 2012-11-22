@@ -2,6 +2,13 @@ module Minotaur
   MIN_SIZE = 10
   DEFAULT_SIZE = 25
 
+  #
+  #   this class has a lot -- probably too many -- little miscellaneous helpers
+  #   its' subclass labyrinth tries to solve this by weaving together complicated behavior into support
+  #   and external classes (pathfinders, extruders.)
+  #
+  #
+  #
   class Grid
     attr_accessor :height, :width
     attr_accessor :rows
@@ -24,20 +31,19 @@ module Minotaur
       at(position).zero?
     end
 
-    def mark!(position, direction)
-      self.rows[position.y][position.x] |= direction
+    def inscribe!(position, value)
+      raise "Cannot mark position #{position} (outside the grid)" unless contains?(position)
+      self.rows[position.y][position.x] |= value
     end
 
     def build_passage!(position,next_position)
       direction = Direction.from(position, next_position)
-      mark!(position,direction)
+      inscribe!(position,direction)
       other_direction = Direction.opposite(direction)
-      mark!(next_position, other_direction)
+      inscribe!(next_position, other_direction)
     end
 
-    def passable?(origin,direction) #destination)
-      #raise "Only adjacent cells can be passable" unless origin.adjacent.include?(destination)
-      #direction = Direction.from(origin, destination)
+    def passable?(origin,direction)
       (at(origin) & direction) != 0
     end
 
@@ -65,37 +71,25 @@ module Minotaur
       end
     end
 
-
-    def to_s(path=[],path_indicator='*',path_start_indicator='a',path_end_indicator='b')
-      output = " " + "_" * (self.width * 2 - 1) << "\n"
-      self.height.times do |y|
-        output << "|"
-        self.width.times do |x|
-          pos = Position.new(x,y)
-          if path.include?(pos)
-            output << case pos
-              when path.first then path_start_indicator
-              when path.last  then path_end_indicator
-              else path_indicator
-            end
-          else
-            output << (passable?(pos,SOUTH) ? " " : "_")
-          end
-          if self.rows[y][x] & EAST != 0
-            output << (((at(pos) | at(pos.translate(EAST))) & SOUTH != 0) ? " " : "_")
-          else
-            output << "|"
-          end
-        end
-        output << "\n"
+    def adjacent?(origin,destination,path=[])
+      adjacent = origin.adjacent.include?(destination)
+      return adjacent unless path
+      if path.index(origin) && path.index(destination) && (path.index(origin) - path.index(destination)).abs == 1
+        adjacent
+      else
+        false
       end
-      output
     end
 
 
-    #
-    # helpers (may belong somewhere else?)
-    #
+    def prettifier
+      @prettifier ||= Prettifier::CompactPrettifier.new
+                      #Prettifier::SimplePrettifier.new
+    end
+
+    def to_s(path=[])
+      prettifier.prettify(self,path)
+    end
 
 
     def self.each_position(width,height)
@@ -105,5 +99,18 @@ module Minotaur
         end
       end
     end
+
+    def all_positions
+      all = []
+      Grid.each_position(self.width,self.height) { |pos| all << pos }
+      all
+    end
+
+
+
+    def open?(position)
+      Directions.all? { |direction| passable?(position,direction) }
+    end
+
   end
 end

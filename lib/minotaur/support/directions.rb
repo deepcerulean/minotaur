@@ -11,8 +11,8 @@ module Minotaur
       case direction
         when NORTH then "north"
         when SOUTH then "south"
-        when EAST then "east"
-        when WEST then "west"
+        when EAST  then "east"
+        when WEST  then "west"
       end
     end
 
@@ -27,13 +27,13 @@ module Minotaur
       return EAST  if a.x < b.x
       return NORTH if a.y > b.y
       return SOUTH if a.y < b.y
-
       raise "Can't determine direction between #{a} and #{b}!"
     end
   end
 
   module Directions
     def self.all;  [NORTH,SOUTH,EAST,WEST] end
+    def self.all?;  all.all? end
     def self.shuffled; all.sort_by { rand } end
     def self.each; all.each end
   end

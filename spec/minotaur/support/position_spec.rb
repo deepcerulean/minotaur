@@ -36,6 +36,4 @@ describe Minotaur::Position do
       subject.translate(Minotaur::NORTH, 2).to_s.should == "(0, -2)"
     end
   end
-  # TODO more real tests
-  pending "some more real tests"
 end
