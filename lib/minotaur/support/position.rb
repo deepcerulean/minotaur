@@ -1,5 +1,7 @@
 module Minotaur
   class Position < Struct.new(:x, :y)
+    include DirectionHelpers
+
     def ==(other)
       self.x == other.x && self.y == other.y
     end
@@ -13,14 +15,21 @@ module Minotaur
     end
 
     def adjacent
-      Directions.all.map { |direction| translate(direction) }
+      all_directions.map { |direction| translate(direction) }
     end
 
     def to_s; "(#{self.x}, #{self.y})" end
 
+  end
+
+  module PositionHelpers
     # some helpers
-    def self.origin
+    def origin
       Position.new(0,0)
     end
+
+    #def self.position(x,y)
+    #  Position.new(x,y)
+    #end
   end
 end

@@ -1,11 +1,10 @@
-require "rspec"
-require 'minotaur'
+require 'spec_helper'
 
-describe Minotaur::Scalar do
+describe Scalar do
   #
   it "can split an uneven magnitude into segments" do
     @magnitude = 9
-    segments = Minotaur::Scalar.new(@magnitude).split!(2,4)
+    segments   = Scalar.new(@magnitude).split!(:count => 2, :minimum => 4)
     #segments.count.should == 2
     segments.should == [4,5]
   end

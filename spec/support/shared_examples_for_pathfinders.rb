@@ -1,16 +1,17 @@
-SIZE = 4
+SIZE = 10
 
 shared_examples_for "a pathfinder" do
   before(:all) do
-    @labyrinth = Minotaur::Labyrinth.new(size: SIZE, pathfinder: subject)
+    @labyrinth = Labyrinth.new(size: SIZE, pathfinder: subject)
     @labyrinth.extrude!
   end
 
   it "explores a #{SIZE}x#{SIZE} labyrinth to identify shortest route(s)" do
-    Minotaur::Grid.each_position(SIZE,SIZE) do |src|
-      Minotaur::Grid.each_position(SIZE,SIZE) do |dst|
+    Labyrinth.each_position(SIZE,SIZE) do |src|
+      Labyrinth.each_position(SIZE,SIZE) do |dst|
         if src != dst
           @labyrinth.path_between?(dst,src).should be_true
+          #puts @labyrinth.to_s(@labyrinth.solution_path)
         end
       end
     end

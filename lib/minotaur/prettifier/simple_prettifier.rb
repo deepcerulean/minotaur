@@ -1,16 +1,24 @@
 module Minotaur
   module Prettifier
-    class SimplePrettifier < Base
-      def prettify(grid,path=[])
-        output = grid_header(grid) #row_separator(grid,0,path) #grid_header(grid)
-        #output << "\n"
-        grid.height.times do |y|
+    module SimplePrettifier # < Base
+      attr_accessor :path_indicator
+      attr_accessor :path_start_indicator
+      attr_accessor :path_end_indicator
+
+      def path_indicator;       @path_indicator       ||= '.' end
+      def path_start_indicator; @path_start_indicator ||= 'a' end
+      def path_end_indicator;   @path_end_indicator   ||= 'b' end
+
+      def to_s(path=[])
+        output = "\n"
+        output << grid_header(self) #row_separator(grid,0,path) #grid_header(grid)
+        height.times do |y|
           output << "|"
-          grid.width.times do |x|
-            output << cell(grid,x,y,path)
+          width.times do |x|
+            output << cell(self,x,y,path)
           end
           output << "\n|"
-          output << row_separator(grid,y,path)
+          output << row_separator(self,y,path)
           output << "\n"
         end
         output

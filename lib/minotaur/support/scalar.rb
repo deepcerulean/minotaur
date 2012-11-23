@@ -1,21 +1,25 @@
 module Minotaur
   class Scalar < Struct.new(:magnitude)
-    def split!(n,min,variance=5)
-      #puts "-- Scalar#split! called: mag=#{magnitude}, min=#{min}, n=#{n}"
+    def split!(opts={}) #n=rand(4),min=5,variance=10)
+      # options
+      n               = opts.delete(:count) { 3 }
+      min             = opts.delete(:minimum) { 4 }
+      variance        = opts.delete(:variance) { 0 }
+
+      # approximate length that would 'evenly' divide the magnitude into n segments
       split_magnitude = (self.magnitude/n).to_i
-      #puts "-- split magnitude: #{split_magnitude}"
+
       return [magnitude] if split_magnitude < min
       width_so_far = 0
       resultant_magnitudes = []
       n.times do |index|
-        #puts "-- #{index}-th split"
-        next_width = split_magnitude + rand(variance) #[width_so_far, split_magnitude + rand(2)].min #.to_i
+        next_width = split_magnitude
         if index==n-1
-          #puts "-- assigining remaining width"
           next_width = (magnitude - width_so_far)
+        else
+          next_width = next_width + (rand*variance).to_i # until next_width >= min && (magnitude-(width_so_far+next_width)) >= min
         end
         width_so_far = width_so_far + next_width
-        #puts "--- width this iteration: #{next_width}"
         resultant_magnitudes << next_width
       end
       resultant_magnitudes

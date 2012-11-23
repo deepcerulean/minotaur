@@ -11,7 +11,13 @@ describe Minotaur::Extruders::RecursiveBacktrackingExtruder do
   end
 
   context "when carving passages for a labyrinth" do
-    let(:size) { 10 }
+    #let(:size) { 25 }
+    #describe "a normal maze" do
+    #  it "is awesome" do
+    #    labyrinth.extrude!
+    #    puts labyrinth
+    #  end
+    #end
 
     context "should extrude passages" do
       describe "an atomic maze" do
