@@ -1,11 +1,11 @@
 require "minotaur/version"
 
-require "minotaur/support/fate"
-require "minotaur/support/directions"
-require "minotaur/support/position"
-require "minotaur/support/scalar"
-require "minotaur/support/room"
-require "minotaur/support/include_helpers"
+require "minotaur/geometry/directions"
+require "minotaur/geometry/position"
+require "minotaur/geometry/scalar"
+require "minotaur/geometry/space"
+require "minotaur/geometry/subdivider"
+require "minotaur/geometry/grid"
 
 require "minotaur/prettifier/simple_prettifier"
 require "minotaur/prettifier/compact_prettifier"
@@ -15,8 +15,16 @@ require "minotaur/extruders/room_extruder"
 
 require "minotaur/pathfinders/recursive_backtracking_pathfinder"
 
+require "minotaur/room"
 require "minotaur/labyrinth"
 
-module Minotaur
+require "minotaur/helpers/fate_helpers"
+require "minotaur/helpers/direction_helpers"
+require "minotaur/helpers/range_helpers"
+require "minotaur/helpers/position_helpers"
 
+#
+#
+#
+module Minotaur
 end

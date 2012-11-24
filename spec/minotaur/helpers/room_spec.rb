@@ -22,7 +22,7 @@ describe Room do
       room = Room.new(location,width,height)
       other_room = Room.new(other_location, other_width, other_height)
 
-      room.adjacent_direction(other_room)
+      room.adjoining_direction(other_room)
     end
 
     context "when the other room is to the east" do
@@ -80,7 +80,7 @@ describe Room do
       room = Room.new(location,width,height)
       other_room = Room.new(other_location, other_width, other_height)
 
-      room.shared_edge(other_room)
+      room.adjoining_edge(other_room)
     end
 
     context "when the other room is to the east" do
@@ -93,12 +93,14 @@ describe Room do
       let(:other_height)   { 2 }
 
       describe "when directly overlapping" do
-        it { should eql([[[1, 0], [2, 0]], [[1, 1], [2, 1]]]) }
+        it { should eql([[[1, 0], [2, 0]], [[1, 1], [2, 1]]]) } #, [[1, 2], [2, 2]]]) } #[[[1, 0], [2, 0]], [[1, 1], [2, 1]]]) }
       end
 
       describe "when partially overlapping" do
         let(:other_location) { origin.translate(EAST,2).translate(SOUTH, 1) }
         it { should_not be_nil }
+        it { should have(1).item }
+        it { should eql([[[1, 1], [2, 1]]]) } #, [[1, 2], [2, 2]]])}
       end
     end
   end
@@ -107,8 +109,8 @@ describe Room do
 
   describe "the result of a #split" do
     subject do
-      room = Room.new(location,width,height)
-      split_results = room.subdivide!(direction: direction, recursive: recursive, min_edge_length: minimum)
+      room = Room.new(location: location, width: width, height: height)
+      split_results = room.subdivide!(direction: direction, recursive: recursive, min_subdivision_length: minimum)
       #p split_results
       split_results
     end
@@ -122,6 +124,7 @@ describe Room do
       describe "given a vertical split" do
         let(:direction) { 'vertical' }
 
+
         it { should_not be_empty }
         it { should have(2).items }
 
@@ -130,7 +133,7 @@ describe Room do
             [ room.width, room.height ]
           end
 
-          room_dimensions.should eql([[13,5],[13,6]])
+          room_dimensions.should eql([[6, 11], [7, 11]]) #[[13,5],[13,6]])
         end
       end
 
@@ -140,7 +143,7 @@ describe Room do
         it { should have(2).items }
         it "should be two particular smaller rooms" do
           room_dimensions = subject.map { |r| [r.width, r.height] }
-          room_dimensions.should eql([[6,11],[7,11]])
+          room_dimensions.should eql([[13, 5], [13, 6]]) #[[6,11],[7,11]])
         end
       end
     end
@@ -150,8 +153,9 @@ describe Room do
       let(:height)    { 6 }
       let(:recursive) { true }
       let(:direction) { 'horizontal' }
+
       describe "given a minimum edge length of 3" do
-        let(:minimum)   { 3 }
+        let(:minimum) { 3 }
         it { should have(4).items }
       end
     end

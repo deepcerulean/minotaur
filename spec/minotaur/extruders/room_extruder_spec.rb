@@ -1,12 +1,18 @@
 require "spec_helper"
 
-describe Extruders::RoomExtruder do
+include Minotaur
+include Minotaur::Extruders
+include Minotaur::Helpers::PositionHelpers
+include Minotaur::Prettifier
+
+
+describe RoomExtruder do
   subject do
-    Extruders::RoomExtruder
+    RoomExtruder
   end
 
   let(:labyrinth) do
-    Labyrinth.new(size: size, extruder:subject, prettifier: Prettifier::CompactPrettifier)
+    Labyrinth.new(size: size, extruder:subject, prettifier: CompactPrettifier)
   end
 
   context "when placing rooms for a dungeon" do
@@ -19,7 +25,7 @@ describe Extruders::RoomExtruder do
     end
 
     it "should have more than 80% 'open' space" do
-      #puts labyrinth
+      puts labyrinth
       total = labyrinth.all_positions.count
       total_open = labyrinth.all_positions.count { |position| labyrinth.open?(position) }
       (total_open.to_f/total).should >= 0.8
@@ -39,6 +45,7 @@ describe Extruders::RoomExtruder do
     end
 
     it "should have rooms that obey the minimum edge/area length guidelines" do
+      #puts labyrinth
       labyrinth.rooms.each do |room|
         room.height.should >= min_edge_length
         room.width.should  >= min_edge_length
