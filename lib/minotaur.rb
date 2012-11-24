@@ -7,9 +7,6 @@ require "minotaur/support/scalar"
 require "minotaur/support/room"
 require "minotaur/support/include_helpers"
 
-#require "minotaur/grid"
-
-require "minotaur/prettifier/base"
 require "minotaur/prettifier/simple_prettifier"
 require "minotaur/prettifier/compact_prettifier"
 

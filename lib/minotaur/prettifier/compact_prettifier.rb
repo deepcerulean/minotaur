@@ -1,14 +1,13 @@
 module Minotaur
   module Prettifier
-    module CompactPrettifier # < Base
-      #include PrettifierBase
+    module CompactPrettifier
 
-      def to_s #(_) #, path=[])
+      def to_s
         output = " " + "_" * (self.width * 2 - 1) << "\n"
         self.height.times do |y|
           output << "|"
           self.width.times do |x|
-            output << cell(self,x,y) #,path)
+            output << cell(self,x,y)
           end
           output << "\n"
         end

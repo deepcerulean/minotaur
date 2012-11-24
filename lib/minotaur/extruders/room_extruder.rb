@@ -16,7 +16,7 @@ module Minotaur
       def carve_rooms!(start=origin, min_edge_length=5, variance=0)
         @rooms = []
         root = Room.new(start, width, height)
-        root.split!({min_edge_length: min_edge_length, variance: variance}).each do |room|
+        root.subdivide!({min_edge_length: min_edge_length, variance: variance}).each do |room|
           @rooms << room
           carve_room!(room)
         end
@@ -35,8 +35,6 @@ module Minotaur
           end
         end
       end
-
-
 
       def carve_room!(room)
         Labyrinth.each_position(room.width,room.height) do |position|

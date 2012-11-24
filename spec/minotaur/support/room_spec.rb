@@ -108,7 +108,7 @@ describe Room do
   describe "the result of a #split" do
     subject do
       room = Room.new(location,width,height)
-      split_results = room.split!(direction: direction, recursive: recursive, min_edge_length: minimum)
+      split_results = room.subdivide!(direction: direction, recursive: recursive, min_edge_length: minimum)
       #p split_results
       split_results
     end

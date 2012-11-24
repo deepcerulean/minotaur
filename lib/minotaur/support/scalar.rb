@@ -1,11 +1,21 @@
 module Minotaur
-  class Scalar < Struct.new(:magnitude)
-    def split!(opts={})
+
+  module ScalarHelpers
+    # TODO really pretty general...
+    def range_overlap?(r1,r2)
+      r1.include?(r2.begin) || r2.include?(r1.begin)
+    end
+
+  #  def split!
+  #
+  #
+  #class Scalar < Struct.new(:magnitude)
+    def split!(magnitude,opts={})
       n               = opts.delete(:count) { 3 }
       min             = opts.delete(:minimum) { 4 }
       variance        = opts.delete(:variance) { 0 }
 
-      split_magnitude = (self.magnitude/n).to_i
+      split_magnitude = (magnitude/n).to_i
 
       return [magnitude] if split_magnitude < min
 

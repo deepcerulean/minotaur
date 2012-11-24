@@ -19,7 +19,7 @@ describe Extruders::RoomExtruder do
     end
 
     it "should have more than 80% 'open' space" do
-      puts labyrinth
+      #puts labyrinth
       total = labyrinth.all_positions.count
       total_open = labyrinth.all_positions.count { |position| labyrinth.open?(position) }
       (total_open.to_f/total).should >= 0.8
@@ -30,7 +30,7 @@ describe Extruders::RoomExtruder do
     end
 
     it "should have no unconnected rooms" do
-      puts labyrinth
+      #puts labyrinth
       labyrinth.rooms.each do |room|
         labyrinth.doors.any? do |door|
           room == door[0] || room == door[1]

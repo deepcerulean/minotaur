@@ -23,13 +23,14 @@ Current features:
    - Solving
   - Dungeons
    - Room division
+   - Doorways
+
 
 [Note that generators/solvers are given symmetrically as 'extruders' (passage-carvers, generators) and 'pathfinders' (solvers)]
 
 In progress:
 
   - Dungeons
-    - Doorways
     - "Features" (differentiated rooms)
       - Treasure
       - Encounters
@@ -45,19 +46,21 @@ Planned work:
     - More sophisticated generation strategies
     - Better atmosphere notes, etc.
 
-  - Towns, Cities [planned]
+  - Towns, Cities
     - building placement
     - citizen generation
     - stories/simulation (history generation)
 
 Backlog:
 
-  - Worlds [backlog]
+  - Refactoring throughout
+
+  - Worlds
     - ecosystem generation
     - cities and towns
     - history simulation
 
-  - API/Server [backlog]
+  - API/Server
     - Sessions
     - World protocol; generalized entities
     - Would need to be able to manage "game state" reliably, etc.
