@@ -10,7 +10,7 @@ describe Extruders::RoomExtruder do
   end
 
   context "when placing rooms for a dungeon" do
-    let(:size)            { 20 }
+    let(:size)            { 40 }
     let(:min_edge_length) { 5 }
     let(:variance)        { 2  }
 
@@ -18,13 +18,10 @@ describe Extruders::RoomExtruder do
       labyrinth.extrude!(min_edge_length: min_edge_length, variance: variance)
     end
 
-  #describe "most of the space should be open" do
     it "should have more than 80% 'open' space" do
       puts labyrinth
       total = labyrinth.all_positions.count
       total_open = labyrinth.all_positions.count { |position| labyrinth.open?(position) }
-
-      #p (total_open.to_f/total)
       (total_open.to_f/total).should >= 0.8
       # TODO note this seems to be returning true for 100% of the grid, which can't/shouldn't be the case
 
@@ -33,14 +30,12 @@ describe Extruders::RoomExtruder do
     end
 
     it "should have no unconnected rooms" do
+      puts labyrinth
       labyrinth.rooms.each do |room|
         labyrinth.doors.any? do |door|
           room == door[0] || room == door[1]
         end.should be_true
       end
-      #p labyrinth.doors
-      #puts labyrinth
-      #labyrinth.doors.count.should > 0
     end
 
     it "should have rooms that obey the minimum edge/area length guidelines" do
@@ -52,5 +47,3 @@ describe Extruders::RoomExtruder do
     end
   end
 end
-#  end
-#end

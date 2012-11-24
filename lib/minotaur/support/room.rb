@@ -6,10 +6,6 @@ module Minotaur
   class Room < Struct.new(:location,:width,:height)
     include FateHelpers
 
-    def ==(other)
-      self.x == other.x && self.y == other.y && self.width == other.width && self.height == other.width
-    end
-
     def to_s
       "#{width}x#{height} room at #{location}"
     end
