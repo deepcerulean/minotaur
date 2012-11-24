@@ -11,11 +11,12 @@ describe Minotaur::Extruders::RecursiveBacktrackingExtruder do
   end
 
   context "when carving passages for a labyrinth" do
-    let(:size) { 10 }
-    #
-    #it "should callback our extruder" do
-    #  subject.should_receive(:build_passage!)
-    #  labyrinth.carve_passages!
+    #let(:size) { 25 }
+    #describe "a normal maze" do
+    #  it "is awesome" do
+    #    labyrinth.extrude!
+    #    puts labyrinth
+    #  end
     #end
 
     context "should extrude passages" do
@@ -23,18 +24,10 @@ describe Minotaur::Extruders::RecursiveBacktrackingExtruder do
         let(:size) { 1 }
 
         it "should leave a 1x1 grid alone" do
-          labyrinth.carve_passages!
+          labyrinth.extrude!
           labyrinth.rows.should == [[0]]
         end
       end
-
-      #describe "a tiny maze" do
-      #  let(:size) { 3 }
-      #  it "should do something" do
-      #    labyrinth.carve_passages!
-      #    puts labyrinth
-      #  end
-      #end
     end
   end
 end

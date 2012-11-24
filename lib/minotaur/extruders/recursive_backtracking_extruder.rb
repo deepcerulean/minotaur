@@ -1,10 +1,16 @@
 module Minotaur
   module Extruders
     module RecursiveBacktrackingExtruder
-      def carve_passages!(origin=Position.origin)
-        each_empty_adjacent_to(origin) do |next_position|
-          build_passage!(origin,next_position)
-          carve_passages!(next_position)
+      #include PositionHelpers
+      #
+      #  extrude hallways recursively
+      #
+      def extrude!(opts={})
+        start = opts.delete(:start) { origin }
+        # 'empty' here basically means 'unexplored'
+        each_empty_adjacent_to(start) do |next_position|
+          build_passage!(start,next_position)
+          extrude!(start: next_position)
         end
       end
     end
