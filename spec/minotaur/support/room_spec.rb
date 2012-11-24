@@ -30,7 +30,7 @@ describe Room do
       let(:width)    { 2 }
       let(:height)   { 2 }
 
-      let(:other_location) { origin.translate(EAST,3) }
+      let(:other_location) { origin.translate(EAST,2) }
       let(:other_width)    { 2 }
       let(:other_height)   { 2 }
 
@@ -42,7 +42,7 @@ describe Room do
       let(:width)    { 2 }
       let(:height)   { 2 }
 
-      let(:other_location) { origin.translate(SOUTH,3) }
+      let(:other_location) { origin.translate(SOUTH,2) }
       let(:other_width)    { 2 }
       let(:other_height)   { 2 }
 
@@ -55,7 +55,7 @@ describe Room do
       let(:width)    { 2 }
       let(:height)   { 2 }
 
-      let(:other_location) { origin.translate(WEST,3) }
+      let(:other_location) { origin.translate(WEST,2) }
       let(:other_width)    { 2 }
       let(:other_height)   { 2 }
 
@@ -67,7 +67,7 @@ describe Room do
       let(:width)    { 2 }
       let(:height)   { 2 }
 
-      let(:other_location) { origin.translate(NORTH,3) }
+      let(:other_location) { origin.translate(NORTH,2) }
       let(:other_width)    { 2 }
       let(:other_height)   { 2 }
 
@@ -88,16 +88,16 @@ describe Room do
       let(:width)    { 2 }
       let(:height)   { 2 }
 
-      let(:other_location) { origin.translate(EAST,3) }
+      let(:other_location) { origin.translate(EAST,2) }
       let(:other_width)    { 2 }
       let(:other_height)   { 2 }
 
       describe "when directly overlapping" do
-        it { should eql([[[2, 0], [3, 0]], [[2, 1], [3, 1]]])}#[[[2,0],[2,1]],[[3,0],[3,1]]]) }
+        it { should eql([[[1, 0], [2, 0]], [[1, 1], [2, 1]]]) }
       end
 
       describe "when partially overlapping" do
-        let(:other_location) { origin.translate(EAST,3).translate(SOUTH, 1) }
+        let(:other_location) { origin.translate(EAST,2).translate(SOUTH, 1) }
         it { should_not be_nil }
       end
     end
@@ -152,7 +152,6 @@ describe Room do
       let(:direction) { 'horizontal' }
       describe "given a minimum edge length of 3" do
         let(:minimum)   { 3 }
-        #it { should_not be_empty }
         it { should have(4).items }
       end
     end
