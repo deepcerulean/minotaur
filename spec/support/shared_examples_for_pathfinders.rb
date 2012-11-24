@@ -1,4 +1,4 @@
-SIZE = 10
+SIZE = 5
 
 shared_examples_for "a pathfinder" do
   before(:all) do

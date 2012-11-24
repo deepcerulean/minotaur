@@ -88,6 +88,7 @@ module Minotaur
       end
     end
 
+    # TODO really belongs to a path, i think?
     def adjacent?(start,destination,path=[])
       adjacent = start.adjacent.include?(destination)
       return adjacent unless path

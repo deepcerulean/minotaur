@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe Minotaur::Room do
+describe Room do
   let(:location) { origin }
 
   describe "attributes" do
@@ -16,11 +16,100 @@ describe Minotaur::Room do
     its(:location) { should eql(location) }
   end
 
+  describe "#adjacent_direction" do
+
+    subject do
+      room = Room.new(location,width,height)
+      other_room = Room.new(other_location, other_width, other_height)
+
+      room.adjacent_direction(other_room)
+    end
+
+    context "when the other room is to the east" do
+      let(:location) { origin }
+      let(:width)    { 2 }
+      let(:height)   { 2 }
+
+      let(:other_location) { origin.translate(EAST,3) }
+      let(:other_width)    { 2 }
+      let(:other_height)   { 2 }
+
+      it { should eql(EAST) }
+    end
+
+    context "when the other room is to the south" do
+      let(:location) { origin }
+      let(:width)    { 2 }
+      let(:height)   { 2 }
+
+      let(:other_location) { origin.translate(SOUTH,3) }
+      let(:other_width)    { 2 }
+      let(:other_height)   { 2 }
+
+      it { should eql(SOUTH) }
+    end
+
+
+    context "when the other room is to the west" do
+      let(:location) { origin }
+      let(:width)    { 2 }
+      let(:height)   { 2 }
+
+      let(:other_location) { origin.translate(WEST,3) }
+      let(:other_width)    { 2 }
+      let(:other_height)   { 2 }
+
+      it { should eql(WEST) }
+    end
+
+    context "when the other room is to the north" do
+      let(:location) { origin }
+      let(:width)    { 2 }
+      let(:height)   { 2 }
+
+      let(:other_location) { origin.translate(NORTH,3) }
+      let(:other_width)    { 2 }
+      let(:other_height)   { 2 }
+
+      it { should eql(NORTH) }
+    end
+  end
+
+  describe "#shared_edge" do
+    subject do
+      room = Room.new(location,width,height)
+      other_room = Room.new(other_location, other_width, other_height)
+
+      room.shared_edge(other_room)
+    end
+
+    context "when the other room is to the east" do
+      let(:location) { origin }
+      let(:width)    { 2 }
+      let(:height)   { 2 }
+
+      let(:other_location) { origin.translate(EAST,3) }
+      let(:other_width)    { 2 }
+      let(:other_height)   { 2 }
+
+      describe "when directly overlapping" do
+        it { should eql([[[2, 0], [3, 0]], [[2, 1], [3, 1]]])}#[[[2,0],[2,1]],[[3,0],[3,1]]]) }
+      end
+
+      describe "when partially overlapping" do
+        let(:other_location) { origin.translate(EAST,3).translate(SOUTH, 1) }
+        it { should_not be_nil }
+      end
+    end
+  end
+
+
+
   describe "the result of a #split" do
     subject do
-      room = Minotaur::Room.new(location,width,height)
+      room = Room.new(location,width,height)
       split_results = room.split!(direction: direction, recursive: recursive, min_edge_length: minimum)
-      p split_results
+      #p split_results
       split_results
     end
 

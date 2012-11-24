@@ -8,40 +8,69 @@ Incorporates a somewhat loose adaptation of jamis' approaches towards mazes
 (e.g., here: http://weblog.jamisbuck.org/2010/12/27/maze-generation-recursive-backtracking).
 
 Nothing really sophisticated yet, but the goal is for this to eventually be a proper 'dungeon' and even 'world' generator
-and simulator, which could maybe live in the cloud and be supported by an API.
+and simulator.
 
-Basic features:
+A very simple client (that should probably be packaged with this gem) would let you talk to the local minotaur
+instance (server?), create mazes/dungeons, and traverse them in a 'first-person' text interface.
 
-  - Mazes [done]
+A further move might involve a minotaur server living in the cloud, accessible by an API, and which could support
+actual games in production.
+
+Current features:
+
+  - Mazes
    - Generation
    - Solving
-  - Dungeons [in progress]
-    - basic room division [done]
-    - doorways [in progress]
-    - differentiated rooms, treasure/encounters/etc. [planned]
+  - Dungeons
+   - Room division
 
-Future planned work:
+[Note that generators/solvers are given symmetrically as 'extruders' (passage-carvers, generators) and 'pathfinders' (solvers)]
+
+In progress:
+
+  - Dungeons
+    - Doorways
+    - "Features" (differentiated rooms)
+      - Treasure
+      - Encounters
+      - Atmosphere notes
+
+Planned work:
+
+  - General
+    - Player class
+    - Simple CLI "client"
+
+  - Dungeons
+    - More sophisticated generation strategies
+    - Better atmosphere notes, etc.
 
   - Towns, Cities [planned]
     - building placement
     - citizen generation
     - stories/simulation (history generation)
 
-  - Worlds [planned]
+Backlog:
+
+  - Worlds [backlog]
     - ecosystem generation
     - cities and towns
     - history simulation
 
+  - API/Server [backlog]
+    - Sessions
+    - World protocol; generalized entities
+    - Would need to be able to manage "game state" reliably, etc.
 
-Note that generators/solvers are given symmetrically as 'extruders' (passage-carvers, generators) and 'pathfinders' (solvers)
 
----
+One idea would be for an eventual merger of this and  worlds; maybe we could think of another minotaur CLI tool
+that would be the "privileged client" -- exposing a deep toolkit, or working alongside a 'local' web app/server, etc.
 
-One critical idea would be for an eventual merger of this and  worlds; maybe we could think of minotaur
-as a privileged client in that case, which could expose a CLI toolkit, a local web gui, etc., built
-around designing world/dungeon 'slugs' (compact details of how the user wants them to look/feel) and
-providing zero-level visual simulations of the worlds. I.e., eventually basis for a worlds toolkit that
-we'd need to start building SDKs.
+The core would be designing game/world/dungeon 'slugs' (compact details of how the user wants them to look/feel)
+-- and maybe to connect back with the text-only minotaur 'browser' -- could also provide zero-level visual simulations
+of the worlds.
+
+(This could, potentially, eventually become the basis for a worlds toolkit that could support building SDKs, etc.)
 
 ## Installation
 
@@ -66,7 +95,7 @@ a size and it can generate and display a labyrinth. There are a bunch of helper 
 things with the labyrinth; I'll try to document them better as this goes public.
 
 At any rate, here's a motivational pry session that shows off what's working as of the last incremental
-pre-alpha release (0.0.3a).
+pre-alpha release (0.0.3a)...
 
 ## Contributing
 
