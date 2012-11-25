@@ -2,7 +2,7 @@ module Minotaur
   module Helpers
     module PositionHelpers
       def origin
-        Position.new(0,0)
+        Geometry::Position.new(0,0)
       end
 
       # TODO really belongs to a path, i think?

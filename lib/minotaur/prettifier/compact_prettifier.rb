@@ -1,6 +1,7 @@
 module Minotaur
   module Prettifier
     module CompactPrettifier
+      include Geometry
 
       def to_s
         output = " " + "_" * (self.width * 2 - 1) << "\n"

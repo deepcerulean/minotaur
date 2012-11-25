@@ -1,5 +1,7 @@
 require "spec_helper"
 
+
+
 describe RoomExtruder do
   subject do
     RoomExtruder
@@ -9,8 +11,8 @@ describe RoomExtruder do
     Labyrinth.new(
       width:        size,
       height:       size,
-      extruder:     subject,
-      prettifier:   CompactPrettifier
+      extruder:     subject
+      #prettifier:   CompactPrettifier
     )
   end
 

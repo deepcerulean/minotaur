@@ -4,6 +4,8 @@ module Minotaur
     #  base superclass for logical 'regions' or 'planes' like grids and labyrinths
     #
     class Space
+      include Helpers::RangeHelpers
+
       attr_accessor :location, :width, :height
 
       def initialize(opts={})

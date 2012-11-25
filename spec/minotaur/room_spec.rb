@@ -132,10 +132,9 @@ describe Room do
 
           first_room,second_room = room_dimensions[0], room_dimensions[1]
 
-          first_room[:width].should eql(6) #[7,11])
+          first_room[:width].should eql(6)
           first_room[:height].should eql(11)
-
-          second_room[:width].should eql(7) #.should eql([6,11])
+          second_room[:width].should eql(7)
           second_room[:height].should eql(11)
         end
       end

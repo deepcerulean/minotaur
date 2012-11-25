@@ -1,6 +1,9 @@
 module Minotaur
   module Prettifier
     module SimplePrettifier # < Base
+      include Geometry
+      include Directions
+
       attr_accessor :path_indicator
       attr_accessor :path_start_indicator
       attr_accessor :path_end_indicator

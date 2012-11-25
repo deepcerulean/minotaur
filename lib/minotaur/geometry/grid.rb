@@ -5,6 +5,7 @@ module Minotaur
     #  we use this matrix to record 'passability'.
     #
     class Grid < Space
+      include Minotaur::Helpers::PositionHelpers
       attr_accessor :rows
 
       def initialize(opts={})
