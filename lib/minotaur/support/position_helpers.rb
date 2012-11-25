@@ -1,12 +1,12 @@
 module Minotaur
-  module Helpers
+  module Support
     module PositionHelpers
       def origin
         Geometry::Position.new(0,0)
       end
 
       # TODO really belongs to a path, i think?
-      #      doesn't seem to be used except by prettifier (!)
+      #      doesn't seem to be used except by prettifiers (!)
       #def adjacent_in_path?(start,destination,path)
       #  adjacent = start.adjacent.include?(destination)
       #  return adjacent unless path

@@ -1,5 +1,5 @@
 module Minotaur
-  module Helpers
+  module Support
     #
     #   general utilities around random numbers
     #

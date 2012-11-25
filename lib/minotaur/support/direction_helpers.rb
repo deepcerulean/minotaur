@@ -1,5 +1,5 @@
 module Minotaur
-  module Helpers
+  module Support
     module DirectionHelpers
       include Geometry::Directions
 
@@ -33,13 +33,13 @@ module Minotaur
       end
 
       # assume no edge cases (could be made better)
-      def direction_from(a,b)
-        raise "No distance between #{a} and #{b}" if a == b
-        return WEST  if a.x > b.x
-        return EAST  if a.x < b.x
-        return NORTH if a.y > b.y
-        return SOUTH if a.y < b.y
-        raise "Can't determine direction between #{a} and #{b}!"
+      def direction_from(alpha,beta)
+        raise "No distance between #{alpha} and #{beta}" if alpha == beta
+        return WEST  if alpha.x > beta.x
+        return EAST  if alpha.x < beta.x
+        return NORTH if alpha.y > beta.y
+        return SOUTH if alpha.y < beta.y
+        raise "Can't determine direction between #{alpha} and #{beta}!"
       end
 
     end

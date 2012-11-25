@@ -5,10 +5,10 @@ module Minotaur
 
       def to_s
         output = " " + "_" * (self.width * 2 - 1) << "\n"
-        self.height.times do |y|
+        self.height.times do |y_coordinate|
           output << "|"
-          self.width.times do |x|
-            output << cell(self,x,y)
+          self.width.times do |x_coordinate|
+            output << cell(Position.new(x_coordinate,y_coordinate))
           end
           output << "\n"
         end
@@ -17,13 +17,12 @@ module Minotaur
 
       private
 
-      def cell(grid,x,y)
+      def cell(position)
         output = ""
-        pos = Position.new(x,y)
-        output << (grid.passable?(pos,SOUTH) ? " " : "_")
+        output << (passable?(position,SOUTH) ? " " : "_")
 
         if grid.rows[y][x] & EAST != 0
-          output << (((grid.at(pos) | grid.at(pos.translate(EAST))) & SOUTH != 0) ? " " : "_")
+          output << (((at(position) | at(position.translate(EAST))) & SOUTH != 0) ? " " : "_")
         else
           output << "|"
         end

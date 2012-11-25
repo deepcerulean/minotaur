@@ -3,34 +3,24 @@ module Minotaur
     #
     #  base superclass for logical 'regions' or 'planes' like grids and labyrinths
     #
-    class Space
+    class Space < Region
       include Directions
-      include Helpers::RangeHelpers
-      include Helpers::DirectionHelpers
+      include Support::RangeHelpers
+      include Support::DirectionHelpers
+      include Support::SizeHelpers
 
-      attr_accessor :location, :width, :height
+      #attr_accessor :location, :width, :height
 
       def initialize(opts={})
         self.location = opts.delete(:location) { origin }
-        self.width    = opts.delete(:width)    { 1 }
-        self.height   = opts.delete(:height)   { 1 }
+        if opts.include?(:width) && opts.include?(:height)
+          self.size     = Size.new(opts.delete(:width), opts.delete(:height))
+        else
+          self.size     = opts.delete(:size)     { unit }
+        end
       end
 
-      def to_s
-        "#{width}x#{height} space at #{location}"
-      end
-
-      def x
-        location.x
-      end
-
-      def y
-        location.y
-      end
-
-      def area
-        width * height
-      end
+      def carve!(grid); grid.build_space!(self) end
 
       def adjoining_direction(other,inverse=false)
         if adjoining_east?(other)

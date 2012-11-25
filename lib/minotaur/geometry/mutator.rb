@@ -17,15 +17,15 @@ module Minotaur
         return arr if arr.empty? || variance == 0
 
         rounds.times do
-          arr.each do |a|
-            arr.each do |b|
+          arr.each do |one|
+            arr.each do |two|
               # this index-dancing is (trying to) handle the possible case where there are duplicates...
-              alpha = arr.index(a)
-              beta = arr.rindex(b)
+              alpha = arr.index(one)
+              beta  = arr.rindex(two)
               next if alpha == beta || !alpha || !beta
-              offset = shuffle_offset(b-min_subdivision_length)
-              arr[alpha] = a + offset
-              arr[beta]  = b - offset
+              offset = shuffle_offset(two-min_subdivision_length)
+              arr[alpha] = one + offset
+              arr[beta]  = two - offset
             end
           end
         end

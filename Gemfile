@@ -1,5 +1,7 @@
 source 'https://rubygems.org'
 
+gem 'dice'
+
 group :test do
   gem 'rake'
   gem 'rspec'

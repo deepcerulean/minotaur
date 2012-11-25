@@ -1,8 +1,8 @@
 require "spec_helper"
 
 include Minotaur::Geometry::Directions
-include Minotaur::Helpers::PositionHelpers
-include Minotaur::Helpers::DirectionHelpers
+include Minotaur::Support::PositionHelpers
+include Minotaur::Support::DirectionHelpers
 
 describe Minotaur::Labyrinth do
   let(:width)   { 20 }
@@ -40,7 +40,7 @@ describe Minotaur::Labyrinth do
     end
   end
 
-  # TODO move to prettifier specs
+  # TODO move to prettifiers specs
   #
   #describe "#to_s" do
   #  context "without a path" do
