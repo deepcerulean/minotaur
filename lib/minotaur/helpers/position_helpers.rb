@@ -5,11 +5,6 @@ module Minotaur
         Position.new(0,0)
       end
 
-      def pt(x,y)
-        Position.new(x,y)
-      end
-
-
       # TODO really belongs to a path, i think?
       #      doesn't seem to be used except by prettifier (!)
       #def adjacent_in_path?(start,destination,path)

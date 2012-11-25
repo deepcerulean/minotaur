@@ -11,16 +11,9 @@ module Minotaur
         self.start            = opts.delete(:start)            { origin }
         self.min_edge_length  = opts.delete(:min_edge_length)  { 5 }
         self.variance         = opts.delete(:variance)         { 0 }
+        self.rooms            = opts.delete(:rooms) { subdivider.subdivide(root) }
 
-        self.rooms = opts.delete(:rooms) { subdivider.subdivide(root) }
-
-        #p rooms
-
-        #raise "halt!"
-
-        carve_rooms!
-        # carve_passages! # if rooms aren't adjoining...
-        carve_doorways!
+        carve_rooms! and carve_doorways!
       end
 
       def subdivider

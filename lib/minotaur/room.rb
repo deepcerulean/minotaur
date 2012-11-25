@@ -1,4 +1,8 @@
 module Minotaur
+  #
+  #   at this point not much more than a space, which can carve itself into a grid
+  #   eventually should support custom features, atmosphere notes, treasure, encounters, etc.
+  #
   class Room < Geometry::Space
     def carve!(grid)
       Geometry::Grid.each_position(width,height) do |position|

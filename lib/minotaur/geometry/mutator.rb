@@ -12,6 +12,8 @@ module Minotaur
         self.min_subdivision_length = opts.delete(:min_subdivision_length) { 1 }
       end
 
+      def random_offset; rand(variance).to_i end
+
       def mutate!(arr)
         return arr unless arr.size > 1
         rounds.times do
@@ -21,10 +23,10 @@ module Minotaur
               alpha = arr.index(a)
               beta = arr.rindex(b)
               next if alpha == beta || !alpha || !beta
-              offset = (rand(variance)).to_i
+              offset = random_offset #(rand(variance)).to_i
               good_pick = false
               until good_pick
-                offset = (rand(variance)).to_i
+                offset = random_offset # (rand(variance)).to_i
                 next_val = b - offset
                 good_pick = (next_val >= min_subdivision_length)
               end
