@@ -1,5 +1,8 @@
 module Minotaur
   module Extruders
+    #
+    #  contains plugin functionality for labyrinth to extrude (mazelike) hallways recursively
+    #
     module RecursiveBacktrackingExtruder
       #include PositionHelpers
       #

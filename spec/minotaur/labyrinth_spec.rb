@@ -1,8 +1,5 @@
 require "spec_helper"
 
-#WIDTH  = 5
-#HEIGHT = 5
-
 describe Minotaur::Labyrinth do
   let(:width)   { 20 }
   let(:height)  { 20 }
@@ -86,7 +83,7 @@ describe Minotaur::Labyrinth do
   end
 
 
-  pending 'some more/better tests'
+  #pending 'some more/better tests'
   #context "generating a dungeon with rooms" do
 
 end

@@ -1,8 +1,11 @@
-require "rspec"
-
-require "minotaur"
+require "spec_helper"
 
 include Minotaur
+include Minotaur::Helpers
+include Minotaur::Helpers::DirectionHelpers
+
+include Minotaur::Geometry
+include Minotaur::Geometry::Directions
 
 describe DirectionHelpers do
   {

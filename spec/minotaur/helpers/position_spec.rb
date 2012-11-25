@@ -1,7 +1,7 @@
 require "rspec"
 require 'minotaur'
 
-include Minotaur
+#include Minotaur
 
 describe Position do
   let(:x) { 4 }
