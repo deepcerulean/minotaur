@@ -1,11 +1,15 @@
 require "spec_helper"
 
+include Minotaur::Geometry::Directions
+include Minotaur::Helpers::PositionHelpers
+include Minotaur::Helpers::DirectionHelpers
+
 describe Minotaur::Labyrinth do
   let(:width)   { 20 }
   let(:height)  { 20 }
 
   subject do
-    Labyrinth.new(width: width, height: height)
+    Minotaur::Labyrinth.new(width: width, height: height)
   end
 
   its(:width)   { should eql(width) }
@@ -73,10 +77,10 @@ describe Minotaur::Labyrinth do
         let(:width)  { 3 }
         let(:height) { 3 }
         before(:each) do
-          subject.build_passage!(Position.origin, Position.origin.translate(EAST))
+          subject.build_passage!(origin, origin.translate(EAST))
         end
         it "should report exactly one adjacent position" do
-          subject.passable_adjacent_to(Position.origin).should eql([Position.origin.translate(EAST)])
+          subject.passable_adjacent_to(origin).should eql([origin.translate(EAST)])
         end
       end
     end

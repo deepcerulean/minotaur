@@ -1,7 +1,9 @@
 require 'spec_helper'
 
 include Minotaur::Geometry
+include Minotaur::Geometry::Directions
 include Minotaur::Helpers::PositionHelpers
+include Minotaur::Helpers::DirectionHelpers
 
 describe Grid do
   let(:width)   { 20 }

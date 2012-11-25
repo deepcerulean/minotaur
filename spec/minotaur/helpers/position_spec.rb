@@ -1,14 +1,13 @@
-require "rspec"
-require 'minotaur'
+require "spec_helper"
 
-#include Minotaur
+include Minotaur::Helpers::DirectionHelpers
 
-describe Position do
+describe Minotaur::Geometry::Position do
   let(:x) { 4 }
   let(:y) { 5 }
 
   subject do
-    Position.new(x,y)
+    Minotaur::Geometry::Position.new(x,y)
   end
 
   its(:x) { should eql(x) }
@@ -24,7 +23,7 @@ describe Position do
       end
 
       let(:expected_position) do
-        Position.new(DX[direction], DY[direction])
+        Minotaur::Geometry::Position.new(DX[direction], DY[direction])
       end
       it "should translate itself #{humanize_direction(direction)} to (#{DX[direction]},#{DY[direction]})" do
         translated_subject.should == expected_position
