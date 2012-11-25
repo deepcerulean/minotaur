@@ -29,15 +29,12 @@ module Minotaur
       end
 
       def adjoining_direction(other,inverse=false)
-        #puts "--- Attempting to determine adjoining direction between #{self} and #{other}"
         if other.x == self.x+self.width #+1
           if range_overlap?( (y..y+height-1), (other.y..other.y+other.height-1) )
-            #puts "--- got EAST"
             return EAST
           end
         elsif other.y == self.y+self.height #+1
           if range_overlap?( (x..x+width-1), (other.x..other.x+other.width-1) )
-            #puts "--- got SOUTH"
             return SOUTH
           end
         end
@@ -67,7 +64,6 @@ module Minotaur
       end
 
       def subdivide(opts={})
-        # don't like reusing opts here, but...
         Subdivider.new(opts).subdivide(self,opts)
       end
     end

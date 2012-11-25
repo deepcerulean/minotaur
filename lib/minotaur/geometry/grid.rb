@@ -67,17 +67,6 @@ module Minotaur
           yield adjacent if contains?(adjacent) && passable?(start,direction_from(start,adjacent))
         end
       end
-      #
-      ## TODO really belongs to a path, i think?
-      #def adjacent?(start,destination,path=[])
-      #  adjacent = start.adjacent.include?(destination)
-      #  return adjacent unless path
-      #  if path.index(start) && path.index(destination) && (path.index(start) - path.index(destination)).abs == 1
-      #    adjacent
-      #  else
-      #    false
-      #  end
-      #end
 
       def self.each_position(width,height)
         width.times do |x|

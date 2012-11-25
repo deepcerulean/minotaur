@@ -17,14 +17,15 @@ module Minotaur
         @depth ||= 0
       end
 
+      def reached_size_limit?(space)
+        space.width < min_subdivision_length || space.height < min_subdivision_length
+      end
+
       MAX_DEPTH = 25
       def subdivide(space,opts={})
         depth = opts.delete(:depth) { 0 }
         depth = depth + 1
-
-        reached_size_limit = (space.width < min_subdivision_length || space.height < min_subdivision_length)
-
-        return [space] if reached_size_limit || (recursive && depth > MAX_DEPTH)
+        return [space] if reached_size_limit?(space) || (recursive && depth > MAX_DEPTH)
 
         direction  = opts.delete(:direction) do
           favorable_split_direction(space, min_subdivision_length)
@@ -37,7 +38,9 @@ module Minotaur
         end
 
         if recursive
-          resultant_subdivisions.map! { |s| subdivide(s,opts.merge!({depth: depth})) }
+          resultant_subdivisions.map! do |s|
+            subdivide(s,opts.merge!({depth: depth}))
+          end
         end
 
         resultant_subdivisions.flatten
@@ -92,10 +95,7 @@ module Minotaur
       end
 
       def split_and_mutate!(magnitude)
-        #puts "==== splitting and mutating!"
-        #puts "--- splitting!"
         arr = splitter.split!(magnitude)
-        #puts "--- mutating!"
         mutator.mutate!(arr)
         arr
       end
