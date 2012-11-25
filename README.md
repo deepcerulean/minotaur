@@ -7,10 +7,10 @@ Dunegon- and labyrinth-generating (and solving) framework framework.
 Incorporates a somewhat loose adaptation of jamis' approaches towards mazes
 (e.g., here: http://weblog.jamisbuck.org/2010/12/27/maze-generation-recursive-backtracking).
 
-Nothing really sophisticated yet, but the goal is for this to eventually be a proper 'dungeon' and even 'world' generator
+Nothing really very sophisticated yet, but the goal is for this to eventually be a proper 'dungeon' and even 'world' generator
 and simulator.
 
-A very simple client (that should probably be packaged with this gem) would let you talk to the local minotaur
+An extremely simple client (that should probably be packaged with this gem) would let you talk to the local minotaur
 instance (server?), create mazes/dungeons, and traverse them in a 'first-person' text interface.
 
 A further move might involve a minotaur server living in the cloud, accessible by an API, and which could support
