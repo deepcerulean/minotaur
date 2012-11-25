@@ -11,7 +11,7 @@ module Minotaur
 
       def to_s(path=[])
         output = "\n"
-        output << grid_header(self) #row_separator(grid,0,path) #grid_header(grid)
+        output << grid_header(self)
         height.times do |y|
           output << "|"
           width.times do |x|

@@ -1,13 +1,10 @@
-require "rspec"
-require 'minotaur'
+require "spec_helper"
 
-describe Minotaur::Extruders::RecursiveBacktrackingExtruder do
-  subject do
-    Minotaur::Extruders::RecursiveBacktrackingExtruder
-  end
+describe RecursiveBacktrackingExtruder do
+  subject { RecursiveBacktrackingExtruder }
 
   let(:labyrinth) do
-    Minotaur::Labyrinth.new(size: size, extruder:subject)
+    Labyrinth.new(size: size, extruder:subject)
   end
 
   context "when carving passages for a labyrinth" do

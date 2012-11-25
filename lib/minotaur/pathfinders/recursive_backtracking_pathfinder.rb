@@ -4,8 +4,7 @@ module Minotaur
       attr_accessor :solution_path
 
       def path_between?(start,destination,path=[])
-        @solution_path = path
-        @solution_path.push(start)
+        @solution_path = path.push(start)
         return true if start == destination
 
         each_passable_adjacent_to(start) do |next_position|

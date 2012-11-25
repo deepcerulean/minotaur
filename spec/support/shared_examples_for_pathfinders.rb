@@ -2,7 +2,7 @@ SIZE = 5
 
 shared_examples_for "a pathfinder" do
   before(:all) do
-    @labyrinth = Labyrinth.new(size: SIZE, pathfinder: subject)
+    @labyrinth = Labyrinth.new(width: SIZE, height: SIZE, pathfinder: subject)
     @labyrinth.extrude!
   end
 
