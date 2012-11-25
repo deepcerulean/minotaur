@@ -1,6 +1,9 @@
 module Minotaur
   module Geometry
-    class Space # < Struct.new(:location, :width, :height)
+    #
+    #  base superclass for logical 'regions' or 'planes' like grids and labyrinths
+    #
+    class Space
       attr_accessor :location, :width, :height
 
       def initialize(opts={})
@@ -64,8 +67,7 @@ module Minotaur
       end
 
       def subdivide(opts={})
-        #puts "--- Space #{self} attempting to subdivide itself with opts: "
-        #p opts
+        # don't like reusing opts here, but...
         Subdivider.new(opts).subdivide(self,opts)
       end
     end

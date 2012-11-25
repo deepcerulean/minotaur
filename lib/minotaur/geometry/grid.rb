@@ -1,17 +1,17 @@
 module Minotaur
   module Geometry
+    #
+    #  a grid 'instruments' a space with a logical matrix
+    #  we use this matrix to record 'passability'.
+    #
     class Grid < Space
-      attr_accessor :size
-      attr_accessor :height, :width
       attr_accessor :rows
 
       def initialize(opts={})
         self.location = opts.delete(:location) { origin }
-        self.size     = opts.delete(:size)
-        self.width    = self.size || opts.delete(:width)  { 1 }
-        self.height   = self.size || opts.delete(:height) { 1 }
-
-        self.rows   = Array.new(self.height) { Array.new(self.width,0) }
+        self.width    = opts.delete(:width)  { 1 }
+        self.height   = opts.delete(:height) { 1 }
+        self.rows = Array.new(self.height) { Array.new(self.width,0) }
 
         super(location:location,width:width, height: height)
       end
@@ -30,7 +30,7 @@ module Minotaur
 
       def inscribe!(position, value)
         raise "Cannot mark position #{position} (outside the grid)" unless contains?(position)
-        self.rows[position.y][position.x] |= value
+        rows[position.y][position.x] |= value
       end
 
       def build_passage!(position,next_position)
@@ -67,17 +67,17 @@ module Minotaur
           yield adjacent if contains?(adjacent) && passable?(start,direction_from(start,adjacent))
         end
       end
-
-      # TODO really belongs to a path, i think?
-      def adjacent?(start,destination,path=[])
-        adjacent = start.adjacent.include?(destination)
-        return adjacent unless path
-        if path.index(start) && path.index(destination) && (path.index(start) - path.index(destination)).abs == 1
-          adjacent
-        else
-          false
-        end
-      end
+      #
+      ## TODO really belongs to a path, i think?
+      #def adjacent?(start,destination,path=[])
+      #  adjacent = start.adjacent.include?(destination)
+      #  return adjacent unless path
+      #  if path.index(start) && path.index(destination) && (path.index(start) - path.index(destination)).abs == 1
+      #    adjacent
+      #  else
+      #    false
+      #  end
+      #end
 
       def self.each_position(width,height)
         width.times do |x|
@@ -94,14 +94,9 @@ module Minotaur
       end
 
       def open?(position)
-        #puts "--- trying to see if position #{position} is open"
         all_directions.all? do |direction|
-          #puts "--- passable to the #{humanize_direction(direction)}? #{passable?(position,direction)}"
           passable?(position,direction)
         end
-
-        #puts "-- open? #{is_open}"
-        #is_open
       end
     end
   end

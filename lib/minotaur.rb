@@ -2,7 +2,6 @@ require "minotaur/version"
 
 require "minotaur/geometry/directions"
 require "minotaur/geometry/position"
-require "minotaur/geometry/scalar"
 require "minotaur/geometry/space"
 require "minotaur/geometry/grid"
 require "minotaur/geometry/splitter"

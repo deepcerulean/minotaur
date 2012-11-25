@@ -1,5 +1,8 @@
 module Minotaur
   module Extruders
+    #
+    #  contains plug-in functionality for labyrinth to extrude rooms and doorways
+    #
     module RoomExtruder
       attr_accessor :rooms, :doors
       attr_accessor :start, :min_edge_length, :variance
@@ -38,23 +41,25 @@ module Minotaur
 
       def carve_rooms!
         rooms.each do |room|
-          #puts "--- carving room: #{room}"
           room.carve!(self)
+        end
+      end
+
+      def each_room_pair
+        rooms.each do |room_one|
+          rooms.each do |room_two|
+            yield [room_one,room_two] unless (room_one == room_two)
+          end
         end
       end
 
       def each_adjoining_room_pair
         @already_yielded = []
-        rooms.each do |room|
-          rooms.each do |other_room|
-            unless (room == other_room)
-              pair = [room,other_room]
-              if !@already_yielded.include?(pair) && room.adjoining?(other_room)
-                yield pair
-                @already_yielded << [room,other_room]
-                @already_yielded << [other_room,room]
-              end
-            end
+        each_room_pair do |room, other_room|
+          if !@already_yielded.include?([room,other_room]) && room.adjoining?(other_room)
+            yield [room,other_room]
+            @already_yielded << [room,other_room]
+            @already_yielded << [other_room,room]
           end
         end
       end
@@ -67,9 +72,12 @@ module Minotaur
 
       def carve_doorway!(room,other_room)
         shared_edge = room.adjoining_edge(other_room)
-        a,b = shared_edge.sort_by { rand }.first
-        start,finish = Position.new(a[0],a[1]), Position.new(b[0],b[1])
+        alpha,beta = shared_edge.sort_by { rand }.first
+        start,finish = Position.new(alpha[0],alpha[1]), Position.new(beta[0],beta[1])
         build_passage!(start,finish)
+
+        # TODO custom door class...
+        doors << [room,other_room]
       end
     end
   end

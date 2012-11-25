@@ -1,7 +1,9 @@
 module Minotaur
   module Geometry
+    #
+    #   logic for splitting a line into even segments
+    #
     class Splitter
-
       attr_accessor :count, :min_subdivision_length
 
       def initialize(opts={})
@@ -12,7 +14,6 @@ module Minotaur
       def split!(magnitude)
         split_magnitude     = (magnitude/count).to_i
         return [magnitude] if split_magnitude < min_subdivision_length
-
         width_so_far = 0
         resultant_magnitudes = []
         count.times do |index|

@@ -1,6 +1,8 @@
 module Minotaur
   module Geometry
-    # maybe needs a more expressive name...
+    #
+    #   subdivides a sm
+    #
     class Subdivider
       attr_accessor :count, :min_subdivision_length, :variance, :recursive
 
@@ -90,7 +92,10 @@ module Minotaur
       end
 
       def split_and_mutate!(magnitude)
+        #puts "==== splitting and mutating!"
+        #puts "--- splitting!"
         arr = splitter.split!(magnitude)
+        #puts "--- mutating!"
         mutator.mutate!(arr)
         arr
       end

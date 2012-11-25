@@ -1,5 +1,8 @@
 module Minotaur
   module Geometry
+    #
+    #  contains bit-values for cardinal directions and some other utility constants
+    #
     module Directions
       NORTH, SOUTH, EAST, WEST = 1, 2, 4, 8
 
