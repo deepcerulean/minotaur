@@ -107,7 +107,7 @@ describe Room do
 
 
 
-  describe "the result of a #split" do
+  describe "the result of a #subdivide" do
     subject do
       room = Room.new(location: location, width: width, height: height)
       room.subdivide(direction: direction, recursive: recursive, min_subdivision_length: minimum)
@@ -127,10 +127,16 @@ describe Room do
 
         it "should be two particular smaller rooms" do
           room_dimensions = subject.map do |room|
-            [ room.width, room.height ]
+            { width: room.width, height: room.height }
           end
 
-          room_dimensions.should eql([[6, 11], [7, 11]])
+          first_room,second_room = room_dimensions[0], room_dimensions[1]
+
+          first_room[:width].should eql(6) #[7,11])
+          first_room[:height].should eql(11)
+
+          second_room[:width].should eql(7) #.should eql([6,11])
+          second_room[:height].should eql(11)
         end
       end
 
@@ -139,8 +145,16 @@ describe Room do
         it { should_not be_empty }
         it { should have(2).items }
         it "should be two particular smaller rooms" do
-          room_dimensions = subject.map { |r| [r.x, r.y, r.width, r.height] }
-          room_dimensions.should eql([[0,0,13, 5], [0,5,13, 6]])
+          room_dimensions = subject.map { |r| {location: Position.new(r.x, r.y), width: r.width, height: r.height} }
+          first_room,second_room = room_dimensions[0],room_dimensions[1]
+
+          first_room[:location].should eql(origin)
+          first_room[:width].should eql(13)
+          first_room[:height].should eql(5)
+
+          second_room[:location].should eql(origin.translate(SOUTH,5))
+          second_room[:width].should eql(13)
+          second_room[:height].should eql(6)
         end
       end
     end
@@ -150,6 +164,7 @@ describe Room do
       let(:height)    { 6 }
       let(:recursive) { true }
       let(:direction) { 'horizontal' }
+
 
       describe "given a minimum edge length of 3" do
         let(:minimum) { 3 }
