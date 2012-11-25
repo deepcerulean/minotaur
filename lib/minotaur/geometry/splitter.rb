@@ -1,6 +1,7 @@
 module Minotaur
   module Geometry
     class Splitter
+
       attr_accessor :count, :min_subdivision_length
 
       def initialize(opts={})

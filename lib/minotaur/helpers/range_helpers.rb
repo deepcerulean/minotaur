@@ -1,8 +1,8 @@
-module Minotuar
+module Minotaur
   module Helpers
     module RangeHelpers
-
       def range_overlap?(r1,r2)
+        #puts "--- Range overlap? #{r1}, #{r2}"
         r1.include?(r2.begin) || r2.include?(r1.begin)
       end
 

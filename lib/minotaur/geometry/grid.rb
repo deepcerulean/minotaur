@@ -1,21 +1,19 @@
 module Minotaur
   module Geometry
     class Grid < Space
-
       attr_accessor :size
       attr_accessor :height, :width
       attr_accessor :rows
 
       def initialize(opts={})
         self.location = opts.delete(:location) { origin }
+        self.size     = opts.delete(:size)
+        self.width    = self.size || opts.delete(:width)  { 1 }
+        self.height   = self.size || opts.delete(:height) { 1 }
 
-        self.size   = opts.delete(:size)
-        self.width  = self.size || opts.delete(:width)  { DEFAULT_SIZE }
-        self.height = self.size || opts.delete(:height) { DEFAULT_SIZE }
-        self.width  = width
-        self.height = height
         self.rows   = Array.new(self.height) { Array.new(self.width,0) }
 
+        super(location:location,width:width, height: height)
       end
 
       def at(position)
@@ -96,7 +94,14 @@ module Minotaur
       end
 
       def open?(position)
-        all_directions? { |direction| passable?(position,direction) }
+        #puts "--- trying to see if position #{position} is open"
+        all_directions.all? do |direction|
+          #puts "--- passable to the #{humanize_direction(direction)}? #{passable?(position,direction)}"
+          passable?(position,direction)
+        end
+
+        #puts "-- open? #{is_open}"
+        #is_open
       end
     end
   end

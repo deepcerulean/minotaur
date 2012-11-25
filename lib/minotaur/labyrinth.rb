@@ -4,8 +4,8 @@ module Minotaur
   DEFAULT_PRETTIFIER   = Prettifier::SimplePrettifier
 
   #
-  #   TODO proper dungeon generator
-  #   (basepoint for weaving component behavior)
+  #   TODO should be a good and proper dungeon generator
+  #   (more than a basepoint for weaving component behavior)
   #
   #   for now just internalize all the various components
   #   (extruders, pathfinders, etc)
@@ -20,6 +20,5 @@ module Minotaur
       extend pathfinder_module
       extend prettifier_module
     end
-
   end
 end

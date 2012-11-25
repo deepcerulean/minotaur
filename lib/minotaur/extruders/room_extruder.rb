@@ -9,41 +9,48 @@ module Minotaur
         self.min_edge_length  = opts.delete(:min_edge_length)  { 5 }
         self.variance         = opts.delete(:variance)         { 0 }
 
+        self.rooms = opts.delete(:rooms) { subdivider.subdivide(root) }
+
+        #p rooms
+
+        #raise "halt!"
+
         carve_rooms!
+        # carve_passages! # if rooms aren't adjoining...
         carve_doorways!
       end
 
       def subdivider
-        @subdivider = Subdivider.new(min_edge_length: min_edge_length, variance: variance)
+        @subdivider ||= Geometry::Subdivider.new(min_edge_length: min_edge_length, variance: variance)
+      end
+
+      def rooms
+        @rooms ||= []
+      end
+
+      def doors
+        @doors ||= []
+      end
+
+      def root
+        @root ||= Room.new(location: start, width: width, height: height)
       end
 
       def carve_rooms!
-        self.rooms = []
-        root = Room.new(location: start, width: width, height: height)
-        subdivider.subdivide(root).each do |room|
-          self.rooms << room
-          carve_room!(room)
-        end
-      end
-
-
-      def carve_room!(room)
-        Grid.each_position(room.width,room.height) do |position|
-          build_passage!(position,position.translate(WEST))  unless position.x <= (room.location).x
-          build_passage!(position,position.translate(NORTH)) unless position.y <= (room.location).y
-          build_passage!(position,position.translate(EAST))  unless position.x >= (room.location).x + room.width  - 1
-          build_passage!(position,position.translate(SOUTH)) unless position.y >= (room.location).y + room.height - 1
+        rooms.each do |room|
+          #puts "--- carving room: #{room}"
+          room.carve!(self)
         end
       end
 
       def each_adjoining_room_pair
         @already_yielded = []
-        @rooms.each do |room|
-          @rooms.each do |other_room|
+        rooms.each do |room|
+          rooms.each do |other_room|
             unless (room == other_room)
-              if room.adjoining?(other_room)
-                pair = [room,other_room]
-                yield pair unless @already_yielded.include?(pair)
+              pair = [room,other_room]
+              if !@already_yielded.include?(pair) && room.adjoining?(other_room)
+                yield pair
                 @already_yielded << [room,other_room]
                 @already_yielded << [other_room,room]
               end
@@ -53,8 +60,6 @@ module Minotaur
       end
 
       def carve_doorways!
-        puts "--- Carving doorways between #{@rooms.size} rooms."
-        @doors = []
         each_adjoining_room_pair do |room,other_room|
           carve_doorway!(room,other_room)
         end
@@ -62,8 +67,6 @@ module Minotaur
 
       def carve_doorway!(room,other_room)
         shared_edge = room.adjoining_edge(other_room)
-        puts "--- Got adjoining edge between #{room} and #{other_room}: "
-        p shared_edge
         a,b = shared_edge.sort_by { rand }.first
         start,finish = Position.new(a[0],a[1]), Position.new(b[0],b[1])
         build_passage!(start,finish)
