@@ -15,6 +15,8 @@ module Minotaur
           build_passage!(start,next_position)
           extrude!(start: next_position)
         end
+
+        self
       end
     end
   end

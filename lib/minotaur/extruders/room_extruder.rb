@@ -4,6 +4,8 @@ module Minotaur
     #  contains plug-in functionality for labyrinth to extrude rooms and doorways
     #
     module RoomExtruder
+      include Geometry
+
       attr_accessor :rooms, :doors
       attr_accessor :start, :min_edge_length, :variance
 

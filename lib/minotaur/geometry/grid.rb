@@ -6,6 +6,8 @@ module Minotaur
     #
     class Grid < Space
       include Minotaur::Helpers::PositionHelpers
+      include Minotaur::Helpers::DirectionHelpers
+
       attr_accessor :rows
 
       def initialize(opts={})

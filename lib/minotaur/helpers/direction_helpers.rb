@@ -1,6 +1,8 @@
 module Minotaur
   module Helpers
     module DirectionHelpers
+      include Geometry::Directions
+
       def all_directions
         [NORTH,SOUTH,EAST,WEST]
       end

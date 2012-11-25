@@ -4,6 +4,7 @@ module Minotaur
     #   subdivides a sm
     #
     class Subdivider
+      include Directions
       include Helpers::FateHelpers
 
       attr_accessor :count, :min_subdivision_length, :variance, :recursive

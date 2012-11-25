@@ -98,7 +98,48 @@ a size and it can generate and display a labyrinth. There are a bunch of helper 
 things with the labyrinth; I'll try to document them better as this goes public.
 
 At any rate, here's a motivational pry session that shows off what's working as of the last incremental
-pre-alpha release (0.0.3a)...
+pre-alpha release (0.0.3)...
+
+   >>> Minotaur::Labyrinth.new width: 5, height: 5
+ ===>
+/---|---|---|---|---|
+|   |   |   |   |   |
+|---|---|---|---|---|
+|   |   |   |   |   |
+|---|---|---|---|---|
+|   |   |   |   |   |
+|---|---|---|---|---|
+|   |   |   |   |   |
+|---|---|---|---|---|
+|   |   |   |   |   |
+|---|---|---|---|---|
+   >>> labyrinth = _
+ ===>
+/---|---|---|---|---|
+|   |   |   |   |   |
+|---|---|---|---|---|
+|   |   |   |   |   |
+|---|---|---|---|---|
+|   |   |   |   |   |
+|---|---|---|---|---|
+|   |   |   |   |   |
+|---|---|---|---|---|
+|   |   |   |   |   |
+|---|---|---|---|---|
+   >>> labyrinth.extrude!
+ ===>
+/---|---|---|---|---|
+|       |           |
+|---|   |---|   |   |
+|   |       |   |   |
+|   |---|   |   |   |
+|           |   |   |
+|   |---|---|   |   |
+|           |   |   |
+|---|---|   |---|   |
+|                   |
+|---|---|---|---|---|
+
 
 ## Contributing
 

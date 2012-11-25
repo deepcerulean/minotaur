@@ -6,11 +6,12 @@ describe RecursiveBacktrackingExtruder do
   subject { RecursiveBacktrackingExtruder }
 
   let(:labyrinth) do
-    Minotaur::Labyrinth.new(size: size, extruder:subject)
+    Minotaur::Labyrinth.new(width: width, height: height, extruder: subject)
   end
 
   context "when carving passages for a labyrinth" do
-    #let(:size) { 25 }
+    #let(:width)  { 5 }
+    #let(:height) { 5 }
     #describe "a normal maze" do
     #  it "is awesome" do
     #    labyrinth.extrude!
@@ -20,7 +21,8 @@ describe RecursiveBacktrackingExtruder do
 
     context "should extrude passages" do
       describe "an atomic maze" do
-        let(:size) { 1 }
+        let(:width)  { 1 }
+        let(:height) { 1 }
 
         it "should leave a 1x1 grid alone" do
           labyrinth.extrude!
