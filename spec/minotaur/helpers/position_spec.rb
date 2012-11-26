@@ -1,6 +1,6 @@
 require "spec_helper"
 
-include Minotaur::Helpers::DirectionHelpers
+include Minotaur::Support::DirectionHelpers
 
 describe Minotaur::Geometry::Position do
   let(:x) { 4 }

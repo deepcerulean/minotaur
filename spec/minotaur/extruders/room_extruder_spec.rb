@@ -3,9 +3,9 @@ require "spec_helper"
 include Minotaur::Extruders
 
 
-describe RoomExtruder do
+describe SubdividingRoomExtruder do
   subject do
-    RoomExtruder
+    SubdividingRoomExtruder
   end
 
   let(:labyrinth) do
@@ -13,7 +13,7 @@ describe RoomExtruder do
       width:        size,
       height:       size,
       extruder:     subject
-      #prettifier:   CompactPrettifier
+      #prettifiers:   CompactPrettifier
     )
   end
 
@@ -47,9 +47,11 @@ describe RoomExtruder do
 
     it "should have no unconnected rooms" do
       labyrinth.rooms.each do |room|
-        labyrinth.doors.any? do |door|
-          room == door[0] || room == door[1]
-        end.should be_true
+        room.doors.should_not be_empty
+        #labyrinth.doors.any? do |door|
+        #  #room == door || room == door[1]
+        #  door.connected_rooms.include?(room)
+        #end.should be_true
       end
     end
   end

@@ -1,8 +1,8 @@
 require "spec_helper"
 
 include Minotaur
-include Minotaur::Helpers
-include Minotaur::Helpers::DirectionHelpers
+include Minotaur::Support
+include Minotaur::Support::DirectionHelpers
 
 include Minotaur::Geometry
 include Minotaur::Geometry::Directions
