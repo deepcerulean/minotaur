@@ -5,15 +5,14 @@ module Minotaur
     #  we use this matrix to record 'passability'.
     #
     class Grid < Space
+      include Support::PositionHelpers
+      include Support::DirectionHelpers
+
       attr_accessor :rows
 
       def initialize(opts={})
-        self.location = opts.delete(:location) { origin }
-        self.width    = opts.delete(:width)  { 1 }
-        self.height   = opts.delete(:height) { 1 }
+        super(opts)
         self.rows = Array.new(self.height) { Array.new(self.width,0) }
-
-        super(location:location,width:width, height: height)
       end
 
       def at(position)
@@ -44,6 +43,17 @@ module Minotaur
         (at(start) & direction) != 0
       end
 
+
+      def build_space!(space)
+        Grid.each_position(space.width,space.height) do |position|
+          real_position = space.location + position
+          build_passage!(real_position,real_position.translate(WEST))  unless real_position.x <= space.location.x
+          build_passage!(real_position,real_position.translate(NORTH)) unless real_position.y <= space.location.y
+          build_passage!(real_position,real_position.translate(EAST))  unless real_position.x >= space.location.x + space.width - 1
+          build_passage!(real_position,real_position.translate(SOUTH)) unless real_position.y >= space.location.y + space.height - 1
+        end
+      end
+
       def empty_adjacent_to(start)
         start.adjacent.shuffle.select do |position|
           contains?(position) && empty?(position)
@@ -69,9 +79,9 @@ module Minotaur
       end
 
       def self.each_position(width,height)
-        width.times do |x|
-          height.times do |y|
-            yield Position.new(x,y)
+        width.times do |x_coordinate|
+          height.times do |y_coordinate|
+            yield Position.new(x_coordinate, y_coordinate)
           end
         end
       end

@@ -5,6 +5,8 @@ module Minotaur
     #   with some extra helpers for grids
     #
     class Position < Struct.new(:x, :y)
+      include Support::DirectionHelpers
+
 
       def ==(other)
         self.x == other.x && self.y == other.y

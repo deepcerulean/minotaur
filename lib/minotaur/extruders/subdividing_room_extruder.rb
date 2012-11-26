@@ -2,9 +2,12 @@ module Minotaur
   module Extruders
     #
     #  contains plug-in functionality for labyrinth to extrude rooms and doorways
+    #  algorithm is straightfoward -- just about subdividing a room (users the Geometry::Subdivider utility)
     #
-    module RoomExtruder
-      attr_accessor :rooms, :doors
+    module SubdividingRoomExtruder
+      include Geometry
+
+      attr_accessor :rooms #, :doors
       attr_accessor :start, :min_edge_length, :variance
 
       def extrude!(opts={})
@@ -64,13 +67,12 @@ module Minotaur
       end
 
       def carve_doorway!(room,other_room)
-        shared_edge = room.adjoining_edge(other_room)
-        alpha,beta = shared_edge.sort_by { rand }.first
-        start,finish = Position.new(alpha[0],alpha[1]), Position.new(beta[0],beta[1])
-        build_passage!(start,finish)
+        door = Door.new(room,other_room)
+        door.carve!(self)
+      end
 
-        # TODO custom door class...
-        doors << [room,other_room]
+      def doors
+        rooms.map { |room| room.doors }.flatten.uniq
       end
     end
   end

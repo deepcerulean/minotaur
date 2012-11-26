@@ -13,3 +13,5 @@ RSpec::Core::RakeTask.new do |task|
   #task.rspec_opts = Dir.glob("[0-9][0-9][0-9]_*").collect { |x| "-I#{x}" }
   task.rspec_opts = '-r spec_helper.rb --color -f d'
 end
+
+task :default => [:spec, :reek]

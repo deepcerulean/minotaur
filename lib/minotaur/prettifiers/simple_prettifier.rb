@@ -1,6 +1,9 @@
 module Minotaur
-  module Prettifier
+  module Prettifiers
     module SimplePrettifier # < Base
+      include Geometry
+      include Directions
+
       attr_accessor :path_indicator
       attr_accessor :path_start_indicator
       attr_accessor :path_end_indicator
@@ -11,14 +14,15 @@ module Minotaur
 
       def to_s(path=[])
         output = "\n"
-        output << grid_header(self)
-        height.times do |y|
+        output << grid_header
+        height.times do |y_coordinate|
           output << "|"
-          width.times do |x|
-            output << cell(self,x,y,path)
+          width.times do |x_coordinate|
+            position = Position.new(x_coordinate,y_coordinate)
+            output << cell(position,path)
           end
           output << "\n|"
-          output << row_separator(self,y,path)
+          output << row_separator(y_coordinate,path)
           output << "\n"
         end
         output
@@ -26,16 +30,16 @@ module Minotaur
 
       private
 
-      def grid_header(grid)
-        "/" + ("---|" * grid.width) << "\n"
+      def grid_header
+        "/" + ("---|" * width) << "\n"
       end
 
-      def row_separator(grid,y,path)
+      def row_separator(y_coordinate,path)
         output = ""
-        grid.width.times do |x|
-          pos = Position.new(x,y)
-          output << if grid.passable?(pos,SOUTH)
-            if !path.empty? && grid.adjacent?(pos,pos.translate(SOUTH),path)
+        width.times do |x_coordinate|
+          pos = Position.new(x_coordinate,y_coordinate)
+          output << if passable?(pos,SOUTH)
+            if !path.empty? && adjacent?(pos,pos.translate(SOUTH),path)
               " #{path_indicator} "
             else
               "   "
@@ -48,11 +52,11 @@ module Minotaur
         output
       end
 
-      def cell(grid,x,y,path)
+      def cell(pos,path)
         output = ""
-        pos = Position.new(x,y)
+        #pos = Position.new(x,y)
 
-        output << if !path.empty? && grid.adjacent?(pos,pos.translate(WEST),path)
+        output << if !path.empty? && adjacent?(pos,pos.translate(WEST),path)
           path_indicator
         else
           " "
@@ -68,14 +72,14 @@ module Minotaur
           ' '
         end
 
-        output << if !path.empty? && grid.adjacent?(pos,pos.translate(EAST),path)
+        output << if !path.empty? && adjacent?(pos,pos.translate(EAST),path)
           path_indicator
         else
           " "
         end
 
-        output << if grid.passable?(pos,EAST)
-          if !path.empty? && grid.adjacent?(pos,pos.translate(EAST),path)
+        output << if passable?(pos,EAST)
+          if !path.empty? && adjacent?(pos,pos.translate(EAST),path)
             path_indicator
           else
             " "

@@ -1,9 +1,12 @@
 module Minotaur
   module Geometry
     #
-    #   subdivides a sm
+    #   subdivides a region into smaller ones!
     #
     class Subdivider
+      include Directions
+      include Support::FateHelpers
+
       attr_accessor :count, :min_subdivision_length, :variance, :recursive
 
       def initialize(opts={})
@@ -38,8 +41,8 @@ module Minotaur
         end
 
         if recursive
-          resultant_subdivisions.map! do |s|
-            subdivide(s,opts.merge!({depth: depth}))
+          resultant_subdivisions.map! do |subdivision|
+            subdivide(subdivision,opts.merge!({depth: depth}))
           end
         end
 

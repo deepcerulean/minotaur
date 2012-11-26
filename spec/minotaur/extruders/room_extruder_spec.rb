@@ -1,16 +1,19 @@
 require "spec_helper"
 
-describe RoomExtruder do
+include Minotaur::Extruders
+
+
+describe SubdividingRoomExtruder do
   subject do
-    RoomExtruder
+    SubdividingRoomExtruder
   end
 
   let(:labyrinth) do
-    Labyrinth.new(
+    Minotaur::Labyrinth.new(
       width:        size,
       height:       size,
-      extruder:     subject,
-      prettifier:   CompactPrettifier
+      extruder:     subject
+      #prettifiers:   CompactPrettifier
     )
   end
 
@@ -37,13 +40,18 @@ describe RoomExtruder do
       (total_open.to_f/total).should >= 0.4
     end
 
-    it "should have doors" do labyrinth.doors.should_not be_empty end
+    it "should have doors" do
+      #puts labyrinth
+      labyrinth.doors.should_not be_empty
+    end
 
     it "should have no unconnected rooms" do
       labyrinth.rooms.each do |room|
-        labyrinth.doors.any? do |door|
-          room == door[0] || room == door[1]
-        end.should be_true
+        room.doors.should_not be_empty
+        #labyrinth.doors.any? do |door|
+        #  #room == door || room == door[1]
+        #  door.connected_rooms.include?(room)
+        #end.should be_true
       end
     end
   end

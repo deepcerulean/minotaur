@@ -10,8 +10,8 @@ Incorporates a somewhat loose adaptation of jamis' approaches towards mazes
 Nothing really very sophisticated yet, but the goal is for this to eventually be a proper 'dungeon' and even 'world' generator
 and simulator.
 
-An extremely simple client (that should probably be packaged with this gem) would let you talk to the local minotaur
-instance (server?), create mazes/dungeons, and traverse them in a 'first-person' text interface.
+An extremely simple client which is packaged in the gem lets you traverse a dungeon in a 'first-person' text interface.
+(Still in progress.)
 
 A further move might involve a minotaur server living in the cloud, accessible by an API, and which could support
 actual games in production.
@@ -22,8 +22,9 @@ Current features:
    - Generation
    - Solving
   - Dungeons
-   - Room division
-   - Doorways
+   - Room extrusion w/ connecting doorways
+   - Room notes (atmosphere, etc.)
+   - Simple CLI "client"
 
 
 [Note that generators/solvers are given symmetrically as 'extruders' (passage-carvers, generators) and 'pathfinders' (solvers)]
@@ -31,16 +32,15 @@ Current features:
 In progress:
 
   - Dungeons
-    - "Features" (differentiated rooms)
+    - Enhancements to CLI "client"
+    - Notes
       - Treasure
       - Encounters
-      - Atmosphere notes
 
 Planned work:
 
   - General
     - Player class
-    - Simple CLI "client"
 
   - Dungeons
     - More sophisticated generation strategies
@@ -91,14 +91,46 @@ Or install it yourself as:
 
 ## Usage
 
-At this point, you could conceivably use it to generate mazes.
+You can play around in a generated world using the built-in 'minotaur' tool. Just run 'minotaur explore' to generate
+a random dungeon and explore it in a text-based mode.
+
+At this point, you could also conceivably use the library to generate dungeon outlines and mazes.
 
 This would involve using the Minotaur::Labyrinth class. It's default values permit you to specify
 a size and it can generate and display a labyrinth. There are a bunch of helper functions to do different
 things with the labyrinth; I'll try to document them better as this goes public.
 
 At any rate, here's a motivational pry session that shows off what's working as of the last incremental
-pre-alpha release (0.0.3a)...
+pre-alpha release (0.0.3)...
+
+       >>> labyrinth = Minotaur::Labyrinth.new width: 5, height: 5
+     ===>
+    /---|---|---|---|---|
+    |   |   |   |   |   |
+    |---|---|---|---|---|
+    |   |   |   |   |   |
+    |---|---|---|---|---|
+    |   |   |   |   |   |
+    |---|---|---|---|---|
+    |   |   |   |   |   |
+    |---|---|---|---|---|
+    |   |   |   |   |   |
+    |---|---|---|---|---|
+
+       >>> labyrinth.extrude!
+     ===>
+    /---|---|---|---|---|
+    |       |           |
+    |---|   |---|   |   |
+    |   |       |   |   |
+    |   |---|   |   |   |
+    |           |   |   |
+    |   |---|---|   |   |
+    |           |   |   |
+    |---|---|   |---|   |
+    |                   |
+    |---|---|---|---|---|
+
 
 ## Contributing
 
@@ -107,3 +139,4 @@ pre-alpha release (0.0.3a)...
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
+

@@ -11,19 +11,15 @@ module Minotaur
 
       def initialize(opts={})
         self.count                    = opts.delete(:count)                  { 2 }
-        self.min_subdivision_length   = opts.delete(:min_subdivision_length) #{ 2 }
-      end
-
-      def split_magnitude(magnitude)
-        (magnitude/count).to_i
+        self.min_subdivision_length   = opts.delete(:min_subdivision_length) { 2 }
       end
 
       def split!(magnitude)
-        return [magnitude] if split_magnitude(magnitude) < min_subdivision_length
-
+        split_magnitude = (magnitude/count).to_i
+        return [magnitude] if split_magnitude < min_subdivision_length
         width_so_far = 0
         Array.new(count) do |index|
-          next_width = index==count-1 ? (magnitude - width_so_far) : split_magnitude(magnitude)
+          next_width = index==count-1 ? (magnitude - width_so_far) : split_magnitude
           width_so_far = width_so_far + next_width
           next_width
         end
