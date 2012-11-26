@@ -10,10 +10,9 @@ module Minotaur
             height: 20,
             extruder: Extruders::SubdividingRoomExtruder
           )
-          l.extrude!(variance: 2)
-          puts l
-          l
+          l.extrude!
         end
+
         self.current_room     = opts.delete(:current_room) { labyrinth.rooms.first }
       end
 
@@ -31,7 +30,7 @@ module Minotaur
                 current_room.doors.each_with_index do |door, _|
                   other_room = door.room_connected_to(current_room)
                   next_room.choice(other_room.to_s.to_sym) do
-                    self.current_room = other_room # door.room_connected_to(current_room) #other # door.room_connected_to(current_room)
+                    self.current_room = other_room
                   end
                 end
               end
