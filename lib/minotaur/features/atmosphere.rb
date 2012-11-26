@@ -1,18 +1,22 @@
 module Minotaur
 
-  #NOTES = {
-  #  :water => [],
-  #  :temperature => [],
-  #  :noise => []
-  #}
-
   # notes on the atmosphere of the space
   module Features
     class Atmosphere < Feature
-      #attr_accessor :notes
+      attr_accessor :description
+      attr_accessor :temperature
 
-      def self.generate!
 
+      def initialize(opts={})
+        self.description = opts.delete(:description)
+        self.temperature = opts.delete(:temperature)
+      end
+
+      def to_s
+        output = ""
+        output << description if description
+        output << "The temperature is #{temperature}" if temperature
+        output
       end
     end
   end

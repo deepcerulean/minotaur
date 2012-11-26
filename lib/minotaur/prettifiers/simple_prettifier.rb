@@ -36,7 +36,7 @@ module Minotaur
 
       def row_separator(y_coordinate,path)
         output = ""
-        grid.width.times do |x_coordinate|
+        width.times do |x_coordinate|
           pos = Position.new(x_coordinate,y_coordinate)
           output << if passable?(pos,SOUTH)
             if !path.empty? && adjacent?(pos,pos.translate(SOUTH),path)

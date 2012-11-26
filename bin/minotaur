@@ -2,12 +2,6 @@
 
 lib = File.expand_path(File.dirname(__FILE__) + '/../lib')
 $LOAD_PATH.unshift(lib) if File.directory?(lib) && !$LOAD_PATH.include?(lib)
-
 require 'minotaur'
-require 'minotaur/explorer/command'
-
-args = ARGV.dup
-ARGV.clear
-command = args.shift.strip rescue 'help'
-
-Minotaur::Explorer::Command.run(command, args)
+require 'minotaur/command/runner'
+Minotaur::Command::Runner.start

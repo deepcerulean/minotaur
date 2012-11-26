@@ -67,10 +67,8 @@ module Minotaur
       end
 
       def carve_doorway!(room,other_room)
-        door = Door.new(connected_rooms: [room,other_room])
+        door = Door.new(room,other_room)
         door.carve!(self)
-        room.doors        << door
-        other_room.doors  << door
       end
 
       def doors

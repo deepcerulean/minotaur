@@ -9,6 +9,7 @@ require "minotaur/version"
 require "minotaur/support/fate_helpers"
 require "minotaur/support/range_helpers"
 
+
 require "minotaur/geometry/directions"
 require "minotaur/support/direction_helpers"
 
@@ -35,21 +36,33 @@ require "minotaur/extruders/assembling_room_extruder"
 
 require "minotaur/pathfinders/recursive_backtracking_pathfinder"
 
+
 require "minotaur/features/feature"
 require "minotaur/features/atmosphere"
-require "minotaur/features/monster"
+require "minotaur/features/creature"
 require "minotaur/features/treasure"
+require "minotaur/features/item"
+require "minotaur/features/trap"
+require "minotaur/features/aura"
+require "minotaur/features/alignment"
+require "minotaur/features/name"
+require "minotaur/features/room_type"
 
-require "minotaur/features/feature_sets/feature_set"
-require "minotaur/features/feature_sets/roguelike/roguelike"
+require "minotaur/theme"
+require "minotaur/support/theme_helpers"
+require "minotaur/themes/roguelike"
+
 
 require "minotaur/door"
 require "minotaur/room"
 require "minotaur/labyrinth"
 
+require "minotaur/explorer/explorer"
+
 #
 #
 #
 module Minotaur
+  DEFAULT_THEME = Minotaur::Themes::Roguelike
 end
 
