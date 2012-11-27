@@ -1,26 +1,27 @@
 module Minotaur
-
+  #
+  #   supporting logic for 'pluggable' generator-sets
+  #
   class Theme
-    include Features
-
     def self.current_theme
       @@current_theme ||= DEFAULT_THEME
     end
 
     def self.generate(sym,opts={},&blk)
-      @@generators[sym].call(opts, &blk)
+      @@feature_generators[sym].call(opts, &blk)
     end
 
     class << self
-      Minotaur::Features::Feature.kinds.each do |kind|
-        define_method(kind.to_sym) { |&blk| register_generator(kind.to_sym, &blk) }
+      def feature_generators
+        @@feature_generators ||= {}
       end
 
-      private
+      def feature_names
+        feature_generators.keys
+      end
 
-      def register_generator(sym, &blk)
-        @@generators ||= {}
-        @@generators[sym] = blk
+      def method_missing(method_name, *args, &block)
+        feature_generators[method_name] = block
       end
     end
   end

@@ -4,6 +4,8 @@ require "bundler"
 Bundler.setup(:default)
 require "dice"
 
+require "ostruct"
+
 require "minotaur/version"
 
 require "minotaur/support/fate_helpers"
@@ -37,16 +39,16 @@ require "minotaur/extruders/assembling_room_extruder"
 require "minotaur/pathfinders/recursive_backtracking_pathfinder"
 
 
-require "minotaur/features/feature"
-require "minotaur/features/atmosphere"
-require "minotaur/features/creature"
-require "minotaur/features/treasure"
-require "minotaur/features/item"
-require "minotaur/features/trap"
-require "minotaur/features/aura"
-require "minotaur/features/alignment"
-require "minotaur/features/name"
-require "minotaur/features/room_type"
+#require "minotaur/features/feature"
+#require "minotaur/features/atmosphere"
+#require "minotaur/features/creature"
+#require "minotaur/features/treasure"
+#require "minotaur/features/item"
+#require "minotaur/features/trap"
+#require "minotaur/features/aura"
+#require "minotaur/features/alignment"
+#require "minotaur/features/name"
+#require "minotaur/features/room_type"
 
 require "minotaur/theme"
 require "minotaur/support/theme_helpers"
