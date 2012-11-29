@@ -10,23 +10,30 @@ module Minotaur
       #     - examples of particular configurations (spaces)
       #
 
-
-      room do #|opts|
-        #features = OpenStruct.new
-        #features = %w[ atmosphere ]
-        #features << generate(:room_type, :for => target)
-        #features << generate(:aura)
-        #features.atmosphere = generate(:atmosphere)
-        #features.name       = generate(:room_name)
-        #features.map { |f| { f.to_sym => generate(f.to_sym) } }
-        #features
+      room_features do #|opts|
         {
-            #room_type:
-            atmosphere: generate(:atmosphere)
+          atmosphere:  generate(:atmosphere),
+          room_name:   generate(:room_name),
+          room_type:   generate(:room_type),
+          description: generate(:room_description)
         }
       end
 
-      room_name do |opts|
+      MORAL_ALIGNMENTS = [ 'very good', 'good', 'slightly good',
+                          'neutral', 'slightly evil', 'evil', 'very evil']
+      ETHICAL_ALIGNMENTS = [ 'very lawful', 'lawful', 'slightly lawful',
+                            'neutral', 'slightly chaotic', 'chaotic', 'very chaotic']
+
+      alignment do
+        moral_alignment    = MORAL_ALIGNMENTS.sample
+        ethical_alignment  = ETHICAL_ALIGNMENTS.sample
+
+        ethical_alignment = 'true' if moral_alignment == 'neutral' && ethical_alignment == 'neutral'
+        Alignment.new(moral_alignment,ethical_alignment)
+      end
+
+
+      room_name do
         %w[ somewhere elsewhere anywhere ].sample
       end
 
@@ -35,16 +42,15 @@ module Minotaur
       end
 
       temperature do
-        %w[ hot mild cold ].sample
-        #case D20.first
-        #  when 0...3  then 'very hot'
-        #  when 3...7  then 'hot'
-        #  when 7...11 then 'somewhat hot'
-        #  when 11..13 then 'mild'
-        #  when 13..16 then 'somewhat cold'
-        #  when 16..19 then 'cold'
-        #  when 19..20 then 'very cold'
-        #end
+        case D20.first
+          when 0...3  then 'very hot'
+          when 3...7  then 'hot'
+          when 7...11 then 'somewhat hot'
+          when 11..13 then 'mild'
+          when 13..16 then 'somewhat cold'
+          when 16..19 then 'cold'
+          when 19..20 then 'very cold'
+        end
       end
 
       room_description do
@@ -60,10 +66,7 @@ module Minotaur
       # atmosphere
       atmosphere do
         atmosphere = OpenStruct.new
-        atmosphere.name        = generate(:room_name)
-        atmosphere.type        = generate(:room_type)
-        atmosphere.temperature = generate(:temperature)
-        atmosphere.description = generate(:room_description)
+        atmosphere.temperature ||= generate(:temperature)
         atmosphere
       end
     end
@@ -281,26 +284,3 @@ end
 #  #    end
 #  #  end
 #  #end
-#
-#  #rooms do
-#  #  treasure do
-#  #    case D20
-#  #      when 1..2 then
-#  #
-#  #      end
-#  #    end
-#  #  end
-#  #
-#  #  monsters do
-#  #
-#  #
-#  #
-#  #  end
-#  #
-#  #  atmosphere do
-#  #
-#  #
-#  #
-#  #  end
-#  #end
-#end

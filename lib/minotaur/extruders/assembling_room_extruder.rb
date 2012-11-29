@@ -1,3 +1,12 @@
+module Minotaur
+  module Extrudes
+    module AssemblingRoomExtruder
+      include Geometry
+
+      attr_accessor
+    end
+  end
+end
 #module Minotaur
 #  module Extruders
 #    #

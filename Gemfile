@@ -4,9 +4,6 @@ gem 'dice'
 gem 'thor'
 gem 'highline'
 
-require 'active_support/core_ext/string'
-
-
 group :test do
   gem 'rake'
   gem 'rspec'
