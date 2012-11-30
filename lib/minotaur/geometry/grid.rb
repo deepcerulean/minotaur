@@ -27,6 +27,12 @@ module Minotaur
         at(position).zero?
       end
 
+      def empty_surrounding?(position)
+        position.surrounding.all? do |other|
+          contains?(other) && empty?(other)
+        end
+      end
+
       def inscribe!(position, value)
         raise "Cannot mark position #{position} (outside the grid)" unless contains?(position)
         rows[position.y][position.x] |= value
@@ -60,9 +66,22 @@ module Minotaur
         end
       end
 
+      def empty_surrounding_and_adjacent_to(start)
+        start.adjacent.shuffle.select do |position|
+          contains?(position) && empty_surrounding?(position)
+        end
+      end
+
       def each_empty_adjacent_to(start)
         empty_adjacent_to(start).select do |position|
           yield position if contains?(position) && empty?(position)
+        end
+      end
+
+      def each_direction_with_an_empty_region_from(start,distance=3)
+        all_directions.map do |direction|
+          position = start.translate(direction,distance)
+          yield direction if empty_surrounding?(position)
         end
       end
 

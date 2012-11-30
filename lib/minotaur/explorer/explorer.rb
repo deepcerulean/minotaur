@@ -1,15 +1,16 @@
 module Minotaur
   module Explorer
     class Explorer
+      include Minotaur::Extruders
       include Support::PositionHelpers
       attr_accessor :still_exploring, :labyrinth, :current_room
 
       def initialize(opts={})
         self.labyrinth        = opts.delete(:labyrinth) do
           l = Labyrinth.new(
-            width:  20,
-            height: 20,
-            extruder: Extruders::SubdividingRoomExtruder
+            width:    40,
+            height:   40,
+            extruder: Minotaur::Extruders::AssemblingRoomExtruder
           )
           l.extrude!
           l

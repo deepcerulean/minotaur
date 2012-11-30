@@ -1,9 +1,17 @@
 module Minotaur
   module Support
     module PositionHelpers
-      def origin
-        Geometry::Position.new(0,0)
-      end
+      include Geometry
+
+      #
+      #def position(x_coordinate, y_coordinate)
+      #  Position.new(x_coordinate, y_coordinate)
+      #end
+
+      #def origin
+      #  Position.new(0,0)
+      #end
+
 
       # TODO really belongs to a path, i think?
       #      doesn't seem to be used except by prettifiers (!)
