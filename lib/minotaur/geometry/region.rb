@@ -38,5 +38,9 @@ module Minotaur
     def y
       location.y
     end
+
+    def contains?(position)
+      position.x >= 0 && position.y >= 0 && position.x < self.width && position.y < self.height
+    end
   end
 end

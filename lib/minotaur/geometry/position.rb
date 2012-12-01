@@ -27,7 +27,7 @@ module Minotaur
         arr = []
         all_directions.map do |first_direction|
           all_directions.map do |second_direction|
-            if first_direction != second_direction
+            if first_direction != second_direction && first_direction != direction_opposite(second_direction)
               diagonal = translate(first_direction).translate(second_direction)
               arr << diagonal unless arr.include?(diagonal)
             end

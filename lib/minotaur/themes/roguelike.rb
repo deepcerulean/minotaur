@@ -19,7 +19,7 @@ module Minotaur
 
 
       room_size do
-        Size.new(width: (5..20).to_a.sample, height: (5..20).to_a.sample)
+        Size.new(width: (5..8).to_a.sample, height: (3..6).to_a.sample)
       end
 
       room_features do #|opts|

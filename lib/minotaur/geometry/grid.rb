@@ -4,6 +4,8 @@ module Minotaur
     #  a grid 'instruments' a space with a logical matrix
     #  we use this matrix to record 'passability'.
     #
+    #  (see also Geometry::Direction.)
+    #
     class Grid < Space
       include Support::PositionHelpers
       include Support::DirectionHelpers
@@ -19,18 +21,21 @@ module Minotaur
         self.rows[position.y][position.x]
       end
 
-      def contains?(position)
-        position.x >= 0 && position.y >= 0 && position.x < self.width && position.y < self.height
-      end
+
 
       def empty?(position)
         at(position).zero?
       end
 
-      def empty_surrounding?(position)
-        position.surrounding.all? do |other|
-          contains?(other) && empty?(other)
+
+      def empty_surrounding_count(position)
+        position.surrounding.count do |other|
+          contains?(other) && empty?(other) #: true
         end
+      end
+
+      def empty_surrounding?(position)
+        empty_surrounding_count(position) == position.surrounding.count
       end
 
       def inscribe!(position, value)
@@ -48,7 +53,6 @@ module Minotaur
       def passable?(start,direction)
         (at(start) & direction) != 0
       end
-
 
       def build_space!(space)
         Grid.each_position(space.width,space.height) do |position|
@@ -98,6 +102,15 @@ module Minotaur
       end
 
       def self.each_position(width,height)
+        width.times do |x_coordinate|
+          height.times do |y_coordinate|
+            yield Position.new(x_coordinate, y_coordinate)
+          end
+        end
+      end
+
+      def each_position
+        puts "--- Giving each position for #{self.size}"
         width.times do |x_coordinate|
           height.times do |y_coordinate|
             yield Position.new(x_coordinate, y_coordinate)

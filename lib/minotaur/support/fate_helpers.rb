@@ -4,7 +4,7 @@ module Minotaur
     #   general utilities around random numbers
     #
     module FateHelpers
-      def coinflip?; rand > 0.5 end
+      def coinflip?(n=1); rand > 0.5**n end
     end
   end
 end
