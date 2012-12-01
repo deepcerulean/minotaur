@@ -28,16 +28,16 @@ module Minotaur
         end
 
         puts '--- carvin'
+        interval = DEFAULT_PASSAGEWAY_UNIT
         Grid.each_position(width-2,height-1) do |pos|
           pos = pos + Position.new(1,1)
-          if pos.x % 2 == 0 && pos.y % 2 == 0
+          if pos.x % interval == 0 && pos.y % interval == 0
             carve_passageways!(opts.merge!(start: pos, depth: 0)) #if coinflip?(4)
           end
         end
       end
 
-      #DEFAULT_REGION_SIZE = 3
-      MAX_DEPTH = 256
+      MAX_DEPTH = 64
       DEFAULT_PASSAGEWAY_UNIT = 3
       def carve_passageways!(opts={})
         depth       = opts.delete(:depth) { 0 }
@@ -45,32 +45,28 @@ module Minotaur
         unit        = opts.delete(:unit)  { DEFAULT_PASSAGEWAY_UNIT }
 
         return if depth > MAX_DEPTH || !contains?(start)
-
-        #(0..DEFAULT_PASSAGEWAY_UNIT).each do |unit|
         all_directions.shuffle.each do |direction|
           position = start.translate(direction,unit)
           next if  on_grid_edge?(start)
           if contains?(position)
-            empty_region = empty_surrounding_count(position) > 6 #_count(position) == 0
-            if empty_region # || (unit == DEFAULT_PASSAGEWAY_UNIT && within_any_room?(position))
-              (0..unit).each do |n|
+            empty_region = empty_surrounding?(position)
+            if empty_region || within_any_room?(position)
+              (0...unit).each do |n|
                 alpha = start.translate(direction,n)
                 beta  = start.translate(direction,n+1)
-                if contains?(alpha) && contains?(beta) && !on_grid_edge?(alpha) && !on_grid_edge?(beta)
+                if contains?(alpha) && contains?(beta) #&& !on_grid_edge?(alpha) && !on_grid_edge?(beta)
                   build_passage!(alpha,beta)
                   alpha.adjacent.each do |next_alpha|
-                    build_passage!(alpha,next_alpha) if !empty?(next_alpha) && !on_grid_edge?(next_alpha) #|| !within_any_room?(next_alpha) #unless within_any_room?(next_alpha) #unless empty?(next_alpha) #if empty_surrounding_count(next_alpha) > 3
-                  end
-                  beta.adjacent.each do |next_beta|
-                    build_passage!(beta,next_beta) if !empty?(next_beta) && !on_grid_edge?(next_beta) #|| !within_any_room?(next_alpha) #unless within_any_room?(next_alpha) #unless empty?(next_alpha) #if empty_surrounding_count(next_alpha) > 3
+                    build_passage!(alpha,next_alpha) if !empty?(next_alpha) && !on_grid_edge?(next_alpha)
                   end
                   #beta.adjacent.each do |next_beta|
-                  #  build_passage!(beta,next_beta) unless empty?(next_beta) #if empty_surrounding_count(next_alpha) > 3
+                  #  build_passage!(beta,next_beta) if !empty?(next_beta) && !on_grid_edge?(next_beta)
                   #end
                 end
               end
             end
-            if empty_region
+
+            if empty_region || empty_surrounding_count(position) > 6
               carve_passageways!(opts.merge!(:start => position, :depth => depth + 1))
             end
           end
@@ -108,7 +104,7 @@ module Minotaur
 
       def within_any_room?(position)
         rooms.each do |room|
-          return true if room.contains?(position)
+          return true if room.contains?(position) && !room.perimeter?(position)
         end
         false
       end

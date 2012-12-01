@@ -8,9 +8,9 @@ module Minotaur
       #  Position.new(x_coordinate, y_coordinate)
       #end
 
-      #def origin
-      #  Position.new(0,0)
-      #end
+      def origin
+        Position.new(0,0)
+      end
 
 
       # TODO really belongs to a path, i think?

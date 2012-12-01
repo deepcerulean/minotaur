@@ -1,5 +1,6 @@
 module Minotaur
   class Region #< Struct.new(:location, :size)
+    include Support::PositionHelpers
     attr_accessor :location, :size
 
     def initialize(opts={})
@@ -17,6 +18,10 @@ module Minotaur
       output << "#{size}"
       output << " at #{location}" if location
       output
+    end
+
+    def location
+      @location ||= origin
     end
 
     def width
@@ -40,7 +45,11 @@ module Minotaur
     end
 
     def contains?(position)
-      position.x >= 0 && position.y >= 0 && position.x < self.width && position.y < self.height
+      position.x >= location.x && position.y >= location.y && position.x < location.x + self.width && position.y < location.y+self.height
+    end
+
+    def perimeter?(position)
+      position.x == location.x || position.y == location.y || position.x == location.x + self.width || position.y == location.y + self.height
     end
   end
 end
