@@ -13,16 +13,14 @@ describe Minotaur::Extruders::AssemblingRoomExtruder do
   let(:labyrinth) do
     Minotaur::Labyrinth.new(
         size:         size,
-
-        #height:       size,
         extruder:     subject,
-        prettifier:   Minotaur::Prettifiers::CompactPrettifier
+        prettifier:   Minotaur::Prettifiers::SimplePrettifier
     )
   end
 
   context "when placing rooms for a dungeon" do
-    let(:size)            { 30 }
-    let(:room_count)      { 14 }
+    let(:size)            { 100 }
+    let(:room_count)      { 150 }
     #let(:min_edge_length) {  5 }
     #let(:variance)        {  0 }
 
@@ -39,6 +37,7 @@ describe Minotaur::Extruders::AssemblingRoomExtruder do
         !labyrinth.empty?(position)
       end
       (total_open.to_f/total).should >= 0.4
+      #puts labyrinth
     end
   end
 end

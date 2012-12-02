@@ -1,4 +1,4 @@
-SIZE = 5
+SIZE = 6
 
 shared_examples_for "a pathfinder" do
   before(:all) do
@@ -11,7 +11,7 @@ shared_examples_for "a pathfinder" do
       Minotaur::Geometry::Grid.each_position(SIZE,SIZE) do |dst|
         if src != dst
           @labyrinth.path_between?(dst,src).should be_true
-          #puts @labyrinth.to_s(@labyrinth.solution_path)
+          puts @labyrinth.to_s(@labyrinth.solution_path)
         end
       end
     end

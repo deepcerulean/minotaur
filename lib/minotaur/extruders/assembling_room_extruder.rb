@@ -14,6 +14,8 @@ module Minotaur
       DEFAULT_ROOM_COUNT = 10
 
       attr_accessor :room_count, :rooms
+      attr_accessor :stairs
+      attr_accessor :doors
 
       def extrude!(opts={})
         self.room_count = opts.delete(:room_count) { DEFAULT_ROOM_COUNT }
@@ -22,46 +24,81 @@ module Minotaur
           Array.new(self.room_count) { generate(:room) }
         end
 
-        puts '--- placin'
+        #puts '--- placin'
         self.rooms.each do |room|
           attempt_to_place room
         end
 
-        puts '--- carvin'
+        #puts '--- carvin'
         interval = DEFAULT_PASSAGEWAY_UNIT
         Grid.each_position(width-2,height-1) do |pos|
           pos = pos + Position.new(1,1)
           if pos.x % interval == 0 && pos.y % interval == 0
-            carve_passageways!(opts.merge!(start: pos, depth: 0)) #if coinflip?(4)
+            carve_passageways!(opts.merge!(start: pos, depth: 0))
+          end
+        end
+
+        #puts '--- emplacin'
+        all_corridor_positions.each do |pos|
+          nonempty_adjacent = pos.adjacent.select { |p| nonempty?(p) }
+
+          if nonempty_adjacent.count == 1 && coinflip?
+            stairs << Stairwell.new(location: pos)
+            #puts "--- placing stairwell at #{pos}"
+          elsif nonempty_adjacent.count == 2
+            first, second = nonempty_adjacent[0], nonempty_adjacent[1]
+            if direction_to(pos,first) == direction_opposite(direction_to(pos,second))
+               #direction_opposite(pos.direction)
+              if (any_room_contains?(first) || any_room_contains?(second)) && !door?(first) && !door?(second)
+                doors << Door.new(location: pos)
+                #puts "--- placing door at #{pos}"
+              end
+            end
           end
         end
       end
 
-      MAX_DEPTH = 64
-      DEFAULT_PASSAGEWAY_UNIT = 3
+      def doors
+        @doors ||= []
+      end
+
+      def door?(pos)
+        doors.any? { |door| door.location == pos }
+      end
+
+      def stairs
+        @stairs ||= []
+      end
+
+      def stairs?(pos)
+        stairs.any? { |stairwell| stairwell.location == pos }
+      end
+
+      MAX_DEPTH = 8
+      DEFAULT_PASSAGEWAY_UNIT = 4
       def carve_passageways!(opts={})
         depth       = opts.delete(:depth) { 0 }
         start       = opts.delete(:start)
         unit        = opts.delete(:unit)  { DEFAULT_PASSAGEWAY_UNIT }
 
         return if depth > MAX_DEPTH || !contains?(start)
+
         all_directions.shuffle.each do |direction|
+
           position = start.translate(direction,unit)
-          next if  on_grid_edge?(start)
+          next if  on_edge?(start)
+
           if contains?(position)
             empty_region = empty_surrounding?(position)
-            if empty_region || within_any_room?(position)
+            if empty_region || within_any_room_and_not_perimeter?(position)
               (0...unit).each do |n|
                 alpha = start.translate(direction,n)
                 beta  = start.translate(direction,n+1)
-                if contains?(alpha) && contains?(beta) #&& !on_grid_edge?(alpha) && !on_grid_edge?(beta)
+                if contains?(alpha) && contains?(beta)
                   build_passage!(alpha,beta)
                   alpha.adjacent.each do |next_alpha|
-                    build_passage!(alpha,next_alpha) if !empty?(next_alpha) && !on_grid_edge?(next_alpha)
+                    build_passage!(alpha,next_alpha) if !empty?(next_alpha)
                   end
-                  #beta.adjacent.each do |next_beta|
-                  #  build_passage!(beta,next_beta) if !empty?(next_beta) && !on_grid_edge?(next_beta)
-                  #end
                 end
               end
             end
@@ -75,8 +112,8 @@ module Minotaur
       end
 
       private
+
       MAX_ATTEMPTS = 1000
-      DEFAULT_MARGIN = 0
       def attempt_to_place(room,opts={})
         attempts = 0
         proposed_location = nil
@@ -101,16 +138,25 @@ module Minotaur
         false
       end
 
+      def any_room_contains?(position)
+        rooms.each do |room|
+          return true if room.contains?(position) #&& !room.perimeter?(position)
+        end
+        false
+      end
 
-      def within_any_room?(position)
+
+      def within_any_room_and_not_perimeter?(position)
         rooms.each do |room|
           return true if room.contains?(position) && !room.perimeter?(position)
         end
         false
       end
 
-      def on_grid_edge?(position)
-        return true if position.x == 0 || position.y == 0 || position.x == width-1 || position.y == height-1
+
+
+      def all_corridor_positions
+        all_nonempty_positions.reject { |p| any_room_contains?(p) }
       end
     end
   end

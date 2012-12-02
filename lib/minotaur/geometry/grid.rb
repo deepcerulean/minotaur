@@ -27,6 +27,11 @@ module Minotaur
         at(position).zero?
       end
 
+      def nonempty?(position)
+        !empty?(position)
+      end
+
+
 
       def empty_surrounding_count(position)
         position.surrounding.count do |other|
@@ -124,10 +129,27 @@ module Minotaur
         all
       end
 
+      def all_empty_positions
+        all_positions.select { |position| empty?(position) }
+      end
+
+      def all_nonempty_positions
+        all_positions.select { |position| nonempty?(position) }
+      end
+
       def open?(position)
         all_directions.all? do |direction|
           passable?(position,direction)
         end
+      end
+
+      def all_open_positions
+        all_positions.select { |position| open?(position) }
+      end
+
+
+      def on_edge?(position)
+        return true if position.x == 0 || position.y == 0 || position.x == width-1 || position.y == height-1
       end
     end
   end

@@ -18,9 +18,9 @@ module Minotaur
       pathfinder_module = opts.delete(:pathfinder) || DEFAULT_PATHFINDER
       prettifier_module = opts.delete(:prettifier) || DEFAULT_PRETTIFIER
 
+      extend prettifier_module
       extend extruder_module
       extend pathfinder_module
-      extend prettifier_module
     end
   end
 end

@@ -23,6 +23,10 @@ module Minotaur
         all_directions.map { |direction| translate(direction) }
       end
 
+      def each_adjacent_with_direction
+        all_directions.map { |direction| yield [direction, translate(direction)] }
+      end
+
       def diagonal_neighbors #(n=1)
         arr = []
         all_directions.map do |first_direction|

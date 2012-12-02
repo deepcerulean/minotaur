@@ -43,6 +43,7 @@ require "minotaur/pathfinders/recursive_backtracking_pathfinder"
 require "minotaur/themes/roguelike"
 
 require "minotaur/door"
+require "minotaur/stairwell"
 require "minotaur/room"
 require "minotaur/labyrinth"
 
