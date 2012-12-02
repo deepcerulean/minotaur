@@ -1,8 +1,12 @@
 source 'https://rubygems.org'
 
+
 gem 'dice'
-gem 'thor'
-gem 'highline'
+gem 'chingu'
+
+
+#gem 'thor'
+#gem 'highline'
 
 group :development, :test do
   gem 'pry'
