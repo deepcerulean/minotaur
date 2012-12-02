@@ -10,19 +10,31 @@ module Minotaur
       #     - examples of particular configurations (spaces)
       #
 
+      room do
+        Room.new(
+          features:   generate(:room_features),
+          size:       generate(:room_size)
+        )
+      end
+
+
+      room_size do
+        Size.new(width: (5..8).to_a.sample, height: (3..6).to_a.sample)
+      end
+
       room_features do #|opts|
-        {
+        OpenStruct.new({
           atmosphere:  generate(:atmosphere),
           room_name:   generate(:room_name),
           room_type:   generate(:room_type),
           description: generate(:room_description)
-        }
+        })
       end
 
-      MORAL_ALIGNMENTS = [ 'very good', 'good', 'slightly good',
-                          'neutral', 'slightly evil', 'evil', 'very evil']
+      MORAL_ALIGNMENTS   = [ 'very good', 'good', 'slightly good',
+                             'neutral', 'slightly evil', 'evil', 'very evil']
       ETHICAL_ALIGNMENTS = [ 'very lawful', 'lawful', 'slightly lawful',
-                            'neutral', 'slightly chaotic', 'chaotic', 'very chaotic']
+                             'neutral', 'slightly chaotic', 'chaotic', 'very chaotic']
 
       alignment do
         moral_alignment    = MORAL_ALIGNMENTS.sample
@@ -64,8 +76,9 @@ module Minotaur
       end
 
       # atmosphere
-      atmosphere do
-        atmosphere = OpenStruct.new
+      atmosphere do |opts|
+        target = opts.delete(:target)
+        atmosphere = target ? target.atmosphere : OpenStruct.new
         atmosphere.temperature ||= generate(:temperature)
         atmosphere
       end

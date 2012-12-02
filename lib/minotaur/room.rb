@@ -4,6 +4,7 @@ module Minotaur
   #   eventually should support custom features, atmosphere notes, treasure, encounters, etc.
   #
   class Room < Geometry::Space
+    include Support::PositionHelpers
     include Support::ThemeHelpers
 
     attr_accessor :doors
@@ -16,7 +17,7 @@ module Minotaur
       # NOTE we are assuming the 'room' generator returns
       #      hash of features.... would be nice to 'safeguard' this
       self.features = opts.delete(:features) do
-        OpenStruct.new generate(:room_features, :target => self)
+        generate(:room_features, :target => self)
       end
     end
 
@@ -31,11 +32,7 @@ module Minotaur
     end
 
     def method_missing(sym, *args, &block)
-
-      #puts "--- method missing: #{method_name}"
-      #p self.features
-      #puts caller
-      return self.features.send(sym) if self.features.respond_to?(sym) #keys.include?(method_name
+      return self.features.send(sym) if self.features.respond_to?(sym)
       super(sym, *args, &block)
     end
   end

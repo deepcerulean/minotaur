@@ -27,10 +27,6 @@ module Minotaur
         @rooms ||= []
       end
 
-      #def doors
-      #  @doors ||= []
-      #end
-
       def doors
         rooms.map { |room| room.doors }.flatten.uniq
       end

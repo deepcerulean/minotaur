@@ -12,12 +12,14 @@ module Minotaur
       #attr_accessor :location, :width, :height
 
       def initialize(opts={})
-        self.location = opts.delete(:location) { origin }
-        if opts.include?(:width) && opts.include?(:height)
-          self.size     = Size.new(opts.delete(:width), opts.delete(:height))
-        else
-          self.size     = opts.delete(:size)     { unit }
-        end
+        #self.location = opts.delete(:location) #{ origin }
+        #if opts.include?(:width) && opts.include?(:height)
+        #  self.size     = Size.new(width: opts.delete(:width), height: opts.delete(:height))
+        #else
+        #  self.size     = opts.delete(:size)     { unit }
+        #  self.size     = Size.new(width: size, height: size) if self.size.is_a? Fixnum
+        #end
+        super(opts)
       end
 
       def carve!(grid); grid.build_space!(self) end

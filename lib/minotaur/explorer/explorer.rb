@@ -1,15 +1,21 @@
+require 'curses'
+
 module Minotaur
   module Explorer
     class Explorer
+      include Curses
+
+      include Minotaur::Extruders
       include Support::PositionHelpers
+
       attr_accessor :still_exploring, :labyrinth, :current_room
 
       def initialize(opts={})
         self.labyrinth        = opts.delete(:labyrinth) do
           l = Labyrinth.new(
-            width:  20,
-            height: 20,
-            extruder: Extruders::SubdividingRoomExtruder
+            width:    20,
+            height:   20,
+            extruder: Minotaur::Extruders::AssemblingRoomExtruder
           )
           l.extrude!
           l
@@ -32,37 +38,100 @@ module Minotaur
         description
       end
 
+      def still_exploring?
+        @still_exploring ||= true
+      end
+
       # kick off an interactive session
       def explore!
-        say("Welcome to Minotaur explorer!")
-        self.still_exploring = true
-        while self.still_exploring
-          say("\n"*10)
-          say(describe!) #(current_room)
-          say "Please select an action: \n"
 
-          choose do |action|
-            action.prompt = "What would you like to do?  "
-            action.choice(:move)  do
-              choose do |next_room|
-                next_room.prompt = "Which room would you like to move to? "
-                connected_rooms.each do |other_room|
-                  next_room.choice(other_room.atmosphere.name) do
-                    self.current_room = other_room
-                  end
-                end
-              end
-              say("Good choice!")
+        init_screen
+        begin
+          crmode
+          setpos((lines - 5) / 2, (cols - 10) / 2)
+          addstr("Welcome to Minotaur explorer!")
+          refresh
+          getch
+
+          # TODO step through character creation?
+
+          #show_message("Hello, World!")
+          #refresh
+
+          #crmode
+          while still_exploring?
+            #width = message.length + 6
+            map = Window.new(labyrinth.height*2+2, labyrinth.width*4+2,
+                             (lines - labyrinth.height*2) / 2, (cols - labyrinth.width*4) / 2)
+            #win.box('||', '--')
+            map.bkgd(COLOR_WHITE)
+            map.setpos(0,0)
+            labyrinth.to_s.split("\n").each do |line|
+              map.addstr(line+"\n")
+            end
+            map.refresh
+            #win.getch
+
+
+
+            #show_message('(1) move')
+            #width = message.length + 6
+            win = Window.new(15, 20,
+                             0,0)
+
+            #win.bkgd(COLOR_CYAN)
+
+            win.box('||', '--')
+            win.setpos(2,3)
+            win.addstr("actions:\n")
+            win.addstr("(j) move left\n")
+            win.addstr("(k) move right\n")
+            win.refresh
+
+            case getch
+              when KEY_UP then show_message("moving north...")
+              when KEY_DOWN then show_message("moving south...")
+              else show_message('huh?')
             end
 
-            action.choices(:quit) do
-              say("Well, bye!")
-              self.still_exploring = false
-            end
+            win.close
+
+
+            map.close
 
           end
+
+
+        ensure
+          close_screen
         end
       end
+
+
+      def show_message(message)
+        width = message.length + 6
+        win = Window.new(5, width,
+                         (lines - 5) / 2, (cols - width) / 2)
+        win.box('||', '--')
+        win.setpos(2, 3)
+        win.addstr(message)
+        win.refresh
+        win.getch
+        win.close
+      end
+
+      def show_menu(items=[],options={})
+        width = message.length + 6
+        win = Window.new(5, width,
+                         (lines - 5) / 2, (cols - width) / 2)
+        win.box('||', '--')
+        win.setpos(2, 3)
+        win.addstr(message)
+        win.refresh
+        win.getch
+        win.close
+      end
+
     end
   end
 end

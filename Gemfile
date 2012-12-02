@@ -4,6 +4,10 @@ gem 'dice'
 gem 'thor'
 gem 'highline'
 
+group :development, :test do
+  gem 'pry'
+end
+
 group :test do
   gem 'rake'
   gem 'rspec'
