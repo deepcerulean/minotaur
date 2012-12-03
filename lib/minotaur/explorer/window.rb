@@ -1,11 +1,12 @@
-module Minotaur
-  module Explorer
-    class Window < Chingu::Window
+#module Minotaur
+#  module Explorer
+
+    class Minotaur::Window < Chingu::Window
       def initialize
         super(640,480,false)              # leave it blank and it will be 800,600,non fullscreen
         self.input = { :escape => :exit } # exits example on Escape
 
-        @player = Player.create(:x => 200, :y => 200, :image => Image["fighter.png"])
+        @player = Minotaur::Player.create(:x => 200, :y => 200, :image => Gosu::Image["fighter.png"])
         @player.input = {
             holding_left: :move_left, holding_right: :move_right,
             holding_up: :move_up, holding_down: :move_down
@@ -17,5 +18,5 @@ module Minotaur
         self.caption = "FPS: #{self.fps} milliseconds_since_last_tick: #{self.milliseconds_since_last_tick}"
       end
     end
-  end
-end
+#  end
+#end

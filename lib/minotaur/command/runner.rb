@@ -1,8 +1,11 @@
-require 'rubygems'
+require "rubygems"
+require "bundler"
+Bundler.setup(:default)
+
 require 'thor'
 require 'highline/import'
 
-#require "curses"
+require 'minotaur/explorer/explorer'
 
 module Minotaur
   module Command
@@ -15,12 +18,13 @@ module Minotaur
 
       desc "explore", 'explore a world'
       def explore
-        explorer.explore!
+        #explorer.explore!
+        explorer.show
       end
 
       private
       def explorer
-        @explorer ||= Minotaur::Explorer::Explorer.new
+        @explorer ||= Minotaur::Window.new
       end
 
 

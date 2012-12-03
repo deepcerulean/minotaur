@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 
 gem 'dice'
 gem 'thor'
+gem 'highline'
 gem 'chingu'
 
 
