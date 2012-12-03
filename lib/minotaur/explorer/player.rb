@@ -1,24 +1,13 @@
-#module Minotaur
-  #module Explorer
-    class Minotaur::Player < Chingu::GameObject
-      # To change this template use File | Settings | File Templates.
-      #attr_accessor :name
-      #
-      #attr_accessor :experience
-      #attr_accessor :level
-      #
-      #attr_accessor :profession
-      #
-      #attr_accessor :current_health
-      #attr_accessor :total_health
-      #
-      #attr_accessor :strength
-      #attr_accessor :constitution
 
-      def move_left;  @x -= 3 end
-      def move_right; @x += 3 end
-      def move_up;    @y -= 3 end
-      def move_down;  @y += 3 end
-    end
-  #end
-#end
+class Minotaur::Player < Chingu::GameObject
+
+  include Minotaur::Geometry::Directions
+  def to_position
+    Minotaur::Geometry::Position.new((@x/40).to_i+1,(@y/40).to_i+1)
+  end
+
+  def move_left;  @x -= 3 unless $labyrinth.empty?(to_position.translate(WEST)) end
+  def move_right; @x += 3 unless $labyrinth.empty?(to_position.translate(EAST)) end
+  def move_up;    @y -= 3 unless $labyrinth.empty?(to_position.translate(NORTH)) end
+  def move_down;  @y += 3 unless $labyrinth.empty?(to_position.translate(SOUTH)) end
+end

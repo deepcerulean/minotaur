@@ -12,6 +12,7 @@ require 'chingu'
 
 require 'minotaur/explorer/player'
 require 'minotaur/explorer/window'
+require 'minotaur/explorer/dungeon'
 
 include Gosu
 Image.autoload_dirs << File.join(Minotaur.root, "data", "images")

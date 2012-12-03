@@ -74,7 +74,7 @@ module Minotaur
         stairs.any? { |stairwell| stairwell.location == pos }
       end
 
-      MAX_DEPTH = 8
+      MAX_DEPTH = 32
       DEFAULT_PASSAGEWAY_UNIT = 4
       def carve_passageways!(opts={})
         depth       = opts.delete(:depth) { 0 }
