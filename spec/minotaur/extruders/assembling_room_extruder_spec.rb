@@ -14,7 +14,7 @@ describe Minotaur::Extruders::AssemblingRoomExtruder do
     Minotaur::Labyrinth.new(
         size:         size,
         extruder:     subject,
-        prettifier:   Minotaur::Prettifiers::CompactPrettifier
+        prettifier:   Minotaur::Prettifiers::SimplePrettifier
     )
   end
 
