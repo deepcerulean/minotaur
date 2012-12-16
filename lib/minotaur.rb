@@ -2,10 +2,15 @@
 require "rubygems"
 require "bundler"
 Bundler.setup(:default)
-require "dice"
 
+# external deps
+require "dice"
+#require "chingu"
+
+# ruby std lib stuff
 require "ostruct"
 
+# internal load order
 require "minotaur/version"
 
 require "minotaur/support/fate_helpers"
@@ -47,12 +52,15 @@ require "minotaur/stairwell"
 require "minotaur/room"
 require "minotaur/labyrinth"
 
-require "minotaur/explorer/explorer"
+#require "minotaur/explorer/player"
+#require "minotaur/explorer/window"
 
-#
-#
-#
+
 module Minotaur
   DEFAULT_THEME = Minotaur::Themes::Roguelike
+
+  def self.root
+    File.join(File.dirname(__FILE__), '../')
+  end
 end
 
