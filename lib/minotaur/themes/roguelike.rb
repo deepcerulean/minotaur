@@ -82,6 +82,7 @@ module Minotaur
         atmosphere.temperature ||= generate(:temperature)
         atmosphere
       end
+
     end
   end
 end

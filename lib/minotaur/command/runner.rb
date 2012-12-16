@@ -2,6 +2,7 @@ require "rubygems"
 require "bundler"
 Bundler.setup(:default)
 
+require 'minotaur'
 require 'thor'
 require 'highline/import'
 
@@ -9,8 +10,6 @@ require 'minotaur/explorer/explorer'
 
 module Minotaur
   module Command
-
-
     #
     #  a little thor app to expose some useful utilities
     #
@@ -26,9 +25,8 @@ module Minotaur
       def explorer
         @explorer ||= Minotaur::Window.new
       end
-
-
-
     end
   end
 end
+
+Minotaur::Command::Runner.start

@@ -114,6 +114,7 @@ module Minotaur
       private
 
       MAX_ATTEMPTS = 1000
+      # TODO make smarter...!
       def attempt_to_place(room,opts={})
         attempts = 0
         proposed_location = nil
