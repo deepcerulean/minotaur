@@ -8,6 +8,14 @@ module Minotaur
       def generate(entity,opts={})
         current_theme.generate(entity,opts)
       end
+
+      #def generate_suite!(opts={})
+      #  #features = []
+      #  current_theme.feature_names.map do |feature|
+      #    generate(feature.to_sym)
+      #  end
+      #  #features
+      #end
     end
   end
 end

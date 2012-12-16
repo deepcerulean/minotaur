@@ -1,26 +1,40 @@
 module Minotaur
-
+  #
+  #   supporting logic for 'pluggable' generator-sets
+  #
   class Theme
-    include Features
-
     def self.current_theme
       @@current_theme ||= DEFAULT_THEME
     end
 
-    def self.generate(sym,opts={},&blk)
-      @@generators[sym].call(opts, &blk)
+    def self.generate(entity,opts={},&blk)
+      generator = @@feature_generators[entity]
+      generator.call(opts, &blk)
     end
 
     class << self
-      Minotaur::Features::Feature.kinds.each do |kind|
-        define_method(kind.to_sym) { |&blk| register_generator(kind.to_sym, &blk) }
+      def feature_generators
+        @@feature_generators ||= {}
       end
 
-      private
+      def feature_names
+        feature_generators.keys
+      end
 
-      def register_generator(sym, &blk)
-        @@generators ||= {}
-        @@generators[sym] = blk
+      # def dungeon...
+
+      #def room(room_name=nil,opts={}, &blk)
+      #  if room_name
+      #    feature_generators[:rooms][room_name.to_sym] = block
+      #    # this is a particular room -- remember it
+      #    # TODO expose a helper to build this room
+      #  else
+      #    feature_generators[:room] = block
+      #  end
+      #end
+
+      def method_missing(method_name, *args, &block)
+        feature_generators[method_name] = block
       end
     end
   end

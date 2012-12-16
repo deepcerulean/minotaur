@@ -42,6 +42,8 @@ module Minotaur
         raise "Can't determine direction between #{alpha} and #{beta}!"
       end
 
+      alias :direction_to :direction_from
+
     end
   end
 end

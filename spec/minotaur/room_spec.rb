@@ -164,10 +164,10 @@ describe Room do
       let(:recursive) { true }
       let(:direction) { 'horizontal' }
 
-
       describe "given a minimum edge length of 3" do
         let(:minimum) { 3 }
         it { should have(4).items }
+        #it { should eql([]) }
         #it { should eql([]) }
       end
     end

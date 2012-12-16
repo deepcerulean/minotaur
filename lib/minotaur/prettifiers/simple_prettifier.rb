@@ -3,6 +3,7 @@ module Minotaur
     module SimplePrettifier # < Base
       include Geometry
       include Directions
+      include Support::PositionHelpers
 
       attr_accessor :path_indicator
       attr_accessor :path_start_indicator
@@ -39,7 +40,7 @@ module Minotaur
         width.times do |x_coordinate|
           pos = Position.new(x_coordinate,y_coordinate)
           output << if passable?(pos,SOUTH)
-            if !path.empty? && adjacent?(pos,pos.translate(SOUTH),path)
+            if !path.empty? && adjacent_in_path?(pos,pos.translate(SOUTH),path)
               " #{path_indicator} "
             else
               "   "
@@ -56,7 +57,7 @@ module Minotaur
         output = ""
         #pos = Position.new(x,y)
 
-        output << if !path.empty? && adjacent?(pos,pos.translate(WEST),path)
+        output << if !path.empty? && adjacent_in_path?(pos,pos.translate(WEST),path)
           path_indicator
         else
           " "
@@ -68,18 +69,22 @@ module Minotaur
           path_end_indicator
         elsif !path.empty? && path.include?(pos)
           path_indicator
+        elsif stairs?(pos)
+          's'
+        elsif door?(pos)
+          'd'
         else
           ' '
         end
 
-        output << if !path.empty? && adjacent?(pos,pos.translate(EAST),path)
+        output << if !path.empty? && adjacent_in_path?(pos,pos.translate(EAST),path)
           path_indicator
         else
           " "
         end
 
         output << if passable?(pos,EAST)
-          if !path.empty? && adjacent?(pos,pos.translate(EAST),path)
+          if !path.empty? && adjacent_in_path?(pos,pos.translate(EAST),path)
             path_indicator
           else
             " "
@@ -90,6 +95,10 @@ module Minotaur
 
         output
       end
+
+
+      def stairs?(_); false end
+      def door?(_);   false end
     end
   end
 end

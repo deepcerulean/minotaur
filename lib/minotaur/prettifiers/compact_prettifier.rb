@@ -1,7 +1,8 @@
 module Minotaur
-  module Prettifier
+  module Prettifiers
     module CompactPrettifier
       include Geometry
+      include Geometry::Directions
 
       def to_s
         output = " " + "_" * (self.width * 2 - 1) << "\n"
@@ -21,7 +22,7 @@ module Minotaur
         output = ""
         output << (passable?(position,SOUTH) ? " " : "_")
 
-        if grid.rows[y][x] & EAST != 0
+        if self.rows[position.y][position.x] & EAST != 0
           output << (((at(position) | at(position.translate(EAST))) & SOUTH != 0) ? " " : "_")
         else
           output << "|"

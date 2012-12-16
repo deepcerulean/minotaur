@@ -1,17 +1,24 @@
 module Minotaur
   # a door represents a connection between two rooms
-  class Door
+  class Stairwell
     include Geometry
-    #include Support::FateHelpers
+    include Support::FateHelpers
     #attr_accessor :features
     #attr_accessor :material_strength, :condition
     #attr_accessor :locked
 
+    UP = 1
+    DOWN = 2
+    UP_AND_DOWN = 3
+
     #attr_accessor :first_room, :second_room
     attr_accessor :location
+    attr_accessor :access
+
     def initialize(opts={})
       #self.features = opts.delete(:features) { generate_features! }
       self.location = opts.delete(:location) { origin }
+      self.access   = opts.delete(:access) { coinflip? ? UP : DOWN }
       #self.features = opts.delete(:features) { generate :door_features }
 
       #self.first_room  = first

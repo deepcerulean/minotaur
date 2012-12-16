@@ -28,7 +28,7 @@ module Minotaur
       end
 
       def doors
-        @doors ||= []
+        rooms.map { |room| room.doors }.flatten.uniq
       end
 
       def root
@@ -69,10 +69,6 @@ module Minotaur
       def carve_doorway!(room,other_room)
         door = Door.new(room,other_room)
         door.carve!(self)
-      end
-
-      def doors
-        rooms.map { |room| room.doors }.flatten.uniq
       end
     end
   end
