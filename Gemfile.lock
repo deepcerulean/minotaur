@@ -2,6 +2,7 @@ PATH
   remote: .
   specs:
     minotaur (0.0.1)
+      dice
 
 GEM
   remote: https://rubygems.org/
