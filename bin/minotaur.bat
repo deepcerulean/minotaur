@@ -1,1 +1,0 @@
-ruby -rminotaur ../lib/minotaur/command/runner.rb
