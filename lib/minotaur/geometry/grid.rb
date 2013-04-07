@@ -56,6 +56,7 @@ module Minotaur
       end
 
       def passable?(start,direction)
+        puts "-- determining if map is passable at #{start} in direction #{direction}"
         (at(start) & direction) != 0
       end
 
