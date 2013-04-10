@@ -92,7 +92,7 @@ module Minotaur
         #          end
 
         output = [0]
-        puts "--- trying to determine if position is passable to the east (#{pos})"
+        #puts "--- trying to determine if position is passable to the east (#{pos})"
         east_block =  if pos.x < width && pos.y < height && passable?(pos,EAST)
                         #if !path.empty? && adjacent_in_path?(pos,pos.translate(EAST),path)
                         #  path_indicator
@@ -102,7 +102,7 @@ module Minotaur
                       else
                         [1]
                       end
-        puts "--- output: #{output} and east block #{east_block}"
+        #puts "--- output: #{output} and east block #{east_block}"
         output + east_block
 
       end
