@@ -18,18 +18,19 @@ module Minotaur
       attr_accessor :doors
 
       def extrude!(opts={})
+        puts "=== extruding!"
         self.room_count = opts.delete(:room_count) { DEFAULT_ROOM_COUNT }
 
         self.rooms = opts.delete(:rooms) do
           Array.new(self.room_count) { generate(:room) }
         end
 
-        #puts '--- placin'
+        puts '--- placin'
         self.rooms.each do |room|
           attempt_to_place room
         end
 
-        #puts '--- carvin'
+        puts '--- carvin'
         interval = DEFAULT_PASSAGEWAY_UNIT
         Grid.each_position(width-2,height-1) do |pos|
           pos = pos + Position.new(1,1)
@@ -38,7 +39,7 @@ module Minotaur
           end
         end
 
-        #puts '--- emplacin'
+        puts '--- emplacin'
         all_corridor_positions.each do |pos|
           nonempty_adjacent = pos.adjacent.select { |p| nonempty?(p) }
 
@@ -56,6 +57,9 @@ module Minotaur
             end
           end
         end
+
+        puts "--done!"
+        puts self.to_s
       end
 
       def doors
