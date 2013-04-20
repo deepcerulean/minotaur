@@ -48,6 +48,9 @@ module Minotaur
         "(#{self.x}, #{self.y})"
       end
 
+      def to_a
+        [x,y]
+      end
     end
   end
 end
