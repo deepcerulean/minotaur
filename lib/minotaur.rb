@@ -34,6 +34,7 @@ require "minotaur/geometry/subdivider"
 
 require "minotaur/prettifiers/simple_prettifier"
 require "minotaur/prettifiers/compact_prettifier"
+require "minotaur/serializers/array_serializer"
 
 require "minotaur/theme"
 require "minotaur/support/theme_helpers"
