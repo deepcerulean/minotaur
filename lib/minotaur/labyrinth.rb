@@ -14,7 +14,7 @@ module Minotaur
   class Labyrinth < Geometry::Grid
     #attr_access
     def initialize(opts={})
-      puts "==== CREATING NEW LABYRINTH YEAHHHHH!!!"
+      #puts "==== CREATING NEW LABYRINTH YEAHHHHH!!!"
       super(opts)
       puts "--- #{self.inspect}"
 

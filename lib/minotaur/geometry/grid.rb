@@ -56,7 +56,7 @@ module Minotaur
       end
 
       def passable?(start,direction)
-        puts "-- determining if map is passable at #{start} in direction #{direction}"
+        #puts "-- determining if map is passable at #{start} in direction #{direction}"
         (at(start) & direction) != 0
       end
 
@@ -116,7 +116,7 @@ module Minotaur
       end
 
       def each_position
-        puts "--- Giving each position for #{self.size}"
+        #puts "--- Giving each position for #{self.size}"
         width.times do |x_coordinate|
           height.times do |y_coordinate|
             yield Position.new(x_coordinate, y_coordinate)
