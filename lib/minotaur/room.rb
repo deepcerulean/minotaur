@@ -9,6 +9,9 @@ module Minotaur
 
     attr_accessor :doors
     attr_accessor :features
+    attr_accessor :adjacent_rooms, :adjacent_room_directions
+    attr_accessor :connected_rooms
+    attr_accessor :placed
 
     # TODO generate rooms FIRST and THEN place... hmmm
     def initialize(opts={})
@@ -19,7 +22,20 @@ module Minotaur
       self.features = opts.delete(:features) do
         generate(:room_features, :target => self)
       end
+
+      self.adjacent_rooms = []
+      self.adjacent_room_directions = { NORTH => [], SOUTH => [], EAST => [], WEST => [] }
+      self.connected_rooms = []
+      self.placed = false
     end
+
+    def connected?(other_room); self.connected_rooms.include?(other_room) end
+
+    def directions_without_adjacent_rooms
+      self.adjacent_room_directions.keys.select { |direction| self.adjacent_room_directions[direction].empty? }
+    end
+
+    def placed?; self.placed end
 
     def passages
       doors.each do |door|

@@ -52,6 +52,7 @@ require "minotaur/door"
 require "minotaur/stairwell"
 require "minotaur/room"
 require "minotaur/labyrinth"
+require "minotaur/dungeon"
 
 #require "minotaur/explorer/player"
 #require "minotaur/explorer/window"

@@ -1,5 +1,5 @@
 module Minotaur
-  # a door represents a connection between two rooms
+  # a stair represents a connection between levels of a dungeon
   class Stairwell
     include Geometry
     include Support::FateHelpers
@@ -16,16 +16,21 @@ module Minotaur
     attr_accessor :access
 
     def initialize(opts={})
+      puts "--- creating stairs..."
       #self.features = opts.delete(:features) { generate_features! }
       self.location = opts.delete(:location) { origin }
       self.access   = opts.delete(:access) { coinflip? ? UP : DOWN }
       #self.features = opts.delete(:features) { generate :door_features }
+      puts "--- created stairs"
 
       #self.first_room  = first
       #self.second_room = second
       #
       #[first_room,second_room].each { |room| room.doors << self }
     end
+
+    def up?; self.access == UP end
+    def down?; self.access == DOWN end
     #
     ## we are assuming connected rooms are actually rooms, that there are at least two, that they are actually adjoining, etc.
     #def carve!(grid)

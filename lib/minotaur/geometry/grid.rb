@@ -21,8 +21,6 @@ module Minotaur
         self.rows[position.y][position.x]
       end
 
-
-
       def empty?(position)
         at(position).zero?
       end
@@ -61,6 +59,7 @@ module Minotaur
       end
 
       def build_space!(space)
+	# could sanity check boundaries first?
         Grid.each_position(space.width,space.height) do |position|
           real_position = space.location + position
           build_passage!(real_position,real_position.translate(WEST))  unless real_position.x <= space.location.x
@@ -116,7 +115,6 @@ module Minotaur
       end
 
       def each_position
-        #puts "--- Giving each position for #{self.size}"
         width.times do |x_coordinate|
           height.times do |y_coordinate|
             yield Position.new(x_coordinate, y_coordinate)

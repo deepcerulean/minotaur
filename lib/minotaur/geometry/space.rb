@@ -55,7 +55,7 @@ module Minotaur
         Subdivider.new(opts).subdivide(self,opts)
       end
 
-      private
+      # protected
 
       def adjoining_east?(other)
         other.x == self.x+self.width && range_overlap?( (y..y+height-1), (other.y..other.y+other.height-1) )
@@ -74,6 +74,7 @@ module Minotaur
         range = range_overlap(self.y...self.y+height-1, other.y...other.y+other.height-1)
         range.map { |next_y| [[other.x-1,next_y],[other.x,next_y]] }
       end
+      
     end
   end
 end

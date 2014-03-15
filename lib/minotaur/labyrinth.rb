@@ -12,12 +12,8 @@ module Minotaur
   #   (extruders, pathfinders, etc)
   #
   class Labyrinth < Geometry::Grid
-    #attr_access
     def initialize(opts={})
-      #puts "==== CREATING NEW LABYRINTH YEAHHHHH!!!"
       super(opts)
-      puts "--- #{self.inspect}"
-
       extruder_module   = opts.delete(:extruder)   || DEFAULT_EXTRUDER
       pathfinder_module = opts.delete(:pathfinder) || DEFAULT_PATHFINDER
       prettifier_module = opts.delete(:prettifier) || DEFAULT_PRETTIFIER
@@ -28,7 +24,7 @@ module Minotaur
       extend pathfinder_module
       extend serializer_module
 
-      extrude!
+      # extrude!
     end
   end
 end
