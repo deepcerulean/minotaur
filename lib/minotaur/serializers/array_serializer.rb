@@ -6,7 +6,7 @@ module Minotaur
       include Support::PositionHelpers
 
       def to_a
-        #puts "--- serializing #{to_s} to array!"
+        puts "--- serializing #{width}x#{height} grid to array!"
         #sleep 3
         output = []
         0.upto(height-1) do |y|

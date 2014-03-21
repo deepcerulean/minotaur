@@ -16,12 +16,10 @@ module Minotaur
     attr_accessor :access
 
     def initialize(opts={})
-      puts "--- creating stairs..."
       #self.features = opts.delete(:features) { generate_features! }
       self.location = opts.delete(:location) { origin }
       self.access   = opts.delete(:access) { coinflip? ? UP : DOWN }
       #self.features = opts.delete(:features) { generate :door_features }
-      puts "--- created stairs"
 
       #self.first_room  = first
       #self.second_room = second

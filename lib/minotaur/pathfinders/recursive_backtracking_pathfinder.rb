@@ -3,7 +3,16 @@ module Minotaur
     module RecursiveBacktrackingPathfinder
       attr_accessor :solution_path
 
+      def path(start, destination)
+	puts "--- finding solution path between #{start} and #{destination}"
+	return @solution_path if path_between?(start,destination)
+	puts "--- none found!"
+	nil
+      end
+
+      # doesn't track visited...?
       def path_between?(start,destination,path=[])
+	# print '.'
         @solution_path = path.push(start)
         return true if start == destination
 
@@ -18,6 +27,7 @@ module Minotaur
         @solution_path.pop
         false
       end
+      
     end
   end
 end

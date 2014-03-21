@@ -12,7 +12,7 @@ module Minotaur
       end
 
       def shuffled_directions
-        all_directions.sort_by { rand }
+        all_directions.shuffle # sort_by { rand }
       end
 
       def each_direction
@@ -29,6 +29,15 @@ module Minotaur
           when SOUTH then "south"
           when EAST  then "east"
           when WEST  then "west"
+        end
+      end
+
+      def direction_from_string(direction)
+        case direction.downcase
+          when "north" then NORTH
+          when "south" then SOUTH
+          when "east"  then EAST
+          when "west"  then WEST
         end
       end
 

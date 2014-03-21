@@ -54,18 +54,15 @@ module Minotaur
       end
 
       def passable?(start,direction)
-        #puts "-- determining if map is passable at #{start} in direction #{direction}"
         (at(start) & direction) != 0
       end
 
       def build_space!(space)
-	# could sanity check boundaries first?
-        Grid.each_position(space.width,space.height) do |position|
-          real_position = space.location + position
-          build_passage!(real_position,real_position.translate(WEST))  unless real_position.x <= space.location.x
-          build_passage!(real_position,real_position.translate(NORTH)) unless real_position.y <= space.location.y
-          build_passage!(real_position,real_position.translate(EAST))  unless real_position.x >= space.location.x + space.width - 1
-          build_passage!(real_position,real_position.translate(SOUTH)) unless real_position.y >= space.location.y + space.height - 1
+        space.each_position do |position|
+          build_passage!(position,position.translate(WEST))  unless position.x <= space.location.x
+          build_passage!(position,position.translate(NORTH)) unless position.y <= space.location.y
+          build_passage!(position,position.translate(EAST))  unless position.x >= space.location.x + space.width - 1
+          build_passage!(position,position.translate(SOUTH)) unless position.y >= space.location.y + space.height - 1
         end
       end
 
@@ -94,38 +91,27 @@ module Minotaur
         end
       end
 
+
+      def accessible_adjacent_to(start)
+	start.adjacent.select do |adjacent|
+	  contains?(adjacent) && accessible?(adjacent)
+	end
+      end
+
+      def accessible_surrounding(start)
+	start.surrounding.select { |s| contains?(s) && accessible?(s) }
+      end
+
       def passable_adjacent_to(start)
-        start.adjacent.shuffle.select do |adjacent|
+        start.adjacent.select do |adjacent|
           contains?(adjacent) && passable?(start,direction_from(start,adjacent))
         end
       end
 
       def each_passable_adjacent_to(start)
-        passable_adjacent_to(start).select do |adjacent|
-          yield adjacent if contains?(adjacent) && passable?(start,direction_from(start,adjacent))
+        passable_adjacent_to(start).each do |adjacent|
+          yield adjacent # if contains?(adjacent) && passable?(start,direction_from(start,adjacent))
         end
-      end
-
-      def self.each_position(width,height)
-        width.times do |x_coordinate|
-          height.times do |y_coordinate|
-            yield Position.new(x_coordinate, y_coordinate)
-          end
-        end
-      end
-
-      def each_position
-        width.times do |x_coordinate|
-          height.times do |y_coordinate|
-            yield Position.new(x_coordinate, y_coordinate)
-          end
-        end
-      end
-
-      def all_positions
-        all = []
-        Grid.each_position(self.width,self.height) { |pos| all << pos }
-        all
       end
 
       def all_empty_positions
@@ -142,10 +128,15 @@ module Minotaur
         end
       end
 
+      def accessible?(position)
+	all_directions.any? do |direction|
+	  passable?(position,direction)
+	end
+      end
+
       def all_open_positions
         all_positions.select { |position| open?(position) }
       end
-
 
       def on_edge?(position)
         return true if position.x == 0 || position.y == 0 || position.x == width-1 || position.y == height-1

@@ -3,6 +3,9 @@ module Minotaur
   #   supporting logic for 'pluggable' generator-sets
   #
   class Theme
+    include Minotaur::Geometry
+    # helpers?
+
     def self.current_theme
       @@current_theme ||= DEFAULT_THEME
     end

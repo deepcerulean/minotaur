@@ -1,12 +1,13 @@
 require "spec_helper"
+require 'pry'
 
 include Minotaur::Geometry::Directions
 include Minotaur::Support::PositionHelpers
 include Minotaur::Support::DirectionHelpers
 
 describe Minotaur::Labyrinth do
-  let(:width)   { 20 }
-  let(:height)  { 20 }
+  let(:width)   { 80 }
+  let(:height)  { 50 }
 
   subject do
     Minotaur::Labyrinth.new(width: width, height: height)
@@ -14,6 +15,10 @@ describe Minotaur::Labyrinth do
 
   its(:width)   { should eql(width) }
   its(:height)  { should eql(height) }
+
+  its('to_a.size') { should eql(height) }
+  its('to_a.first.size') { should eql(width) }
+  its('to_a.first.first') { should be_a(Integer) }
 
   let(:direction) { direction_from start, destination }
 

@@ -75,6 +75,10 @@ of the worlds.
 
 (This could, potentially, eventually become the basis for a worlds toolkit that could support building SDKs, etc.)
 
+## Working Notes
+
+Eventually we really want a combo of dijkstra and recursive-backtracking -- recursive-backtracking at the room-graph level, and dijkstras between points...
+
 ## Installation
 
 Add this line to your application's Gemfile:

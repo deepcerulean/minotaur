@@ -13,6 +13,8 @@ module Minotaur
     attr_accessor :connected_rooms
     attr_accessor :placed
 
+    attr_accessor :contained_entities
+
     # TODO generate rooms FIRST and THEN place... hmmm
     def initialize(opts={})
       super(opts)
@@ -20,13 +22,20 @@ module Minotaur
       # NOTE we are assuming the 'room' generator returns
       #      hash of features.... would be nice to 'safeguard' this
       self.features = opts.delete(:features) do
-        generate(:room_features, :target => self)
+        generate(:room_features, self) #:target => self)
       end
 
       self.adjacent_rooms = []
       self.adjacent_room_directions = { NORTH => [], SOUTH => [], EAST => [], WEST => [] }
       self.connected_rooms = []
       self.placed = false
+
+      # self.gold = self.features.treasure.gold.map do |gp|
+      #   { :amount => gp.amount, :location 
+      # end
+
+      # self.contained_entities = []
+
     end
 
     def connected?(other_room); self.connected_rooms.include?(other_room) end
@@ -47,9 +56,10 @@ module Minotaur
       @doors ||= []
     end
 
-    def method_missing(sym, *args, &block)
-      return self.features.send(sym) if self.features.respond_to?(sym)
-      super(sym, *args, &block)
-    end
+
+    # def method_missing(sym, *args, &block)
+    #   return self.features.send(sym) if self.features.respond_to?(sym)
+    #   super(sym, *args, &block)
+    # end
   end
 end

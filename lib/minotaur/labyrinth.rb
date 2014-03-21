@@ -1,8 +1,8 @@
 module Minotaur
-  DEFAULT_EXTRUDER     = Extruders::RecursiveBacktrackingExtruder
+  DEFAULT_EXTRUDER     = Extruders::AssemblingRoomExtruder # RecursiveBacktrackingExtruder
   DEFAULT_PATHFINDER   = Pathfinders::RecursiveBacktrackingPathfinder
-  DEFAULT_PRETTIFIER   = Prettifiers::SimplePrettifier
-  DEFAULT_SERIALIZER   = Serializers::ArraySerializer
+  DEFAULT_PRETTIFIER   = Prettifiers::CompactPrettifier #SimplePrettifier
+  DEFAULT_SERIALIZER   = Serializers::CompactArraySerializer #ArraySerializer
 
   #
   #   TODO should be a good and proper dungeon generator
@@ -26,5 +26,9 @@ module Minotaur
 
       # extrude!
     end
+
+    # def map
+    #   to_a
+    # end
   end
 end

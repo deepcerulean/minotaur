@@ -35,6 +35,7 @@ require "minotaur/geometry/subdivider"
 require "minotaur/prettifiers/simple_prettifier"
 require "minotaur/prettifiers/compact_prettifier"
 require "minotaur/serializers/array_serializer"
+require "minotaur/serializers/compact_array_serializer"
 
 require "minotaur/theme"
 require "minotaur/support/theme_helpers"
@@ -43,8 +44,10 @@ require "minotaur/support/theme_helpers"
 require "minotaur/extruders/recursive_backtracking_extruder"
 require "minotaur/extruders/subdividing_room_extruder"
 require "minotaur/extruders/assembling_room_extruder"
+require "minotaur/extruders/open_space_extruder"
 
 require "minotaur/pathfinders/recursive_backtracking_pathfinder"
+require "minotaur/pathfinders/dijkstras_pathfinder"
 
 require "minotaur/themes/roguelike"
 

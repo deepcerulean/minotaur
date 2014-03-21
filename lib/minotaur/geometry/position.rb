@@ -7,6 +7,10 @@ module Minotaur
     class Position < Struct.new(:x, :y)
       include Support::DirectionHelpers
 
+      # a bit weird, but intended to be able to make points behave like 1x1 spaces if need be...
+      def width; 0 end
+      def height; 0 end
+
       def ==(other)
         self.x == other.x && self.y == other.y
       end
@@ -24,7 +28,7 @@ module Minotaur
       end
 
       def each_adjacent_with_direction
-        all_directions.map { |direction| yield [direction, translate(direction)] }
+        shuffled_directions.map { |direction| yield [direction, translate(direction)] }
       end
 
       def diagonal_neighbors #(n=1)
