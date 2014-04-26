@@ -1,6 +1,5 @@
 require 'pry'
 shared_examples_for "a pathfinder" do
-
   before(:all) do
     @labyrinth = Minotaur::Labyrinth.new(width: 5, 
 					 height: 5, 

@@ -3,6 +3,7 @@ require "rubygems"
 require "bundler"
 Bundler.setup(:default)
 
+
 # external deps
 require "dice"
 #require "chingu"
@@ -12,6 +13,9 @@ require "ostruct"
 
 # internal load order
 require "minotaur/version"
+
+require "minotaur/entity"
+
 
 require "minotaur/support/fate_helpers"
 require "minotaur/support/range_helpers"
@@ -56,6 +60,8 @@ require "minotaur/stairwell"
 require "minotaur/room"
 require "minotaur/labyrinth"
 require "minotaur/dungeon"
+require "minotaur/city"
+require 'minotaur/world'
 
 #require "minotaur/explorer/player"
 #require "minotaur/explorer/window"

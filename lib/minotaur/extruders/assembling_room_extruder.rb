@@ -19,8 +19,8 @@ module Minotaur
       include Support::DirectionHelpers
 
       DEFAULT_ROOM_COUNT = 20
-      MAX_DEPTH = 10
-      MAX_ATTEMPTS = 10
+      MAX_DEPTH = 100
+      MAX_ATTEMPTS = 30
 
       attr_accessor :room_count, :rooms
       attr_accessor :stairs
@@ -40,17 +40,22 @@ module Minotaur
         end
 
 	# attempt to place first room next to stairs, or in the middle of the map
+      
 	place_first_room!
 	recursively_place_adjacent_rooms(self.placed_rooms.first)
 	attempts = 0
+
 	until unplaced_rooms.count == 0 || attempts > MAX_ATTEMPTS
+	  print "."
 	  attempts = attempts + 1
 	  recursively_place_adjacent_rooms(self.placed_rooms.sample)
 	end
 
 	self.rooms = placed_rooms
 	carve_passageways!
-	emplace_stairs!	
+	#print '.'
+	# emplace_stairs!	if self.stair_count > 0
+	print '!'
       end
 
       def place_first_room!
@@ -77,28 +82,46 @@ module Minotaur
 	end
       end
 
-      def emplace_stairs!
-	until stairs.count >= self.stair_count
-	  self.rooms.shuffle.each do |room|
-	    perimeter = room.outer_perimeter - all_corridor_positions
-	    position = perimeter.select { |p| contains?(p) }.sample
+      def emplace_stairwell!(position, access=Stairwell::DOWN)
+	binding.pry if position.nil? || position.x.nil?
+	puts "=== EMPLACING STAIRWELL"
+        stairs << Stairwell.new(location: position, access: access)
 
-	    access = Stairwell::DOWN
-	    access = Stairwell::UP if stairs.count { |s| s.up? } < self.up_stairs_count
-
-	    stairs << Stairwell.new(location: position, access: access)
-
-	    direction = room.direction_for_outer_perimeter_position(position)
-	    next_position = position.translate(direction_opposite(direction))
-	    
-	    # binding.pry
-	    binding.pry unless room.contains?(next_position)
-	    build_passage!(next_position, position)
-	    
-	    break if self.stairs.count >= self.stair_count 
-	  end
+	# room = rooms.detect { |r| r.contains?(position) || r.outer_perimeter?(position) }
+	#binding.pry unless room
+	if room = rooms.detect { |r| r.outer_perimeter?(position) }
+	  direction = room.direction_for_outer_perimeter_position(position)
+	  next_position = position.translate(direction_opposite(direction))
+	  #binding.pry unless room.contains?(next_position)
+	  build_passage!(next_position, position)
 	end
       end
+
+      # def emplace_stairs!
+      #   until stairs.count >= self.stair_count
+      #     self.rooms.shuffle.each do |room|
+      #       perimeter = room.outer_perimeter - all_corridor_positions
+      #       position = perimeter.select { |p| contains?(p) }.sample
+
+      #       # try not to place adjacent to two rooms at once...
+      #       next if empty_surrounding_count(position) < 5
+
+      #       access = Stairwell::DOWN
+      #       access = Stairwell::UP if stairs.count { |s| s.up? } < self.up_stairs_count
+
+      #       stairs << Stairwell.new(location: position, access: access)
+
+      #       direction = room.direction_for_outer_perimeter_position(position)
+      #       next_position = position.translate(direction_opposite(direction))
+      #       
+      #       # binding.pry
+      #       binding.pry unless room.contains?(next_position)
+      #       build_passage!(next_position, position)
+      #       
+      #       break if self.stairs.count >= self.stair_count 
+      #     end
+      #   end
+      # end
 
       def carve_passageways!
 	self.rooms.each do |room|
@@ -112,11 +135,11 @@ module Minotaur
       def direction_between_rooms(room, other_room)
 	all_directions.detect do |dir|
 	  room.adjacent_room_directions[dir].include?(other_room) 
-        end
+	end
       end
 
       def adjacent_room_adjoining_edge(room, other_room)
-        direction = direction_between_rooms(room, other_room)
+	direction = direction_between_rooms(room, other_room)
 	case direction
 	when NORTH, SOUTH then
 	  range_overlap(room.horizontal_range, other_room.horizontal_range).to_a 
@@ -126,20 +149,20 @@ module Minotaur
       end
 
       def carve_passageway!(room,other_room)
-        direction = direction_between_rooms(room, other_room)
+	direction = direction_between_rooms(room, other_room)
 	case direction
 	when NORTH then 
-          x = adjacent_room_adjoining_edge(room, other_room).sample 
+	  x = adjacent_room_adjoining_edge(room, other_room).sample 
 	  y = room.y + room.height
 	when SOUTH then
-          x = adjacent_room_adjoining_edge(room, other_room).sample 
+	  x = adjacent_room_adjoining_edge(room, other_room).sample 
 	  y = other_room.y + other_room.height
 	when EAST then
 	  x = other_room.x + other_room.width
-          y = adjacent_room_adjoining_edge(room, other_room).sample
+	  y = adjacent_room_adjoining_edge(room, other_room).sample
 	when WEST then
 	  x = room.x + room.width
-          y = adjacent_room_adjoining_edge(room, other_room).sample
+	  y = adjacent_room_adjoining_edge(room, other_room).sample
 	end
 
 	first, second, third = nil, nil, nil
@@ -153,10 +176,10 @@ module Minotaur
 	  second = Position.new(x,y)
 	  third = Position.new(x+1,y)
 	end
-	
+
 	build_passage!(first,second) 
 	build_passage!(second,third)
-        doors << Door.new(location: second)
+	doors << Door.new(location: second)
 
 	room.connected_rooms << other_room
 	other_room.connected_rooms << room

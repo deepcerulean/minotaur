@@ -41,7 +41,7 @@ module Minotaur
       end
 
       room_size do
-        Size.new(width: (4..20).to_a.sample, height: (4..20).to_a.sample)
+        Size.new(width: (3..20).to_a.sample, height: (3..20).to_a.sample)
       end
 
       room_features do |size| # |size| #|opts|

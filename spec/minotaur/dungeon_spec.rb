@@ -3,6 +3,15 @@ require 'pry'
 describe Minotaur::Dungeon do
   its('levels.count') { should eql(Minotaur::Dungeon::DEFAULT_DEPTH) }
 
+  # it 'should run in deterministic time?' do
+  #   # i don't know how to test for this?
+  #   # just run it a bunch of times and assert that they're within a reasonable medium?
+  #   # i don't think i can *prove* this without mathematizing it all a lot further somehow...
+
+  # end
+
+  
+
   it 'should have one stairwell on the first floor' do
     subject.levels.first.stairs.count.should eql(1)
   end
@@ -10,6 +19,9 @@ describe Minotaur::Dungeon do
   it 'should have one stairwell on the last floor' do
     subject.levels.last.stairs.count.should eql(1)
   end
+
+  # it 'should not place stairwells adjacent to two walls' do
+  # end
 
   it 'should have interconnected levels' do
     subject.levels.each_cons(2) do |this_level, next_level|

@@ -47,8 +47,8 @@ describe Minotaur::Extruders::AssemblingRoomExtruder do
   end
 
   context "when extruding a dungeon" do
-    let(:size)            { 50 }
-    let(:room_count)      { 5 }
+    let(:size)            { 20 }
+    let(:room_count)      { 10 }
 
     before(:each) do
       labyrinth.extrude!({room_count: room_count})
@@ -56,8 +56,7 @@ describe Minotaur::Extruders::AssemblingRoomExtruder do
       puts labyrinth.to_s
     end
 
-     it "should extrude stairs and doors" do
-      labyrinth.should have(2).stairs
+     it "should extrude doors" do
       labyrinth.should have(labyrinth.rooms.count-1).doors
     end
   end

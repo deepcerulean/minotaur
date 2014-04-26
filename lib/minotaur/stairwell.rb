@@ -29,6 +29,17 @@ module Minotaur
 
     def up?; self.access == UP end
     def down?; self.access == DOWN end
+
+    def self.good_locations(level)
+      level.rooms.map do |room|
+	perimeter = room.all_positions + (room.outer_perimeter - level.all_corridor_positions)
+	positions = perimeter.select { |p| level.contains?(p) }
+
+	# try not to place adjacent to two rooms at once...
+	#positions.reject! { |position| level.empty_surrounding_count(position) < 2 }
+	positions
+      end.flatten
+    end
     #
     ## we are assuming connected rooms are actually rooms, that there are at least two, that they are actually adjoining, etc.
     #def carve!(grid)
