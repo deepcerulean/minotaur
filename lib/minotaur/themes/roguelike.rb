@@ -121,8 +121,6 @@ module Minotaur
       treasure do |size|
 	t = OpenStruct.new
 
-	binding.pry if size.is_a?(Hash)
-
 	chest_count = case size.area 
 	when 0..180 then D3
 	when 180..350 then D6

@@ -46,7 +46,7 @@ module Minotaur
 	attempts = 0
 
 	until unplaced_rooms.count == 0 || attempts > MAX_ATTEMPTS
-	  print "."
+	  # print "."
 	  attempts = attempts + 1
 	  recursively_place_adjacent_rooms(self.placed_rooms.sample)
 	end
@@ -55,7 +55,7 @@ module Minotaur
 	carve_passageways!
 	#print '.'
 	# emplace_stairs!	if self.stair_count > 0
-	print '!'
+	# print '!'
       end
 
       def place_first_room!
@@ -74,7 +74,6 @@ module Minotaur
 	  direction = (chosen_direction)
 	  stair_position = self.up_stairs_location
 	  room_position = self.up_stairs_location.translate(direction)
-	    binding.pry unless first_room.contains?(room_position)
 
 	  build_passage!(stair_position, room_position) 
 	else
@@ -83,45 +82,14 @@ module Minotaur
       end
 
       def emplace_stairwell!(position, access=Stairwell::DOWN)
-	binding.pry if position.nil? || position.x.nil?
-	puts "=== EMPLACING STAIRWELL"
         stairs << Stairwell.new(location: position, access: access)
 
-	# room = rooms.detect { |r| r.contains?(position) || r.outer_perimeter?(position) }
-	#binding.pry unless room
 	if room = rooms.detect { |r| r.outer_perimeter?(position) }
 	  direction = room.direction_for_outer_perimeter_position(position)
 	  next_position = position.translate(direction_opposite(direction))
-	  #binding.pry unless room.contains?(next_position)
 	  build_passage!(next_position, position)
 	end
       end
-
-      # def emplace_stairs!
-      #   until stairs.count >= self.stair_count
-      #     self.rooms.shuffle.each do |room|
-      #       perimeter = room.outer_perimeter - all_corridor_positions
-      #       position = perimeter.select { |p| contains?(p) }.sample
-
-      #       # try not to place adjacent to two rooms at once...
-      #       next if empty_surrounding_count(position) < 5
-
-      #       access = Stairwell::DOWN
-      #       access = Stairwell::UP if stairs.count { |s| s.up? } < self.up_stairs_count
-
-      #       stairs << Stairwell.new(location: position, access: access)
-
-      #       direction = room.direction_for_outer_perimeter_position(position)
-      #       next_position = position.translate(direction_opposite(direction))
-      #       
-      #       # binding.pry
-      #       binding.pry unless room.contains?(next_position)
-      #       build_passage!(next_position, position)
-      #       
-      #       break if self.stairs.count >= self.stair_count 
-      #     end
-      #   end
-      # end
 
       def carve_passageways!
 	self.rooms.each do |room|
@@ -201,7 +169,6 @@ module Minotaur
 
 	if success
 	  place_room(room,proposed_location)
-	  binding.pry unless room.outer_perimeter.include?(position)
 	  return proposed_direction
 	end
 

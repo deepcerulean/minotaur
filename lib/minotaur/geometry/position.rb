@@ -4,12 +4,8 @@ module Minotaur
     #   track a position in 2-d space
     #   with some extra helpers for grids
     #
-    class Position < Struct.new(:x, :y)
+    class Position < Struct.new(:x, :y, :z)
       include Support::DirectionHelpers
-
-      # a bit weird, but intended to be able to make points behave like 1x1 spaces if need be...
-      def width; 0 end
-      def height; 0 end
 
       def ==(other)
         self.x == other.x && self.y == other.y
@@ -23,7 +19,7 @@ module Minotaur
         Position.new(self.x + count*DX[direction], self.y + count*DY[direction])
       end
 
-      def adjacent #(n=1)
+      def adjacent 
         all_directions.map { |direction| translate(direction) }
       end
 
@@ -31,7 +27,7 @@ module Minotaur
         shuffled_directions.map { |direction| yield [direction, translate(direction)] }
       end
 
-      def diagonal_neighbors #(n=1)
+      def diagonal_neighbors
         arr = []
         all_directions.map do |first_direction|
           all_directions.map do |second_direction|
@@ -44,7 +40,7 @@ module Minotaur
         arr
       end
 
-      def surrounding #(depth=n)
+      def surrounding
         adjacent + diagonal_neighbors
       end
 
@@ -55,6 +51,7 @@ module Minotaur
       def to_a
         [x,y]
       end
+
     end
   end
 end

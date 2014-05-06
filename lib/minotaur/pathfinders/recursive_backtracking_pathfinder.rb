@@ -4,9 +4,9 @@ module Minotaur
       attr_accessor :solution_path
 
       def path(start, destination)
-	puts "--- finding solution path between #{start} and #{destination}"
+	# puts "--- finding solution path between #{start} and #{destination}"
 	return @solution_path if path_between?(start,destination)
-	puts "--- none found!"
+	# puts "--- none found!"
 	nil
       end
 

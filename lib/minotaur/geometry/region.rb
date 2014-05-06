@@ -41,8 +41,6 @@ module Minotaur
 	  yield Position.new(x_coordinate, y_coordinate)
 	end
       end
-    rescue
-      binding.pry
     end
 
     def all_relative_positions

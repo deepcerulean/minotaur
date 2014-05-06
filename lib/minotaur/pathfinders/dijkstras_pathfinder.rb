@@ -5,8 +5,9 @@ module Minotaur
       attr_accessor :solution_path
 
       def path(start, destination)
-	puts "--- finding path between #{start} and #{destination}"
-	puts Benchmark.measure { find_path(start, destination) }
+	# puts "--- finding path between #{start} and #{destination}"
+	# puts Benchmark.measure { }
+	find_path(start, destination) 
 	@solution_path
       end
 

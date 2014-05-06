@@ -4,6 +4,8 @@ module Minotaur
   # we'll bake-in extensible 'features' or options to all entities
   # for later theming, flexible extension
   #
+  # Does this seem like asking for trouble? :)
+  #
   class Entity
     extend Forwardable
     def initialize(options = {})
