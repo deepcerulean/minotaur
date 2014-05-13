@@ -31,10 +31,6 @@ module Minotaur
       output
     end
 
-    # def location
-    #   self.location ||= origin
-    # end
-
     def each_position
       (self.x..self.x+self.width-1).each do |x_coordinate|
 	(self.y..self.y+self.height-1).each do |y_coordinate|

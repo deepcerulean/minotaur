@@ -1,7 +1,7 @@
 module Minotaur
   class World < Entity
     DEFAULT_DUNGEON_COUNT = 5
-    DEFAULT_CITY_COUNT = 3
+    DEFAULT_CITY_COUNT    = 3
 
     attr_accessor :cities, :dungeons
 
@@ -13,11 +13,12 @@ module Minotaur
       @dungeons = Array.new(dungeon_count) { Minotaur::Dungeon.new }
 
       super(opts)
-
-      # place them randomly on a world, generate land around them, run cellular automata...?
-      # will want automata for dungeon caverns eventually anyway...
-      
     end
-    # def awesome?; true end
+
+    def population; @cities.map(&:population).reduce(&:+) end
+
+    def step!
+      @cities.each(&:step!)
+    end
   end
 end

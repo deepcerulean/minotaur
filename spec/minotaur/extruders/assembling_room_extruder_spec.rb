@@ -1,13 +1,9 @@
 require "spec_helper"
 require 'pry'
 
-#include Minotaur::Extruders
-#include Minotaur::Prettifiers
 include Minotaur::Support::DirectionHelpers
 
-
 describe Minotaur::Extruders::AssemblingRoomExtruder do
-
   subject do
     Minotaur::Extruders::AssemblingRoomExtruder
   end
@@ -18,17 +14,6 @@ describe Minotaur::Extruders::AssemblingRoomExtruder do
 
   context "should place rooms adjacently" do
     let(:size) { 20 }
-
-    it 'should place a room adjacently to a position' do
-      room = Minotaur::Room.new(width: 2, height: 2)
-      position = labyrinth.center
-
-      labyrinth.attempt_to_place_adjacent_to_position(room, position, WEST)
-      room.should be_placed
-
-      room.x.should eql(position.x-room.width)
-      room.y.should eql(position.y-room.height+1)
-    end
 
     it 'should place a room adjacently to another room' do
       first = Minotaur::Room.new(width: 3, height: 6)

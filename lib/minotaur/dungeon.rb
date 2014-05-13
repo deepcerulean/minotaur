@@ -16,7 +16,6 @@ module Minotaur
       @intended_room_count = opts.delete(:room_count) { DEFAULT_ROOM_COUNT } 
       super(opts)
 
-      puts "generating #{self.width}x#{self.height} dungeon..."
       generate!
     end
 
