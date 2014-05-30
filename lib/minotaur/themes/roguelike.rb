@@ -47,7 +47,7 @@ module Minotaur
       room_features do |size| # |size| #|opts|
         OpenStruct.new({
           atmosphere:  generate(:atmosphere),
-	  treasure:   generate(:treasure, size),
+	  treasure:    generate(:treasure, size),
 
           # room_name:   generate(:room_name),
           room_type:   generate(:room_type),
@@ -142,28 +142,18 @@ module Minotaur
 		       end.first
 
 	t.gold = Array.new(chest_count) do 
-	  # { :amount => D20x3.reduce(&:+) } #, :location => 
-	  OpenStruct.new amount: D20x3.reduce(&:+)
+	  OpenStruct.new type: :gold, subtype: :gold, properties: { amount: D20x3.reduce(&:+) }
 	end
 
 	t.potions = Array.new(potion_count) do
-	  OpenStruct.new amount: 1, color: generate(:color)
+	  OpenStruct.new type: :potion, subtype: :potion, properties: { amount: 1, color: generate(:color) }
 	end
 
 	t.scrolls = Array.new(scroll_count) do
-	  OpenStruct.new amount: 1, title: generate(:spell).name
+	  OpenStruct.new type: :scroll, subtype: :scroll, properties: { amount: 1, title: generate(:spell).name }
 	end
+
 	t
-	# { :gp => D20x3 }
-	# generate :gold_pieces
-	# 
-	# case D20.first
-	# when 0..1  then nil
-	# when 2..6  then generate(:gold_pieces)
-	# when 6..12 then generate(:potion)
-	# when 13..18 then generate(:armor)
-	# when 19..20 then generate(:weapon)
-	# end
       end
 
 

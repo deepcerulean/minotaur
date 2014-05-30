@@ -6,10 +6,10 @@ describe Roguelike do
   let(:room) { generate :room }
   
   context '#treasure' do
-    let(:treasure) { room.features.treasure }
+    let(:treasure) { room.entities.detect { |e| e.type == :gold }}
     it 'should generate gold pieces' do
-      treasure.gold.should_not be_nil
-      treasure.gold.first.amount.should be >= 1
+      treasure.should_not be_nil
+      treasure.amount.should be >= 1
     end
   end
 end

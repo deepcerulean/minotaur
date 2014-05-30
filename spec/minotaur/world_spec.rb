@@ -11,4 +11,17 @@ describe Minotaur::World do
     subject.step!
     subject.population.should be > old_population
   end
+
+  it 'should track global economic production' do
+    global_economy = subject.cities.map(&:economic_output)
+    total_production = global_economy.inject({}) do |hsh, resources|
+      resources.each do |resource, amount|
+        hsh[resource] ||= 0
+        hsh[resource] = hsh[resource] + amount
+      end
+      hsh
+    end
+    
+    subject.economic_output.should eql(total_production)
+  end
 end

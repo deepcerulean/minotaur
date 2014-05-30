@@ -1,10 +1,10 @@
 module Minotaur
   class Dungeon < Entity
     include Support::ThemeHelpers
-    DEFAULT_WIDTH  = 20
-    DEFAULT_HEIGHT = 20 
-    DEFAULT_DEPTH  = 5
-    DEFAULT_ROOM_COUNT = 10
+    DEFAULT_WIDTH  = 40
+    DEFAULT_HEIGHT = 40 
+    DEFAULT_DEPTH  = 15
+    DEFAULT_ROOM_COUNT = 20
 
     attr_accessor :levels, :height, :width, :depth, :entities
 
@@ -29,52 +29,28 @@ module Minotaur
 
       self.levels = [ first_level ]
 
-      threads = []
-      (1..self.depth-1).each do |current_depth|
-	threads << Thread.new do
-	  level = Minotaur::Labyrinth.new(base_opts.dup)
-	  level.extrude!({stair_count: 0, room_count: @intended_room_count}) 
-	  @levels << level
-	end
+      (1...self.depth).each do |current_depth|
+	level = Minotaur::Labyrinth.new(base_opts.dup)
+	level.extrude!({stair_count: 0, room_count: @intended_room_count}) 
+	@levels << level
       end
-      threads.each { |th| th.join }
 
       @levels.each_cons(2) do |upper, lower|
+	# puts "=== Considering levels #{@levels.index(upper)} and #{@levels.index(lower)}"
+#	binding.pry
 	possible_positions = Stairwell.good_locations(upper) & Stairwell.good_locations(lower) 
 	target = possible_positions.sample
-
+	# puts "--- Placing stairwells at #{target}"
 	upper.emplace_stairwell!(target)
 	lower.emplace_stairwell!(target, Stairwell::UP)
       end
 
-
       @entities = []
       self.levels.each_with_index do |level, i|
 	@entities[i] = []
-	level.rooms.each do |room|
-	  occupied_locations = []
-	  room.features.treasure.gold.each do |gp|
-	    location = (room.all_positions - occupied_locations).sample
-	    @entities[i] << OpenStruct.new(type: :gold, amount: gp.amount, location: location)
-	    occupied_locations << location
-	  end
-
-	  room.features.treasure.potions.each do |potion|
-	    location = (room.all_positions - occupied_locations).sample
-	    @entities[i] << OpenStruct.new(type: :potion, amount: potion.amount, location: location, color: potion.color) # amount: gp.amount, location: location)
-	    occupied_locations << location
-	  end
-
-	  room.features.treasure.scrolls.each do |scroll|
-	    location = (room.all_positions - occupied_locations).sample
-	    @entities[i] << OpenStruct.new(type: :scroll, amount: scroll.amount, location: location, title: scroll.title)
-	    occupied_locations << location
-	  end
-	end
+	level.rooms.each { |room| @entities[i] = @entities[i] + room.entities }
       end
-
     end
-
     def to_s
       "dungeon of depth #{depth}"
     end

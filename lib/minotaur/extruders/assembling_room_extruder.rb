@@ -18,7 +18,7 @@ module Minotaur
       include Support::FateHelpers
       include Support::DirectionHelpers
 
-      DEFAULT_ROOM_COUNT = 20
+      DEFAULT_ROOM_COUNT = 50
       MAX_DEPTH = 100
       MAX_ATTEMPTS = 30
 

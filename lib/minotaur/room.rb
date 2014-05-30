@@ -13,7 +13,7 @@ module Minotaur
     attr_accessor :connected_rooms
     attr_accessor :placed
 
-    attr_accessor :contained_entities
+    attr_accessor :entities
 
     # TODO generate rooms FIRST and THEN place... hmmm
     def initialize(opts={})
@@ -35,6 +35,7 @@ module Minotaur
       # end
 
       # self.contained_entities = []
+      place_entities
 
     end
 
@@ -56,10 +57,35 @@ module Minotaur
       @doors ||= []
     end
 
+    def occupied_positions
+      @occupied_positions ||= []
+    end
 
-    # def method_missing(sym, *args, &block)
-    #   return self.features.send(sym) if self.features.respond_to?(sym)
-    #   super(sym, *args, &block)
-    # end
-  end
-end
+    def unoccupied_positions
+      all_positions - occupied_positions
+    end
+
+    def place_entities
+      @entities = []
+      @occupied_locations = []
+      # binding.pry if features.nil?
+      return if features.nil?
+      entities_to_place = [ features.monsters, features.treasure.gold, features.treasure.potions, features.treasure.scrolls ].compact.flatten
+      entities_to_place.each { |entity| place_entity(entity) }
+      @entities
+    end
+
+    def place_entity(entity)
+      return false if unoccupied_positions.empty?
+      location = unoccupied_positions.sample
+      attrs = entity_attributes(type: entity.type, subtype: entity.subtype, location: location)
+      attrs = attrs.merge(entity.properties) if entity.properties.is_a?(Hash)
+      entity_struct = OpenStruct.new(attrs)
+      @entities << entity_struct
+    end
+
+    def entity_attributes(attrs={})
+      attrs.merge({guid: SecureRandom.uuid})
+    end
+  end # Room
+end # Roguecraft

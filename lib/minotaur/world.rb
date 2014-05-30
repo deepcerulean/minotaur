@@ -17,6 +17,17 @@ module Minotaur
 
     def population; @cities.map(&:population).reduce(&:+) end
 
+    def economic_output
+      global_economy = @cities.map(&:economic_output)
+      global_economy.inject({}) do |hsh, resources|
+	resources.each do |resource, amount|
+	  hsh[resource] ||= 0
+	  hsh[resource] = hsh[resource] + amount
+	end
+	hsh
+      end
+    end
+
     def step!
       @cities.each(&:step!)
     end

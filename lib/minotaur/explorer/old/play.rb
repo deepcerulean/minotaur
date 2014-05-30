@@ -22,7 +22,7 @@ class Minotaur::Play < Chingu::GameState
         height:   50,
         extruder: Minotaur::Extruders::AssemblingRoomExtruder
     )
-    puts "--- reticulating splines, please wait..."
+    # puts "--- reticulating splines, please wait..."
     @labyrinth.extrude!
 
     @tiles = []

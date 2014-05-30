@@ -25,7 +25,7 @@ describe Minotaur::Dungeon do
 
   it 'should have interconnected levels' do
     subject.levels.each_cons(2) do |this_level, next_level|
-      puts this_level.to_s
+      # puts this_level.to_s
       down_stairs = this_level.stairs.detect(&:down?)
       up_stairs = next_level.stairs.detect(&:up?)
       down_stairs.location.should eql(up_stairs.location)
@@ -37,9 +37,13 @@ describe Minotaur::Dungeon do
       next if level == subject.levels.first || level == subject.levels.last
       up = level.stairs.detect(&:up?)
       down = level.stairs.detect(&:down?)
+      next unless up && down
+      # puts level.to_s
+      #
       # puts level.to_s
       solution = level.path(up.location, down.location)
       solution.should_not be_nil
+      # p solution
       solution.first.should eql(up.location)
       solution.last.should eql(down.location)
       # puts solution #levelshortest_path(up.location, down.location)
@@ -52,8 +56,11 @@ describe Minotaur::Dungeon do
   end
 
   it 'should place entities' do
-    first_gold_piece = subject.entities[0].first
-    first_gold_piece.type.should eql(:gold)
-    first_gold_piece.amount.should be >= 1 
+    entities = subject.entities.first
+    first_gold_chest = entities.detect { |e| e.type == :gold }
+    first_gold_chest.amount.should be >= 1 
+
+    potion = entities.detect { |e| e.type == :potion }
+    potion.color.should be_a String
   end
 end

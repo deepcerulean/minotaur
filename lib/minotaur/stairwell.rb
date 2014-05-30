@@ -32,11 +32,11 @@ module Minotaur
 
     def self.good_locations(level)
       level.rooms.map do |room|
-	perimeter = room.all_positions + (room.outer_perimeter - level.all_corridor_positions)
-	positions = perimeter.select { |p| level.contains?(p) }
+	positions = room.outer_perimeter - level.all_corridor_positions # room.all_positions # - room.perimeter # + room.outer_perimeter # + (room.outer_perimeter - level.all_corridor_positions)
+	# positions = perimeter.select { |p| level.contains?(p) }
 
 	# try not to place adjacent to two rooms at once...
-	#positions.reject! { |position| level.empty_surrounding_count(position) < 2 }
+	positions.reject! { |position| level.empty_surrounding_count(position) > 3 }
 	positions
       end.flatten
     end

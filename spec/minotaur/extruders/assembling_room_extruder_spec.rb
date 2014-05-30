@@ -37,8 +37,8 @@ describe Minotaur::Extruders::AssemblingRoomExtruder do
 
     before(:each) do
       labyrinth.extrude!({room_count: room_count})
-      puts
-      puts labyrinth.to_s
+      # puts
+      # puts labyrinth.to_s
     end
 
      it "should extrude doors" do

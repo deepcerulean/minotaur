@@ -3,14 +3,17 @@ module Minotaur
   #   supporting logic for 'pluggable' generator-sets
   #
   class Theme
+    include Minotaur
     include Minotaur::Geometry
     # helpers?
 
+    # hmmmmmm? is this even connected to anything? IS THIS THING ON
     def self.current_theme
       @@current_theme ||= DEFAULT_THEME
     end
 
     def self.generate(entity,opts={},&blk)
+      # # puts "=== "
       generator = @@feature_generators[entity]
       generator.call(opts, &blk)
     end
