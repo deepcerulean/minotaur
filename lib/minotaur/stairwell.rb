@@ -1,5 +1,5 @@
 module Minotaur
-  # a door represents a connection between two rooms
+  # a stair represents a connection between levels of a dungeon
   class Stairwell
     include Geometry
     include Support::FateHelpers
@@ -25,6 +25,20 @@ module Minotaur
       #self.second_room = second
       #
       #[first_room,second_room].each { |room| room.doors << self }
+    end
+
+    def up?; self.access == UP end
+    def down?; self.access == DOWN end
+
+    def self.good_locations(level)
+      level.rooms.map do |room|
+	positions = room.outer_perimeter - level.all_corridor_positions # room.all_positions # - room.perimeter # + room.outer_perimeter # + (room.outer_perimeter - level.all_corridor_positions)
+	# positions = perimeter.select { |p| level.contains?(p) }
+
+	# try not to place adjacent to two rooms at once...
+	positions.reject! { |position| level.empty_surrounding_count(position) > 3 }
+	positions
+      end.flatten
     end
     #
     ## we are assuming connected rooms are actually rooms, that there are at least two, that they are actually adjoining, etc.

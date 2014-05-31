@@ -6,7 +6,8 @@ module Minotaur
       end
 
       def range_overlap(range_one,range_two)
-        [range_one.begin,range_two.begin].max..[range_one.end,range_two.end].min
+	raise "no overlap between #{range_one} and #{range_two}" unless range_overlap?(range_one,range_two)
+        ([range_one.begin,range_two.begin].max..[range_one.end,range_two.end].min)
       end
     end
   end

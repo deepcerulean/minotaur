@@ -1,2 +1,5 @@
 .DS_Store
 .idea
+tags
+.bundle
+tmp

@@ -1,46 +1,48 @@
 require "spec_helper"
+require 'pry'
 
-#include Minotaur::Extruders
-#include Minotaur::Prettifiers
-
+include Minotaur::Support::DirectionHelpers
 
 describe Minotaur::Extruders::AssemblingRoomExtruder do
-
   subject do
     Minotaur::Extruders::AssemblingRoomExtruder
   end
 
   let(:labyrinth) do
-    Minotaur::Labyrinth.new(
-        width:         size,
-        height:        size,
-        extruder:     subject,
-        prettifier:   Minotaur::Prettifiers::SimplePrettifier
-    )
+    Minotaur::Labyrinth.new(width: size, height: size, extruder: subject)
   end
 
-  context "when placing rooms for a dungeon" do
-    let(:size)            { 24 }
-    let(:room_count)      { 4 }
-    #let(:min_edge_length) {  5 }
-    #let(:variance)        {  0 }
+  context "should place rooms adjacently" do
+    let(:size) { 20 }
+
+    it 'should place a room adjacently to another room' do
+      first = Minotaur::Room.new(width: 3, height: 6)
+      second = Minotaur::Room.new(width: 4, height: 8)
+
+      labyrinth.place_centrally(first)
+      first.should be_placed
+
+      labyrinth.attempt_to_place_adjacently(second, first, WEST)
+      second.should be_placed
+
+      second.x.should eql(first.x-second.width-1)
+      (second.y+second.height).should be > first.y
+      second.y.should be < first.y + first.height
+    end
+  end
+
+  context "when extruding a dungeon" do
+    let(:size)            { 20 }
+    let(:room_count)      { 10 }
 
     before(:each) do
-      labyrinth.extrude!({room_count:   room_count})
-      # (min_edge_length: min_edge_length, variance: variance)
-      puts "--- have labyrinth!:"
-      puts labyrinth
+      labyrinth.extrude!({room_count: room_count})
+      # puts
+      # puts labyrinth.to_s
     end
 
-
-    it "should not have more than 60% 'empty' space" do
-      puts "--- okay..."
-      #total = labyrinth.all_positions.count
-      #total_open = labyrinth.all_positions.count do |position|
-      #  !labyrinth.empty?(position)
-      #end
-      #(total_open.to_f/total).should >= 0.4
-      #puts labyrinth
+     it "should extrude doors" do
+      labyrinth.should have(labyrinth.rooms.count-1).doors
     end
   end
 end

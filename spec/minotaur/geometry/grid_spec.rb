@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'pry'
 
 include Minotaur::Geometry
 include Minotaur::Geometry::Directions
@@ -39,6 +40,22 @@ describe Grid do
         subject.passable?(start,SOUTH).should be_false
       end
     end
+  end
+
+  context "building spaces" do
+    let(:width) { 3 }
+    let(:height) { 3 }
+    let(:space) { Space.new(x: 1, y: 1, width: 2, height: 2) }
+
+    before do
+      subject.build_space!(space)
+    end
+
+    it 'should have carved the space' do
+      subject.rows.should eql([[0, 0, 0], [0, 6, 10], [0, 5, 9]])
+
+    end
+
   end
 
   #describe "#to_s" do

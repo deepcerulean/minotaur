@@ -1,12 +1,11 @@
 source 'https://rubygems.org'
 
-
 gem 'dice'
 gem 'thor'
 
 # ...pull out all this old UI at some point
 gem 'highline'
-gem 'chingu'
+#gem 'chingu'
 
 
 #gem 'thor'

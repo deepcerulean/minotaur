@@ -24,6 +24,12 @@ module Minotaur
           false
         end
       end
+
+      def distance_between(start,destination)
+	dx = start.x - destination.x
+	dy = start.y - destination.y
+	Math.sqrt(dx.abs**2 + dy.abs**2) #(start.x - destination.x).abs^2 + abs(start.y - destination.y).abs^2)
+      end
     end
   end
 end

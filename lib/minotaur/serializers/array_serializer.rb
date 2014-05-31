@@ -6,7 +6,7 @@ module Minotaur
       include Support::PositionHelpers
 
       def to_a
-        #puts "--- serializing #{to_s} to array!"
+        # puts "--- serializing #{width}x#{height} grid to array!"
         #sleep 3
         output = []
         0.upto(height-1) do |y|
@@ -19,13 +19,16 @@ module Minotaur
             #sleep 1
             pos = Position.new(x,y)
             north,south,east,west = passable?(pos,NORTH), passable?(pos,SOUTH), passable?(pos,EAST), passable?(pos,WEST)
+	    value = stairs?(pos) ? 3 : (door?(pos) ? 2 : 0)
 
             x0 = (x*3)
             output[y0][x0]     = north && west ? 0 : 1
             output[y0][x0+1]   = north ? 0 : 1
             output[y0][x0+2]   = north && east ? 0 : 1
             output[y0+1][x0]   = west ? 0 : 1
-            output[y0+1][x0+1] = north || south || east || west ? 0 : 1
+
+            output[y0+1][x0+1] = north || south || east || west ? value : 1
+
             output[y0+1][x0+2] = east  ? 0 : 1
             output[y0+2][x0]   = south && west ? 0 : 1
             output[y0+2][x0+1] = south ? 0 : 1

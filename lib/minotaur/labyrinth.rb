@@ -1,8 +1,8 @@
 module Minotaur
-  DEFAULT_EXTRUDER     = Extruders::RecursiveBacktrackingExtruder
+  DEFAULT_EXTRUDER     = Extruders::AssemblingRoomExtruder # RecursiveBacktrackingExtruder
   DEFAULT_PATHFINDER   = Pathfinders::RecursiveBacktrackingPathfinder
-  DEFAULT_PRETTIFIER   = Prettifiers::SimplePrettifier
-  DEFAULT_SERIALIZER   = Serializers::ArraySerializer
+  DEFAULT_PRETTIFIER   = Prettifiers::CompactPrettifier #SimplePrettifier
+  DEFAULT_SERIALIZER   = Serializers::CompactArraySerializer #ArraySerializer
 
   #
   #   TODO should be a good and proper dungeon generator
@@ -12,12 +12,8 @@ module Minotaur
   #   (extruders, pathfinders, etc)
   #
   class Labyrinth < Geometry::Grid
-    #attr_access
     def initialize(opts={})
-      #puts "==== CREATING NEW LABYRINTH YEAHHHHH!!!"
       super(opts)
-      puts "--- #{self.inspect}"
-
       extruder_module   = opts.delete(:extruder)   || DEFAULT_EXTRUDER
       pathfinder_module = opts.delete(:pathfinder) || DEFAULT_PATHFINDER
       prettifier_module = opts.delete(:prettifier) || DEFAULT_PRETTIFIER
@@ -28,7 +24,11 @@ module Minotaur
       extend pathfinder_module
       extend serializer_module
 
-      extrude!
+      # extrude!
     end
+
+    # def map
+    #   to_a
+    # end
   end
 end

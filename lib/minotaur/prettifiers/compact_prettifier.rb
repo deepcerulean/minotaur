@@ -4,7 +4,7 @@ module Minotaur
       include Geometry
       include Geometry::Directions
 
-      def to_s
+      def to_s(*args) # ignore args?
         output = " " + "_" * (self.width * 2 - 1) << "\n"
         self.height.times do |y_coordinate|
           output << "|"
@@ -23,7 +23,11 @@ module Minotaur
         output << (passable?(position,SOUTH) ? " " : "_")
 
         if self.rows[position.y][position.x] & EAST != 0
-          output << (((at(position) | at(position.translate(EAST))) & SOUTH != 0) ? " " : "_")
+	  # if stairs.any? { |s| s.location == position } #2 (self.rows[position.y][position.x].stairs?)
+	  #   outputs << '<'
+	  # else
+	  output << (((at(position) | at(position.translate(EAST))) & SOUTH != 0) ? " " : "_")
+	 #  end
         else
           output << "|"
         end

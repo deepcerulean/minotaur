@@ -10,24 +10,49 @@ module Minotaur
       #     - examples of particular configurations (spaces)
       #
 
-      room do
-        Room.new(
-          features:   generate(:room_features),
-          size:       generate(:room_size)
-        )
+      player_name do
+	forename, surname = generate(:player_forename), generate(:player_surname)
+	nickname = generate(:player_nickname)
+
+	"#{forename} #{surname} #{nickname}"
       end
 
+      player_forename do
+	%w[ alec alia amoth alberon alarion aldren arc arnt aurion avon azhar balzar belyn calonet coriander antiphon bellax phaeronus chalipht exmostigar alphaewin ].sample.capitalize
+      end
+
+      player_surname do
+	%w[ canda dante darkspur ectorius elantir extresion smythe furl graymantle alvaricus greeth grimwulf jandrel scionex pallathor caelex snarlgurf ].sample.capitalize
+      end
+
+      player_nickname do
+	"the " + %w[ wise brave arrogant cruel kind humble meek proud glorious arcane sneaky lionheart strict zealous free trader unfortunate lost wild tragic imprisoned traveler ].sample.capitalize
+      end
+
+
+      room do
+	size = generate(:room_size)
+	# space = Space.new(size: size)
+
+	Room.new(
+	  features:   generate(:room_features, size),
+	  size:       size
+	)
+      end
 
       room_size do
-        Size.new(width: (5..8).to_a.sample, height: (3..6).to_a.sample)
+        Size.new(width: (3..20).to_a.sample, height: (3..20).to_a.sample)
       end
 
-      room_features do #|opts|
+      room_features do |size| # |size| #|opts|
         OpenStruct.new({
           atmosphere:  generate(:atmosphere),
-          room_name:   generate(:room_name),
+	  treasure:    generate(:treasure, size),
+
+          # room_name:   generate(:room_name),
           room_type:   generate(:room_type),
           description: generate(:room_description)
+	  # floor_type:  generate(:floor_type)
         })
       end
 
@@ -44,13 +69,12 @@ module Minotaur
         Alignment.new(moral_alignment,ethical_alignment)
       end
 
-
-      room_name do
-        %w[ somewhere elsewhere anywhere ].sample
-      end
+      # room_name do
+      #   %w[ somewhere elsewhere anywhere ].sample
+      # end
 
       room_type do
-        %w[ armory barracks ].sample
+        %w[ armory barracks sanctum library workshop ].sample
       end
 
       temperature do
@@ -83,6 +107,61 @@ module Minotaur
         atmosphere
       end
 
+      ####
+      #
+      spell do |opts|
+	name = [%w[ fire lightning ice ].sample, %w[ blast circle ray cone ].sample].join ' '
+	OpenStruct.new(name: name)
+      end
+
+      color do
+	%w[ red purple yellow green orange blue indigo colorless black ].sample
+      end
+
+      treasure do |size|
+	t = OpenStruct.new
+
+	chest_count = case size.area 
+	when 0..180 then D3
+	when 180..350 then D6
+	when 350..700 then D10
+	else D20
+	end.first
+
+	potion_count = case size.area
+		       when 0..300 then D3
+		       when 300..750 then D6
+		       when 750..3000 then D10
+		       else D20
+		       end.first
+
+	scroll_count = case size.area
+		       when 0..300 then D3
+		       when 300..750 then D6
+		       when 750..3000 then D10
+		       end.first
+
+	t.gold = Array.new(chest_count) do 
+	  OpenStruct.new type: :gold, subtype: :gold, properties: { amount: D20x3.reduce(&:+) }
+	end
+
+	t.potions = Array.new(potion_count) do
+	  OpenStruct.new type: :potion, subtype: :potion, properties: { amount: 1, color: generate(:color) }
+	end
+
+	t.scrolls = Array.new(scroll_count) do
+	  OpenStruct.new type: :scroll, subtype: :scroll, properties: { amount: 1, title: generate(:spell).name }
+	end
+
+	t
+      end
+
+
+      # gold_pieces do
+      #   GP.new(count: D10x2)
+      #   # Array.new(D10x2) { GoldPiece.new }
+      #   # D20x5.first.times { generate(:gold_piece) }
+      # end
     end
   end
 end
